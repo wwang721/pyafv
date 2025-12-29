@@ -5,8 +5,12 @@ import tqdm
 from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
 
 
-# Maximal radius
-radius = 1.0
+np.random.seed(42)
+
+N = 100         # number of cells
+radius = 1.0    # Maximal radius
+mu = 1.0        # mobility
+dt = 0.01       # time step
 
 # Parameter set
 phys = PhysicalParams(
@@ -18,27 +22,26 @@ phys = PhysicalParams(
     lambda_tension=0.2
 )
 
-N = 100  # or 1, 2, 3, 4
-np.random.seed(42)
+# Initial positions
 pts = np.random.rand(N, 2)*0.3 + 0.35  # shape (N,2)
 pts *= 25.
 
+# Initialize simulator
 sim = FiniteVoronoiSimulator(pts, phys)
 
+# Plot initial configuration
 fig, ax = plt.subplots()
 sim.plot_2d(ax=ax)
 plt.show()
 
-
-mu = 1.0
-dt = 0.01
-
+# Relaxation to mechanical equilibrium
 for _ in tqdm.tqdm(range(1000), desc="Relaxation"):
     diag = sim.build()
     forces = diag["forces"]
     pts += mu * forces * dt
     sim.update_positions(pts)
 
+# Plot relaxed configuration
 fig, ax = plt.subplots()
 sim.plot_2d(ax=ax)
 plt.show()
