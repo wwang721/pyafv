@@ -3,35 +3,50 @@
 
 # py-afv
 
-Python code that implements the `active-finite-Voronoi (AFV) model`.
+Python code that implements the **active-finite-Voronoi (AFV) model**.
+The AFV framework was introduced and developed in, for example,
+ [[Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B)] and [[Phys. Rev. E **98**, 042418
+(2018)](https://doi.org/10.1103/PhysRevE.98.042418)].
 
 
 ## Installation
 
-I am usingg [`uv`](https://docs.astral.sh/uv/) to manage the Python packages.
+This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management.
 
-After clone this repo, first sync the dependencies with `uv`:
-``` bash
+After cloning the repository, synchronize the dependencies with
+```bash
 uv sync --dev
 ```
-or just `uv sync` if you only need to use the code.
+or simply `uv sync` if you only intend to run the core code without development dependencies.
 
-> I put `tqdm` in the "dev" group, so for some scripts in [`examples`](/examples/), you may need to `uv add tqdm` manually if you did sync my development dependency group.
+> Note: `tqdm` is included in the dev dependency group. Some scripts in [`examples`](/examples/) rely on `tqdm`, so you may need to install it manually via `uv add tqdm` if you did not sync the development dependency group.
 
-## Run tests
 
-Status of CI using GitHub Actions should be shown on the top badge. If you want to run all tests in [`test`](/tests/) by yourself:
-``` bash
+## Running tests
+
+The current CI status for the test suite is shown in the badge at the top of this file.
+To run the full test suite locally (located in [`test`](/tests/)):
+```bash
 uv run pytest
 ```
-or with coverage flags like `--cov`.
+You can also include coverage options such as `--cov` if desired.
+
+> Note: A comparison against the MATLAB implementation from [[Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B)] is included in [test_core.py](/tests/test_core.py).
 
 
 ## Usage
 
-See examples in [`examples`](/examples/).
+Example scripts are provided in [`examples`](/examples/).
 
-Some simulation snapshots:
-* ![initial_config](/assets/initial_configuration.png)
-* ![after_relax](/assets/relaxed_configuration.png)
-* ![active_dynamics](/assets/active_FV.png)
+Below are representative simulation snapshots generated using the AFV model:
+| Initial configuration |
+|-----------------------|
+| <img src="./assets/initial_configuration.png" width="600"> |
+
+| After relaxation |
+|------------------|
+| <img src="./assets/relaxed_configuration.png" width="600"> |
+
+| Active dynamics enabled |
+|-----------------|
+| <img src="./assets/active_FV.png" width="600"> |
