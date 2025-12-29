@@ -14,8 +14,17 @@ dependencies = [
 dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
+    "tqdm>=4.67.1",
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
+# pythonpath = ["."]  # not needed with setuptools
 testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# optional but explicit
+packages = ["afv"]

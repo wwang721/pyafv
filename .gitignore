@@ -20,4 +20,3 @@ wheels/
 htmlcov/
 
 # Some custom ignores
-/test.py
