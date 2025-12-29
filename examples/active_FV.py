@@ -5,8 +5,14 @@ import tqdm
 from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
 
 
-# Maximal radius
-radius = 1.0
+np.random.seed(42)
+
+N = 100         # number of cells
+radius = 1.0    # Maximal radius
+mu = 1.0        # mobility
+va = 2.4        # self-propulsion speed
+Dr = 0.3        # rotational diffusion constant
+dt = 0.01       # time step
 
 # Parameter set
 phys = PhysicalParams(
@@ -18,33 +24,25 @@ phys = PhysicalParams(
     lambda_tension=0.2
 )
 
-N = 100  # or 1, 2, 3, 4
-np.random.seed(42)
+# Initial positions and orientations
 pts = np.random.rand(N, 2)*0.3 + 0.35  # shape (N,2)
 pts *= 25.
-
 theta = 2. * np.pi * np.random.rand(N) - np.pi
 
-
+# Initialize simulator
 sim = FiniteVoronoiSimulator(pts, phys)
 
-
-mu = 1.0
-va = 2.4
-Dr = 0.3
-dt = 0.01
-
+# Relaxation to mechanical equilibrium
 for _ in tqdm.tqdm(range(200), desc="Relaxation"):
     diag = sim.build()
     pts += mu * diag["forces"] * dt
     sim.update_positions(pts)
 
-
-
+# Active dynamics
 for _ in tqdm.tqdm(range(1000), desc="Active dynamics"):
     diag = sim.build()
     forces = diag["forces"]
-    
+
     active_velocity = va * np.column_stack((np.cos(theta), np.sin(theta)))
 
     pts += (mu * forces + active_velocity) * dt
@@ -54,9 +52,10 @@ for _ in tqdm.tqdm(range(1000), desc="Active dynamics"):
 
     sim.update_positions(pts)
 
-print(pts)
+
 fig, ax = plt.subplots()
 sim.plot_2d(ax=ax)
-ax.quiver(pts[:, 0], pts[:, 1], np.cos(theta), np.sin(theta), color='C4', scale=20, zorder=3)
+# Plot cell orientations
+ax.quiver(pts[:, 0], pts[:, 1], np.cos(theta),
+          np.sin(theta), color='C4', scale=20, zorder=3)
 plt.show()
-
