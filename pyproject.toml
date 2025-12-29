@@ -5,9 +5,11 @@ description = "Python code that implements the active-finite-Voronoi (AFV) model
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cython>=3.2.3",
     "matplotlib>=3.10.8",
     "numpy>=2.4.0",
     "scipy>=1.16.3",
+    "setuptools>=80.9.0",
 ]
 
 [dependency-groups]
@@ -22,7 +24,7 @@ dev = [
 testpaths = ["tests"]
 
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68", "wheel", "Cython>=3.0", "numpy"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
