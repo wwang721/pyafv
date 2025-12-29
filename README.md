@@ -26,7 +26,7 @@ or simply `uv sync` if you only intend to run the core code without development 
 
 The current CI status of the test suite, run via [GitHub Actions](/.github/workflows/tests.yml), is shown in the badge at the top of this file.
 
-To run the full test suite locally (located in [`test`](/tests/)):
+To run the full test suite locally (located in [`tests`](/tests/)):
 ```bash
 uv run pytest
 ```
@@ -42,7 +42,7 @@ Example scripts are provided in [`examples`](/examples/). They can be run using
 uv run <script_name>.py
 ```
 
-Below are representative simulation snapshots generated using the AFV model:
+Below are representative simulation snapshots generated using the code:
 | Initial configuration |
 |-----------------------|
 | <img src="./assets/initial_configuration.png" width="600"> |
