@@ -19,4 +19,9 @@ wheels/
 .coverage
 htmlcov/
 
+# Cython build files
+*.so
+*.pyd
+*.dll
+
 # Some custom ignores
