@@ -1,5 +1,5 @@
 [![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=feature)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:feature)
-[![codecov](https://codecov.io/github/wwang721/py-afv/graph/badge.svg?token=VSXSOX8HVS&branch=feature)](https://codecov.io/github/wwang721/py-afv?branch=feature)
+[![codecov](https://codecov.io/github/wwang721/py-afv/branch/feature/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/feature)
 
 # py-afv
 
