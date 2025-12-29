@@ -1,7 +1,7 @@
-""""
+"""
 Finite Voronoi Model Simulator in 2D
 ====================================
-Create by Wei Wang, 2025.
+Created by Wei Wang, 2025.
 
 Key public entry points:
 ------------------------

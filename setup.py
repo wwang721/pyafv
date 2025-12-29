@@ -1,11 +1,11 @@
-""""
+"""
 Setup script for compiling Cython extension module.
 ===================================================
 Modules to be compiled:
 - cell_geom.pyx
 
 ---------------------------------------------------
-Create by Wei Wang, 2025.
+Created by Wei Wang, 2025.
 """
 
 from setuptools import setup, Extension
