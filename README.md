@@ -19,12 +19,13 @@ uv sync --dev
 ```
 or simply `uv sync` if you only intend to run the core code without development dependencies.
 
-> Note: `tqdm` is included in the dev dependency group. Some scripts in [`examples`](/examples/) rely on `tqdm`, so you may need to install it manually via `uv add tqdm` if you did not sync the development dependency group.
+> Note: `tqdm` is included in the *dev* group. Some scripts in [`examples`](/examples/) rely on `tqdm`; if you did not sync the development dependency group, you may need to add it manually via `uv add tqdm`.
 
 
 ## Running tests
 
-The current CI status for the test suite is shown in the badge at the top of this file.
+The current CI status of the test suite, run via [GitHub Actions](/.github/workflows/tests.yml), is shown in the badge at the top of this file.
+
 To run the full test suite locally (located in [`test`](/tests/)):
 ```bash
 uv run pytest
@@ -36,7 +37,10 @@ You can also include coverage options such as `--cov` if desired.
 
 ## Usage
 
-Example scripts are provided in [`examples`](/examples/).
+Example scripts are provided in [`examples`](/examples/). They can be run using
+```bash
+uv run <script_name>.py
+```
 
 Below are representative simulation snapshots generated using the AFV model:
 | Initial configuration |
