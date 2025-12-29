@@ -14,3 +14,10 @@ wheels/
 
 # pytest cache
 .pytest_cache/
+
+# pytest coverage files
+.coverage
+htmlcov/
+
+# Some custom ignores
+/test.py
