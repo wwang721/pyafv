@@ -54,31 +54,41 @@ You can also include coverage options such as `--cov` if desired. If you previou
 
 ## Usage
 
-Example scripts are provided in [`examples`](/examples/).
-After installing other required packages (e.g., `tqdm`, `jupyter`) using `uv sync --extra examples` or `uv sync --all-extras`, you can then run these scripts with:
+Using `uv run python`, you should be able to import `afv` from anywhere within the repository directory.
+The following example demonstrates how to construct a finite-Voronoi diagram:
+```python
+import numpy as np
+from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
+
+N = 100                                               # number of cells
+pts = np.random.rand(N, 2) * 10                       # initial positions
+params = PhysicalParams()                             # use default parameter values
+sim = FiniteVoronoiSimulator(pts, params)             # initialize the simulator
+sim.plot_2d(show=True)                                # visualize the Voronoi diagram
+```
+To compute the conservative forces and extract detailed geometric information (e.g., cell areas, vertices, and edges), call:
+```python
+diag = sim.build()
+```
+The returned object `diag` is a Python `dict` containing these quantities.
+
+More example scripts are provided in [`examples`](/examples/).
+After installing the optional dependencies (e.g., `tqdm`, `jupyter`) via `uv sync --extra examples` or `uv sync --all-extras`, you can then run these scripts with:
 ```bash
 uv run <script_name>.py
 ```
 
-> * To launch Jupyter Notebook: `uv run jupyter notebook`.
+> * To launch Jupyter Notebook: after `uv` syncs the extra dependencies, run `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
 
 
 Below are representative simulation snapshots generated using the code:
-| Model illustration |
-|-----------------|
-| <img src="./assets/model_illustration.png" width="600"> |
+| Model illustration | Periodic boundary conditions |
+|-----------------|-----------------|
+| <img src="./assets/model_illustration.png" height="378"> | <img src="./assets/pbc.png" height="378">|
 
-| Initial configuration |
-|-----------------------|
-| <img src="./assets/initial_configuration.png" width="600"> |
-
-| After relaxation |
-|------------------|
-| <img src="./assets/relaxed_configuration.png" width="600"> |
-
-| Active dynamics enabled |
-|-----------------|
-| <img src="./assets/active_FV.png" width="600"> |
+| Initial configuration | After relaxation | Active dynamics enabled |
+|-----------------------|-----------------------|-----------------------|
+| <img src="./assets/initial_configuration.png" width="300"> | <img src="./assets/relaxed_configuration.png" width="300"> | <img src="./assets/active_FV.png" width="300"> |
 
 
 ## License
