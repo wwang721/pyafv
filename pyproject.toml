@@ -1,6 +1,6 @@
 [project]
 name = "py-afv"
-version = "0.1.0"
+version = "0.2.2"
 description = "Python code that implements the active-finite-Voronoi (AFV) model."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -12,21 +12,26 @@ dependencies = [
     "setuptools>=80.9.0",
 ]
 
+[project.optional-dependencies]
+examples = [
+    "ipywidgets>=8.1.8",
+    "jupyter>=1.1.1",
+    "tqdm>=4.67.1",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
-    "tqdm>=4.67.1",
 ]
 
 [tool.pytest.ini_options]
-# pythonpath = ["."]  # not needed with setuptools
 testpaths = ["tests"]
+# pythonpath = ["."]  # not needed with setuptools
 
 [build-system]
 requires = ["setuptools>=68", "wheel", "Cython>=3.0", "numpy"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-# optional but explicit
-packages = ["afv"]
+packages = ["afv"]  # optional but explicit
