@@ -21,12 +21,10 @@ or simply `uv sync` if you only intend to run the core code without development 
 
 **Notes:**
 > * `tqdm` is included in the *dev* group. Some scripts in [`examples`](/examples/) rely on `tqdm`; if you did not sync the development dependency group, you may need to add it manually via `uv add tqdm`.
-> 
 > * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/afv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted, you can reinstall the package with `uv sync --reinstall-package py-afv` or recompile it with `uv run setup.py build_ext --inplace`.
 For the old pure-Python implementation with no C/C++ compiled dependencies, see **[v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0)**.
->
 
-### Windows MinGW GCC
+#### Windows MinGW GCC
 If you are using **MinGW GCC** (rather than MSVC) on Windows, add a `setup.cfg` at the repository root
 ```ini
 # setup.cfg
