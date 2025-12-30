@@ -24,4 +24,7 @@ htmlcov/
 *.pyd
 *.dll
 
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
 # Some custom ignores
