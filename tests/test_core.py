@@ -13,7 +13,7 @@ def test_MATLAB(data_dir, simulator):
     # Get forces
     forces = diag["forces"]
 
-    # This is results of the MATLAB implementation for the points in 'init_pts.csv' file
+    # This is result of the MATLAB implementation for the points in 'init_pts.csv' file
     forces_matlab = np.loadtxt(data_dir / "init_forces.csv", delimiter=',')
     F_comp = np.abs(forces - forces_matlab)
 
