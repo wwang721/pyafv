@@ -1,5 +1,6 @@
 [![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:main)
 [![codecov](https://codecov.io/github/wwang721/py-afv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/main)
+[![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 
 # py-afv
 
@@ -68,3 +69,7 @@ Below are representative simulation snapshots generated using the code:
 | Active dynamics enabled |
 |-----------------|
 | <img src="./assets/active_FV.png" width="600"> |
+
+## License
+
+This project is licensed under the [MIT License](/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
