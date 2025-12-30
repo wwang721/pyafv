@@ -1,5 +1,5 @@
-[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=feature)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:feature)
-[![codecov](https://codecov.io/github/wwang721/py-afv/branch/feature/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/feature)
+[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=plotting-examples)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:plotting-examples)
+[![codecov](https://codecov.io/github/wwang721/py-afv/branch/plotting-examples/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/plotting-examples)
 [![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 
 # py-afv
