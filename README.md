@@ -12,7 +12,7 @@ The AFV framework was introduced and developed in, for example,
 
 ## Installation
 
-This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management.
+This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
 
 * After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can synchronize the dependencies with
     ```bash
@@ -91,7 +91,7 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
 | Initial configuration | After relaxation | Active dynamics enabled |
 |-----------------------|-----------------------|-----------------------|
-| <img src="./assets/initial_configuration.png" width="300"> | <img src="./assets/relaxed_configuration.png" width="300"> | <img src="./assets/active_FV.png" width="300"> |
+| <img src="./assets/initial_configuration.png" height="300"> | <img src="./assets/relaxed_configuration.png" height="300"> | <img src="./assets/active_FV.png" height="300"> |
 
 
 ## License
