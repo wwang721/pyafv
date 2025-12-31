@@ -85,7 +85,7 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
 * Below are representative simulation snapshots generated using the code:
 
-| Model illustration | Periodic boundary conditions [*](/examples/jupyter/periodic_plotting.ipynb) |
+| Model illustration | Periodic boundary conditions[*](/examples/jupyter/periodic_plotting.ipynb) |
 |-----------------|-----------------|
 | <img src="./assets/model_illustration.png" height="373"> | <img src="./assets/pbc.png" height="385">|
 
