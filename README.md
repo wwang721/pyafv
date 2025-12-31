@@ -73,8 +73,8 @@ diag = sim.build()
 ```
 The returned object `diag` is a Python `dict` containing these quantities.
 
-#### More [`examples`](/examples/) scripts
-To run these example scripts, you need to install at least one additional dependency, `tqdm`, via `uv add tqdm`. Then you can simply run any script in [`examples`](/examples/) with
+#### More example scripts
+To run the example scripts in [`examples`](/examples), you need to install at least one additional dependency, `tqdm`, via `uv add tqdm`. Then you can simply run any script in [`examples`](/examples/) with
 ```bash
 uv run <script_name>.py
 ```
