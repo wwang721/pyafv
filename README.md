@@ -94,6 +94,13 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 | <img src="./assets/initial_configuration.png" height="300"> | <img src="./assets/relaxed_configuration.png" height="300"> | <img src="./assets/active_FV.png" height="300"> |
 
 
+## More information
+
+See the important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
+* [QhullError when 3+ points are collinear #1](https://github.com/wwang721/py-afv/issues/1) [Closed]
+*  [Add customized plotting to examples illustrating access to vertices and edges in AFV model #5](https://github.com/wwang721/py-afv/issues/5) [Completed in PR [#7](https://github.com/wwang721/py-afv/pull/7)]
+
+
 ## License
 
 This project is licensed under the [MIT License](/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
