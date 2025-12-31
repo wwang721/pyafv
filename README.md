@@ -73,13 +73,14 @@ diag = sim.build()
 ```
 The returned object `diag` is a Python `dict` containing these quantities.
 
-**More example scripts** are provided in [`examples`](/examples/).
-After installing the optional dependencies (e.g., `tqdm`, `jupyter`) via `uv sync --extra examples` or `uv sync --all-extras`, you can then run these scripts with:
+#### More [`examples`](/examples/) scripts
+To run these example scripts, you need to install at least one additional dependency, `tqdm`, via `uv add tqdm`. Then you can simply run any script in [`examples`](/examples/) with
 ```bash
 uv run <script_name>.py
 ```
+You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv sync --extra examples` or `uv sync --all-extras`.
 
-* To launch Jupyter Notebook: after `uv` syncs the extra dependencies, run `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
+* To launch Jupyter Notebook: after `uv` has synced all extra dependencies, start Jupyter with `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
 
 
 * Below are representative simulation snapshots generated using the code:
