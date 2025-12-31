@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - 'README.md'
       - 'examples/**'
+      - 'assets/**'
       - 'LICENSE'
       - '.gitignore'
 
@@ -13,6 +14,7 @@ on:
     paths-ignore:
       - 'README.md'
       - 'examples/**'
+      - 'assets/**'
       - 'LICENSE'
       - '.gitignore'
 
