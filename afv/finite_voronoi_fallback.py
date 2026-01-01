@@ -12,7 +12,6 @@ Key public entry points:
 - update_params(): update physical parameters.
 """
 
-from dataclasses import dataclass                              # pragma: no cover
 from typing import Dict, List, Tuple, Optional                 # pragma: no cover
 import numpy as np                                             # pragma: no cover
 from scipy.spatial import Voronoi                              # pragma: no cover
@@ -20,21 +19,13 @@ from collections import defaultdict                            # pragma: no cove
 from matplotlib import pyplot as plt                           # pragma: no cover
 from matplotlib.axes import Axes                               # pragma: no cover
 
+from .physical_params import PhysicalParams                    # pragma: no cover
+
 
 # ---- tiny helpers to avoid tiny allocations in hot loops ----
 def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:      # pragma: no cover
     """Row-wise dot product for 2D arrays with shape (N,2)."""
     return np.einsum("ij,ij->i", a, b)
-
-
-@dataclass
-class PhysicalParams:                                           # pragma: no cover
-    r: float = 1.0                       # Radius (maximal) of the Voronoi cells
-    A0: float = np.pi                    # Preferred area of the Voronoi cells
-    P0: float = 4.8                      # Preferred perimeter of the Voronoi cells
-    KA: float = 1.0                      # Area elasticity
-    KP: float = 1.0                      # Perimeter elasticity
-    lambda_tension: float = 0.2          # Tension difference
 
 
 class FiniteVoronoiSimulator:                                   # pragma: no cover

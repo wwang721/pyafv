@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import numpy as np
 
-from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator, _USING_ACCEL
+import afv
 
 
 @pytest.fixture(scope="session")
@@ -13,8 +13,8 @@ def data_dir() -> Path:
 
 
 @pytest.fixture(scope="session")
-def phys() -> PhysicalParams:
-    return PhysicalParams(
+def phys() -> afv.PhysicalParams:
+    return afv.PhysicalParams(
         r=1.0,
         A0=np.pi,
         P0=4.8,
@@ -25,9 +25,12 @@ def phys() -> PhysicalParams:
 
 
 @pytest.fixture(scope="session")
-def simulator(phys) -> FiniteVoronoiSimulator:
-    assert _USING_ACCEL, "Accelerated backend is not in use."
-
+def simulator(phys) -> afv.FiniteVoronoiSimulator:
     # Initialize the Voronoi simulator with the defined parameters
     pts = np.array([[0.0, 0.0]])
-    return FiniteVoronoiSimulator(pts, phys)
+    sim = afv.FiniteVoronoiSimulator(pts, phys)
+    
+    _USING_ACCEL = sim._BACKEND in {"cython", "numba"}
+
+    assert _USING_ACCEL, "Accelerated backend is not in use."
+    return sim
