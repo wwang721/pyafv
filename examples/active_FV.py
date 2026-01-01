@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tqdm
-
-from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
+import afv
 
 
 np.random.seed(42)
@@ -15,7 +14,7 @@ Dr = 0.3        # rotational diffusion constant
 dt = 0.01       # time step
 
 # Parameter set
-phys = PhysicalParams(
+phys = afv.PhysicalParams(
     r=radius,
     A0=np.pi*(radius**2),
     P0=4.8*radius,
@@ -30,7 +29,7 @@ pts *= 25.
 theta = 2. * np.pi * np.random.rand(N) - np.pi
 
 # Initialize simulator
-sim = FiniteVoronoiSimulator(pts, phys)
+sim = afv.FiniteVoronoiSimulator(pts, phys)
 
 # Relaxation to mechanical equilibrium
 for _ in tqdm.tqdm(range(200), desc="Relaxation"):

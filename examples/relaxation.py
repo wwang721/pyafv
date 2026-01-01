@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tqdm
-
-from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
-
+import afv
 
 np.random.seed(42)
 
@@ -13,7 +11,7 @@ mu = 1.0        # mobility
 dt = 0.01       # time step
 
 # Parameter set
-phys = PhysicalParams(
+phys = afv.PhysicalParams(
     r=radius,
     A0=np.pi*(radius**2),
     P0=4.8*radius,
@@ -27,7 +25,7 @@ pts = np.random.rand(N, 2)*0.3 + 0.35  # shape (N,2)
 pts *= 25.
 
 # Initialize simulator
-sim = FiniteVoronoiSimulator(pts, phys)
+sim = afv.FiniteVoronoiSimulator(pts, phys)
 
 # Plot initial configuration
 fig, ax = plt.subplots()

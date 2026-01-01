@@ -59,12 +59,12 @@ Using `uv run python`, you should be able to import `afv` from anywhere within t
 The following example demonstrates how to construct a finite-Voronoi diagram:
 ```python
 import numpy as np
-from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
+import afv
 
 N = 100                                      # number of cells
 pts = np.random.rand(N, 2) * 10              # initial positions
-params = PhysicalParams()                    # use default parameter values
-sim = FiniteVoronoiSimulator(pts, params)    # initialize the simulator
+params = afv.PhysicalParams()                    # use default parameter values
+sim = afv.FiniteVoronoiSimulator(pts, params)    # initialize the simulator
 sim.plot_2d(show=True)                       # visualize the Voronoi diagram
 ```
 To compute the conservative forces and extract detailed geometric information (e.g., cell areas, vertices, and edges), call:

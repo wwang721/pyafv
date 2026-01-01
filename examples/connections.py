@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
-
-from afv.finite_voronoi import PhysicalParams, FiniteVoronoiSimulator
+import afv
 
 
 np.random.seed(42)
@@ -11,7 +10,7 @@ N = 200         # number of cells
 radius = 1.0    # Maximal radius
 
 # Parameter set
-phys = PhysicalParams(
+phys = afv.PhysicalParams(
     r=radius,
     A0=np.pi*(radius**2),
     P0=4.8*radius,
@@ -25,7 +24,7 @@ pts = np.random.rand(N, 2)*0.3 + 0.35  # shape (N,2)
 pts *= 70.
 
 # Initialize simulator
-sim = FiniteVoronoiSimulator(pts, phys)
+sim = afv.FiniteVoronoiSimulator(pts, phys)
 diag = sim.build()
 connect = diag["connections"]
 
