@@ -1,4 +1,5 @@
-[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:main)
+<!--[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:main)-->
+[![pytest](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/github/wwang721/py-afv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/main)
 [![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 

@@ -1,6 +1,6 @@
 [project]
 name = "py-afv"
-version = "0.2.5"
+version = "0.3.0"
 description = "Python code that implements the active-finite-Voronoi (AFV) model."
 readme = "README.md"
 requires-python = ">=3.13"
