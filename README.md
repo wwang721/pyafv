@@ -83,6 +83,7 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
 * To launch Jupyter Notebook: after `uv` has synced all extra dependencies, start Jupyter with `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
 
+    > Jupyter notebooks and media are stored via [**Git LFS**](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage). If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install Git LFS to fetch them automatically or download the files manually from the GitHub web interface.
 
 * Below are representative simulation snapshots generated using the code:
 
