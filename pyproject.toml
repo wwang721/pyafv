@@ -25,10 +25,6 @@ dev = [
     "pytest-cov>=6.0.0",
 ]
 
-[tool.uv]
-# This tells uv to look for the lowest version satisfying requirements
-resolution = "lowest-direct"
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # pythonpath = ["."]  # not needed with setuptools
@@ -39,3 +35,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["afv"]  # optional but explicit
+
