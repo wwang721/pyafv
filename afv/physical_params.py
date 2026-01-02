@@ -82,7 +82,7 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
     """
     Given physical parameters and a target detachment force, compute the corresponding delta.
     """
-    KP, A0, P0, Lambda = params.KA, params.A0, params.P0, params.lambda_tension
+    KP, A0, P0, Lambda = params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r
 
     distances = np.linspace(1e-6, 2*l-(1e-6), 10_000)
