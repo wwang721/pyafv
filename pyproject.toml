@@ -3,34 +3,38 @@ name = "py-afv"
 version = "0.3.0"
 description = "Python code that implements the active-finite-Voronoi (AFV) model."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11.11"
 dependencies = [
-    "cython>=3.2.3",
-    "matplotlib>=3.10.8",
-    "numpy>=2.4.0",
-    "scipy>=1.16.3",
-    "setuptools>=80.9.0",
+    "cython>=3.0",
+    "numpy>=2.1.3",
+    "scipy>=1.15.3",
+    "matplotlib>=3.10.7",
+    "setuptools>=72.1.0",
 ]
 
 [project.optional-dependencies]
 examples = [
-    "ipywidgets>=8.1.8",
-    "jupyter>=1.1.1",
+    "ipywidgets>=8.1.5",
+    "jupyter>=1.1.0",
     "tqdm>=4.67.1",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
-    "pytest-cov>=7.0.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
 ]
+
+[tool.uv]
+# This tells uv to look for the lowest version satisfying requirements
+resolution = "lowest-direct"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # pythonpath = ["."]  # not needed with setuptools
 
 [build-system]
-requires = ["setuptools>=68", "wheel", "Cython>=3.0", "numpy"]
+requires = ["setuptools>=64", "cython>=3.0", "numpy>=2.1.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
