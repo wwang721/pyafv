@@ -4,6 +4,7 @@ import pytest
 import numpy as np
 
 import afv
+from afv.finite_voronoi_fallback import FiniteVoronoiSimulator as FallbackSimulator
 
 
 @pytest.fixture(scope="session")
@@ -21,16 +22,23 @@ def phys() -> afv.PhysicalParams:
         KA=1.0,
         KP=1.0,
         lambda_tension=0.2,
+        delta=0.45
     )
 
 
-@pytest.fixture(scope="session")
-def simulator(phys) -> afv.FiniteVoronoiSimulator:
-    # Initialize the Voronoi simulator with the defined parameters
+@pytest.fixture(scope="session", params=["accel", "fallback"])
+def simulator(request, phys):
+    """Fixture that provides both the accelerated and fallback simulators."""
     pts = np.array([[0.0, 0.0]])
-    sim = afv.FiniteVoronoiSimulator(pts, phys)
-    
-    _USING_ACCEL = sim._BACKEND in {"cython", "numba"}
 
-    assert _USING_ACCEL, "Accelerated backend is not in use."
-    return sim
+    if request.param == "accel":
+        sim = afv.FiniteVoronoiSimulator(pts, phys)
+        # Verify it's actually using an accelerated backend
+        _USING_ACCEL = sim._BACKEND in {"cython", "numba"}
+
+        assert _USING_ACCEL, "Accelerated backend is not in use."
+        return sim
+
+    else:
+        sim = FallbackSimulator(pts, phys)
+        return sim

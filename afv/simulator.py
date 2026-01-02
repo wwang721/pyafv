@@ -19,7 +19,7 @@ class FiniteVoronoiSimulator(backend_simulator):
     def __init__(self, *args, **kwargs):
         # Ensure you call the parent constructor
         super().__init__(*args, **kwargs)
-        
+
         if self._BACKEND not in {"cython", "numba"}:                 # pragma: no cover
             # raise warning to inform user about fallback
             import warnings
@@ -31,6 +31,7 @@ class FiniteVoronoiSimulator(backend_simulator):
                 stacklevel=2,
             )
 
+
 __all__ = [
     "FiniteVoronoiSimulator",
-    ]
+]

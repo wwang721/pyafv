@@ -1,5 +1,5 @@
-[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:main)
-[![codecov](https://codecov.io/github/wwang721/py-afv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/main)
+[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=feature%2Fdivergence)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:feature%2Fdivergence)
+[![codecov](https://codecov.io/github/wwang721/py-afv/branch/feature%2Fdivergence/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/feature%2Fdivergence)
 [![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 
 # py-afv
@@ -22,8 +22,8 @@ or use `uv sync --no-dev` if you only intend to run the core code without develo
 
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
-> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/afv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted, you can reinstall the package with `uv sync --reinstall-package py-afv` or recompile it with `uv run setup.py build_ext --inplace`.
-For the old pure-Python implementation with no C/C++ compiled dependencies, see **[v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0)**.
+> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/afv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package py-afv --inexact` (the `--inexact` flag prevents uv from removing any installed packages) or recompile the Cython extension with `uv run setup.py build_ext --inplace`.
+> * For the old pure-Python implementation with no C/C++ compiled dependencies, see **[v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0)**.
 
 
 #### Windows MinGW GCC
@@ -50,7 +50,7 @@ The current CI status of the test suite, run via [GitHub Actions](/.github/workf
 
 **Notes:** 
 > * A comparison against the MATLAB implementation from [[Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B)] is included in [test_core.py](/tests/test_core.py).
-> * Unlike [v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided.
+> * Unlike [v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
 ## Usage
@@ -99,7 +99,7 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 See the important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
 * [QhullError when 3+ points are collinear #1](https://github.com/wwang721/py-afv/issues/1) [Closed]
 *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/py-afv/issues/5) [Completed in PR [#7](https://github.com/wwang721/py-afv/pull/7)]
-
+* [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/py-afv/issues/8) [🚧 [feature/divergence](https://github.com/wwang721/py-afv/tree/feature%2Fdivergence) in progress]
 
 ## License
 

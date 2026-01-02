@@ -12,23 +12,23 @@ Key public entry points:
 - update_params(): update physical parameters.
 """
 
-from typing import Dict, List, Tuple, Optional                 # pragma: no cover
-import numpy as np                                             # pragma: no cover
-from scipy.spatial import Voronoi                              # pragma: no cover
-from collections import defaultdict                            # pragma: no cover
-from matplotlib import pyplot as plt                           # pragma: no cover
-from matplotlib.axes import Axes                               # pragma: no cover
+from typing import Dict, List, Tuple, Optional
+import numpy as np
+from scipy.spatial import Voronoi
+from collections import defaultdict
+from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
 
-from .physical_params import PhysicalParams                    # pragma: no cover
+from .physical_params import PhysicalParams
 
 
 # ---- tiny helpers to avoid tiny allocations in hot loops ----
-def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:      # pragma: no cover
+def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Row-wise dot product for 2D arrays with shape (N,2)."""
     return np.einsum("ij,ij->i", a, b)
 
 
-class FiniteVoronoiSimulator:                                   # pragma: no cover
+class FiniteVoronoiSimulator:
     def __init__(self, pts: np.ndarray, phys: PhysicalParams):
         self.pts = pts.copy()            # (N,2) array of initial points
         self.N = pts.shape[0]            # Number of points
@@ -546,8 +546,6 @@ class FiniteVoronoiSimulator:                                   # pragma: no cov
                         vertex_out_dl_dtheta[k2v, which2] = dl2
 
 
-
-        
         diagnostics = dict(
             vertex_in_id=set(vertex_in_id),
             vertex_out_id=set(vertex_out_id),
@@ -708,7 +706,7 @@ class FiniteVoronoiSimulator:                                   # pragma: no cov
                 y_unit = np.array([0.0, 1.0])[None, :]
 
                 cross_z = rij_vec[:, [1]] * x_unit - rij_vec[:, [0]] * y_unit  # (M,2)
-                denom = (root[:, None] * (rij ** 3)[:, None])
+                denom = (np.maximum(root[:, None], self.phys.delta) * (rij ** 3)[:, None])  # small offset to avoid singularities
 
                 dx_terms = - (2.0 * (r ** 2) * rij_vec[:, [0]] * cross_z / denom) \
                         - (root / (2.0 * rij))[:, None] * y_unit

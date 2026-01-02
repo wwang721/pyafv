@@ -523,7 +523,7 @@ class FiniteVoronoiSimulator:
                 y_unit = np.array([0.0, 1.0])[None, :]
 
                 cross_z = rij_vec[:, [1]] * x_unit - rij_vec[:, [0]] * y_unit  # (M,2)
-                denom = (root[:, None] * (rij ** 3)[:, None])
+                denom = (np.maximum(root[:, None], self.phys.delta) * (rij ** 3)[:, None])  # small offset to avoid singularities
 
                 dx_terms = - (2.0 * (r ** 2) * rij_vec[:, [0]] * cross_z / denom) \
                         - (root / (2.0 * rij))[:, None] * y_unit

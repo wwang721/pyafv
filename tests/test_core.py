@@ -1,9 +1,15 @@
 import numpy as np
+from afv import target_delta
 
 
 def test_MATLAB(data_dir, simulator):
     # Compare forces computed by our code with those from MATLAB implementation
-    
+
+    # temporarily change delta to 0.0 for this test
+    original_phys = simulator.phys
+    new_phys = original_phys.with_delta(0.0)
+    simulator.update_params(new_phys)
+
     pts = np.loadtxt(data_dir / "init_pts.csv", delimiter=',')
     simulator.update_positions(pts)
 
@@ -24,3 +30,18 @@ def test_MATLAB(data_dir, simulator):
         f"Force mismatch with MATLAB implementation!\n"
         f"Max difference: {max_err:.3e} (tolerance = {tolerance})"
     )
+
+    # restore original delta
+    simulator.update_params(original_phys)
+
+
+def test_physical_params(phys):
+    l, d = phys.get_steady_state()
+    params = phys.with_optimal_radius()
+
+    target_force = 2.5
+    delta_t = target_delta(params, target_force)
+
+    assert np.abs(params.r - l) < 1.0e-6, "Optimal radius not set correctly."
+    assert d >= 0, "Optimal d should be non-negative."
+    assert delta_t >= 0, "Computed delta should be non-negative."
