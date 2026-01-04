@@ -22,7 +22,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: "cp311-* cp312-* cp313-* cp314-*"
-          CIBW_BUILD_FRONTEND: "uv"
+          CIBW_BUILD_FRONTEND: "build[uv]"
 
       - uses: actions/upload-artifact@v4
         with:
