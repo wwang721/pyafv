@@ -14,8 +14,8 @@ import numpy as np
 
 
 ext = Extension(
-    "afv.cell_geom",
-    sources=["afv/cell_geom.pyx"],
+    "pyafv.cell_geom",
+    sources=["pyafv/cell_geom.pyx"],
     extra_compile_args=[],
     extra_link_args=[],
     define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
