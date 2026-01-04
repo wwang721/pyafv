@@ -3,8 +3,8 @@ from pathlib import Path
 import pytest
 import numpy as np
 
-import afv
-from afv.finite_voronoi_fallback import FiniteVoronoiSimulator as FallbackSimulator
+import pyafv as afv
+from pyafv.finite_voronoi_fallback import FiniteVoronoiSimulator as FallbackSimulator
 
 
 @pytest.fixture(scope="session")

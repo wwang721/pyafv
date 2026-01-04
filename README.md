@@ -1,9 +1,9 @@
-<!--[![Tests](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml?query=branch:main)-->
-[![pytest](https://github.com/wwang721/py-afv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/py-afv/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/github/wwang721/py-afv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/py-afv/tree/main)
+<!--[![Tests](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
+[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
 [![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 
-# py-afv
+# PyAFV
 
 Python code that implements the **active-finite-Voronoi (AFV) model**.
 The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
@@ -24,8 +24,8 @@ or use `uv sync --no-dev` if you only intend to run the core code without develo
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
 > * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/afv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package py-afv --inexact` (the `--inexact` flag prevents uv from removing any installed packages) or recompile the Cython extension with `uv run setup.py build_ext --inplace`.
-> * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
+> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages) or recompile the Cython extension with `uv run setup.py build_ext --inplace`.
+> * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
 
 
 #### Windows MinGW GCC
@@ -52,7 +52,7 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
 
 **Notes:** 
 > * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
-> * Unlike [v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided and tested.
+> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
 ## Usage
@@ -61,7 +61,7 @@ Using `uv run python`, you should be able to import `afv` from anywhere within t
 The following example demonstrates how to construct a finite-Voronoi diagram:
 ```python
 import numpy as np
-import afv
+import pyafv as afv
 
 N = 100                                          # number of cells
 pts = np.random.rand(N, 2) * 10                  # initial positions
@@ -99,15 +99,21 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
 ## More information
 
-See important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
-* [QhullError when 3+ points are collinear #1](https://github.com/wwang721/py-afv/issues/1) [Closed - see [comments](https://github.com/wwang721/py-afv/issues/1#issuecomment-3701355742)]
-*  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/py-afv/issues/5) [Completed in PR [#7](https://github.com/wwang721/py-afv/pull/7)]
-* [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/py-afv/issues/8) [Closed in PR [#9](https://github.com/wwang721/py-afv/pull/9)]
+See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
+* [QhullError when 3+ points are collinear #1](https://github.com/wwang721/pyafv/issues/1) [Closed - see [comments](https://github.com/wwang721/pyafv/issues/1#issuecomment-3701355742)]
+*  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
+* [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
 
 ## Zenodo
 
 The releases of this repository is cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
+
+
+## License
+
+This project is licensed under the [MIT License](/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
+
 
 ## References
 
@@ -132,7 +138,3 @@ The releases of this repository is cross-listed on [Zenodo](https://doi.org/10.5
   </tr>
 </table>
 
-
-## License
-
-This project is licensed under the [MIT License](/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.

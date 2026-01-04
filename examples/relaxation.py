@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tqdm
-import afv
+import pyafv as afv
 
 np.random.seed(42)
 

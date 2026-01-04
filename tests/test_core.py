@@ -1,5 +1,5 @@
 import numpy as np
-from afv import target_delta
+from pyafv import target_delta
 
 
 def test_MATLAB(data_dir, simulator):

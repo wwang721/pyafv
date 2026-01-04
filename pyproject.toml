@@ -1,6 +1,6 @@
 [project]
-name = "py-afv"
-version = "0.3.0"
+name = "pyafv"
+version = "0.3.1"
 description = "Python code that implements the active-finite-Voronoi (AFV) model."
 readme = "README.md"
 requires-python = ">=3.11.11"
@@ -34,5 +34,5 @@ requires = ["setuptools>=64", "cython>=3.0", "numpy>=2.1.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["afv"]  # optional but explicit
+packages = ["pyafv"]  # optional but explicit
 
