@@ -6,9 +6,7 @@
 # py-afv
 
 Python code that implements the **active-finite-Voronoi (AFV) model**.
-The AFV framework was introduced and developed in, for example,
- [[Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B)] and [[Phys. Rev. E **98**, 042418
-(2018)](https://doi.org/10.1103/PhysRevE.98.042418)].
+The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
 
 ## Installation
@@ -53,7 +51,7 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
     You can also include coverage options such as `--cov` if desired. If you previously use `uv sync --no-dev`, you will need to run `uv sync` again to install the packages in the *dev* dependency group.
 
 **Notes:** 
-> * A comparison against the MATLAB implementation from [[Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B)] is included in [test_core.py](/tests/test_core.py).
+> * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
 > * Unlike [v0.1.0](https://github.com/wwang721/py-afv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
@@ -101,7 +99,7 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
 ## More information
 
-See the important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
+See important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
 * [QhullError when 3+ points are collinear #1](https://github.com/wwang721/py-afv/issues/1) [Closed - see [comments](https://github.com/wwang721/py-afv/issues/1#issuecomment-3701355742)]
 *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/py-afv/issues/5) [Completed in PR [#7](https://github.com/wwang721/py-afv/pull/7)]
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/py-afv/issues/8) [Closed in PR [#9](https://github.com/wwang721/py-afv/pull/9)]
@@ -109,7 +107,30 @@ See the important [**issues**](https://github.com/wwang721/py-afv/issues?q=is%3A
 
 ## Zenodo
 
-The release of this repository is cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
+The releases of this repository is cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
+
+## References
+
+<table>
+  <tr>
+    <td id="huang2023bridging" valign="top">[1]</td>
+    <td>
+      J. Huang, H. Levine, and D. Bi, <em>Bridging the gap between collective motility and epithelial-mesenchymal transitions through the active finite Voronoi model</em>, <a href="https://doi.org/10.1039/D3SM00327B">Soft Matter <strong>19</strong>, 9389 (2023)</a>.
+    </td>
+  </tr>
+  <tr>
+    <td id="teomy2018confluent" valign="top">[2]</td>
+    <td>
+      E. Teomy, D. A. Kessler, and H. Levine, <em>Confluent and nonconfluent phases in a model of cell tissue</em>, <a href="https://doi.org/10.1103/PhysRevE.98.042418">Phys. Rev. E <strong>98</strong>, 042418 (2018)</a>.
+    </td>
+  </tr>
+  <tr>
+    <td id="wang2026divergence" valign="top">[3]</td>
+    <td>
+      W. Wang (汪巍) and B. A. Camley, <em>Divergence of detachment forces in the finite-Voronoi model</em>, manuscript in preparation (2026).
+    </td>
+  </tr>
+</table>
 
 
 ## License
