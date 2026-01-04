@@ -24,7 +24,7 @@ or use `uv sync --no-dev` if you only intend to run the core code without develo
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
 > * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages) or recompile the Cython extension with `uv run setup.py build_ext --inplace`.
+> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
 > * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
 
 
@@ -37,7 +37,7 @@ or use `uv sync --no-dev` if you only intend to run the core code without develo
     compiler=mingw32
     ```
     It will then work in the same way.
-    With this configuration in place, you even no longer need to pass the `--compiler=mingw32` flag when trying to compile with `uv run python setup.py build_ext --inplace`.
+    <!--With this configuration in place, you even no longer need to pass the `--compiler=mingw32` flag when trying to compile with `uv run python setup.py build_ext --inplace`.-->
 
 
 ## Running tests
@@ -57,7 +57,7 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
 
 ## Usage
 
-Using `uv run python`, you should be able to import `afv` from anywhere within the repository directory.
+Using `uv run python`, you should be able to import `pyafv` from anywhere within the repository directory.
 The following example demonstrates how to construct a finite-Voronoi diagram:
 ```python
 import numpy as np
