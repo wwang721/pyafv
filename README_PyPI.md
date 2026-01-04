@@ -9,6 +9,36 @@ Python code that implements the **active-finite-Voronoi (AFV) model**.
 The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
 
+## Installation
+
+`PyAFV` is now available on [**PyPI**](https://pypi.org/project/pyafv/), so you should be able to install it through `pip`:
+```bash
+pip install pyafv
+```
+Python@3.11 is set as the minimum requirement.
+
+
+## Usage
+
+<!--Using `uv run python`, you should be able to import `pyafv` from anywhere within the repository directory.-->
+The following example demonstrates how to construct a finite-Voronoi diagram:
+```python
+import numpy as np
+import pyafv as afv
+
+N = 100                                          # number of cells
+pts = np.random.rand(N, 2) * 10                  # initial positions
+params = afv.PhysicalParams()                    # use default parameter values
+sim = afv.FiniteVoronoiSimulator(pts, params)    # initialize the simulator
+sim.plot_2d(show=True)                           # visualize the Voronoi diagram
+```
+To compute the conservative forces and extract detailed geometric information (e.g., cell areas, vertices, and edges), call:
+```python
+diag = sim.build()
+```
+The returned object `diag` is a Python `dict` containing these quantities.
+
+
 ## More information
 
 GitHub: [https://github.com/wwang721/pyafv](https://github.com/wwang721/pyafv)
