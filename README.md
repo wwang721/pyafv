@@ -13,13 +13,14 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 
 ## Installation
 
-PyAFV is now available on [PyPI](https://pypi.org/project/pyafv/), so you should be able to install it through `pip`:
+`PyAFV` is now available on [**PyPI**](https://pypi.org/project/pyafv/), so you should be able to install it through `pip`:
 ```bash
 pip install pyafv
 ```
 Python 3.11.11 is my local development version, so Python@3.11 is set as the minimum requirement. If you just want to use the package, skip directly to [Usage](#usage) section.
 
-### For developers
+
+## Local development
 
 This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
 
@@ -85,7 +86,8 @@ diag = sim.build()
 ```
 The returned object `diag` is a Python `dict` containing these quantities.
 
-### More examples
+
+### Featured examples
 To run the example scripts and notebooks in [`examples`](/examples), you need to install at least one additional dependency `tqdm`.
 
 For local development using `uv`: in the project root, run `uv add tqdm`. Then you can simply run any script in [`examples`](/examples/) with
@@ -98,7 +100,10 @@ You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv
 
     > Jupyter notebooks and media are stored via [**Git LFS**](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage). If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install Git LFS to fetch them automatically or download the files manually (or download the repository as a ZIP archive) from the GitHub web interface.
 
-* Below are representative simulation snapshots generated using the code:
+
+### Simulation previews
+
+Below are representative simulation snapshots generated using the code:
 
 | Model illustration | Periodic boundary conditions[*](/examples/jupyter/periodic_plotting.ipynb) |
 |-----------------|-----------------|
@@ -117,9 +122,9 @@ See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
 
-## Zenodo
+### Zenodo
 
-The releases of this repository is cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
+The releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
 
 
 ## License
