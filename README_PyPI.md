@@ -15,7 +15,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-Python@3.11 is set as the minimum requirement.
+Python 3.11+ is set as the minimum requirement.
 
 
 ## Usage
