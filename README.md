@@ -17,14 +17,14 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-Python 3.11.11 is my local development version, so Python@3.11 is set as the minimum requirement. If you just want to use the package, skip directly to [Usage](#usage) section.
+Developed using Python 3.11.11, so Python 3.11+ is set as the minimum requirement. If you just want to use the package, skip directly to the [Usage](#usage) section.
 
 
 ## Local development
 
 This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
 
-> If you'd like to use your own Python, ensure the `which python` version meets this requirement (>=3.11) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
+> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.11) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
 After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can synchronize the dependencies with
 ```bash
@@ -122,7 +122,7 @@ See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
 
-### Zenodo
+## Zenodo
 
 The releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
 
