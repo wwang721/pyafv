@@ -9,6 +9,8 @@ on:
       - 'LICENSE'
       - '.gitignore'
       - '.gitattributes'
+      - '.github/workflows/publish-to-pypi.yml'
+      - '.github/workflows/zenodo-display.yml'
 
   pull_request:
     branches: [ "main" ]
@@ -19,6 +21,8 @@ on:
       - 'LICENSE'
       - '.gitignore'
       - '.gitattributes'
+      - '.github/workflows/publish-to-pypi.yml'
+      - '.github/workflows/zenodo-display.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
