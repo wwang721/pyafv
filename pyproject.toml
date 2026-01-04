@@ -1,16 +1,26 @@
+[build-system]
+requires = ["setuptools>=64", "cython>=3.0", "numpy>=2.1.3"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "pyafv"
 version = "0.3.1"
-description = "Python code that implements the active-finite-Voronoi (AFV) model."
-readme = "README.md"
+description = "Python implementation of the active-finite-Voronoi (AFV) model"
+readme = "README_PyPI.md"
+authors = [
+    { name = "Wei Wang (汪巍)", email = "ww000721@gmail.com" }
+]
+license = {file = "LICENSE"}
 requires-python = ">=3.11.11"
 dependencies = [
-    "cython>=3.0",
     "numpy>=2.1.3",
     "scipy>=1.15.3",
     "matplotlib>=3.10.7",
-    "setuptools>=72.1.0",
 ]
+
+[project.urls]
+"Download" = "https://test.pypi.org/project/pyafv/#files"
+"Source Code" = "https://github.com/wwang721/pyafv"
 
 [project.optional-dependencies]
 examples = [
@@ -25,14 +35,12 @@ dev = [
     "pytest-cov>=6.0.0",
 ]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-# pythonpath = ["."]  # not needed with setuptools
-
-[build-system]
-requires = ["setuptools>=64", "cython>=3.0", "numpy>=2.1.3"]
-build-backend = "setuptools.build_meta"
-
 [tool.setuptools]
 packages = ["pyafv"]  # optional but explicit
 
+[tool.setuptools.package-data]
+pyafv = ["*.pyx", "*.pxd"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# pythonpath = ["."]  # not needed with setuptools

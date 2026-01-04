@@ -1,0 +1,32 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [released]
+    
+  workflow_dispatch:
+
+jobs:
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: PyPI
+      url: https://pypi.org/p/pyafv
+    permissions:
+      id-token: write # Mandatory for Trusted Publishing
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5 # Sets up uv in the runner
+
+      - name: Set up Python
+        run: uv python install 3.12 # Ensures correct Python version
+
+      - name: Build package
+        run: uv build # Generates dist/ folder
+
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1 # Uploads to PyPI
