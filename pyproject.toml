@@ -37,10 +37,11 @@ dev = [
 
 [tool.setuptools]
 packages = ["pyafv"]  # optional but explicit
+include-package-data = true
 
 [tool.setuptools.package-data]
 pyafv = ["*.pyx", "*.pxd"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# pythonpath = ["."]  # not needed with setuptools
+# pythonpath = ["."]  # not needed if package is installed
