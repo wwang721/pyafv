@@ -3,7 +3,7 @@ name: pytest
 on:
   push:
     paths-ignore:
-      - '**/README*'
+      - '**/*.md'
       - 'examples/**'
       - 'assets/**'
       - 'LICENSE'
@@ -15,7 +15,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths-ignore:
-      - '**/README*'
+      - '**/*.md'
       - 'examples/**'
       - 'assets/**'
       - 'LICENSE'
