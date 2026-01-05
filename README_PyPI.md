@@ -11,7 +11,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 
 ## Installation
 
-`PyAFV` is now available on [**PyPI**](https://pypi.org/project/pyafv/), so you should be able to install it through `pip`:
+Install **PyAFV** with:
 ```bash
 pip install pyafv
 ```
