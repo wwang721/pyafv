@@ -30,12 +30,12 @@ After cloning the repository, Linux/macOS users (Windows users: see [below](#win
 ```bash
 uv sync
 ```
-or use `uv sync --no-dev` if you only intend to run the core code without development dependencies (like `pytest` for running tests).
+or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `cython` and `pytest`).
 
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
 > * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-> * The current version requires **Cython** (and therefore a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the Cython compiled extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
+> * The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the compiled C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
 > * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
 
 
@@ -51,6 +51,15 @@ or use `uv sync --no-dev` if you only intend to run the core code without develo
     <!--With this configuration in place, you even no longer need to pass the `--compiler=mingw32` flag when trying to compile with `uv run python setup.py build_ext --inplace`.-->
 
 
+#### Editing the Cython file
+
+If you modify the Cython source file [pyafv/cell_geom.pyx](/pyafv/cell_geom.pyx), you must regenerate the corresponding `.cpp` file by running
+```bash
+uv run cython -3 --cplus pyafv/cell_geom.pyx -o pyafv/cell_geom.cpp
+```
+Afterward, reinstall the package to ensure the changes take effect: `uv sync --reinstall-package pyafv --inexact`.
+
+
 ### Running tests
 
 Current CI status of the test suite, run via [GitHub Actions](/.github/workflows/tests.yml) on Python 3.12, is shown in the badge at the top of this file.
@@ -63,7 +72,7 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
 
 **Notes:** 
 > * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
-> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython backend is not available, even though a pure-Python fallback implementation is provided and tested.
+> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
 ## Usage

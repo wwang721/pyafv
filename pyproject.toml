@@ -1,5 +1,6 @@
 [build-system]
-requires = ["setuptools>=64", "cython>=3.0", "numpy>=2.1.3"]
+# Remove "cython>=3.0" dependencies at build but still need NumPy's C/C++ API.
+requires = ["setuptools>=64", "numpy>=2.1.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -31,16 +32,17 @@ examples = [
 
 [dependency-groups]
 dev = [
+    "cython>=3.0",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
 ]
 
 [tool.setuptools]
 packages = ["pyafv"]  # optional but explicit
-include-package-data = true
+# include-package-data = true  # not needed if using cpp directly
 
-[tool.setuptools.package-data]
-pyafv = ["*.pyx", "*.pxd"]
+# [tool.setuptools.package-data]
+# pyafv = ["*.pyx", "*.pxd"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

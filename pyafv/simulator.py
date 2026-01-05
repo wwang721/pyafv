@@ -24,7 +24,7 @@ class FiniteVoronoiSimulator(backend_simulator):
             # raise warning to inform user about fallback
             import warnings
             warnings.warn(
-                "Could not import the Cython-accelerated module. "
+                "Could not import the C++ extension module (Cython). "
                 "Falling back to the pure Python implementation, which may be slower. "
                 "To enable the accelerated version, ensure that all dependencies are installed.",
                 RuntimeWarning,
