@@ -4,7 +4,7 @@ First off, **THANK YOU** for considering contributing to PyAFV! We welcome contr
 
 Before working on a feature or major change, please raise an [issue](https://github.com/wwang721/pyafv/issues) and/or get in touch with the developers. They may have insights on how to implement the feature or useful advice to save you time.
 
-Much of this guide is based on best practices from the broader open-source community, including [this excellent guide](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
+Much of this guide is based on the [pyqmc CONTRIBUTING.md](https://github.com/WagnerGroup/pyqmc/blob/master/CONTRIBUTING.md), which itself draws from [this excellent guide](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
 
 ## How to contribute
 
@@ -173,6 +173,11 @@ All submissions require review before merging. Reviewers will check:
 If you have questions about contributing, feel free to:
 
 - Open an issue on GitHub
-- Contact the maintainer via email (see the `authors` section in [pyproject.toml](pyproject.toml))
+- Start a discussion in [GitHub Discussions](https://github.com/wwang721/pyafv/discussions)
+- Contact the maintainer via email: ww000721@gmail.com
 
 Thank you for helping make PyAFV better!
+
+---
+
+*This contributing guide was drafted by GitHub Copilot and approved by the maintainer.*
