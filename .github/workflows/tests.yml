@@ -46,7 +46,8 @@ jobs:
 
       - name: Sync dependencies
         run: |
-          uv sync --dev
+          uv sync --no-dev
+          uv pip install "pytest>=8.3.4" "pytest-cov>=6.0.0"
 
       - name: Run tests
         run: |
