@@ -173,6 +173,6 @@ All submissions require review before merging. Reviewers will check:
 If you have questions about contributing, feel free to:
 
 - Open an issue on GitHub
-- Contact the maintainers via email (see [pyproject.toml](pyproject.toml) for contact information)
+- Contact the maintainer via email (see the `authors` section in [pyproject.toml](pyproject.toml))
 
 Thank you for helping make PyAFV better!
