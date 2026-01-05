@@ -28,7 +28,7 @@ uv sync
 This installs the core package dependencies along with `cython` and `pytest` required for development and testing.
 
 **Notes:**
-- If you modify the Cython source file [`pyafv/cell_geom.pyx`](/pyafv/cell_geom.pyx), regenerate the `.cpp` file:
+- If you modify the Cython source file [`pyafv/cell_geom.pyx`](pyafv/cell_geom.pyx), regenerate the `.cpp` file:
   ```bash
   uv run cython -3 --cplus pyafv/cell_geom.pyx -o pyafv/cell_geom.cpp
   ```
@@ -100,7 +100,7 @@ Note: We use `rebase` to keep the commit history clean.
 
 ## Writing tests
 
-Tests are located in the [`tests/`](/tests/) directory. Run the test suite with:
+Tests are located in the [`tests/`](tests/) directory. Run the test suite with:
 
 ```bash
 uv run pytest
@@ -173,6 +173,6 @@ All submissions require review before merging. Reviewers will check:
 If you have questions about contributing, feel free to:
 
 - Open an issue on GitHub
-- Contact the maintainers via email (see [pyproject.toml](/pyproject.toml) for contact information)
+- Contact the maintainers via email (see [pyproject.toml](pyproject.toml) for contact information)
 
 Thank you for helping make PyAFV better!
