@@ -17,7 +17,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-Developed using Python 3.11.11, so Python 3.11+ is set as the minimum requirement. If you just want to use the package, skip directly to the [Usage](#usage) section.
+Developed using Python 3.11.11, so Python 3.11+ is set as the minimum requirement. If you just want to use the package, skip directly to the [**Usage**](#usage) section.
 
 
 ## Local development
@@ -30,7 +30,8 @@ After cloning the repository, Linux/macOS users (Windows users: see [below](#win
 ```bash
 uv sync
 ```
-or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `cython` and `pytest`).
+This command installs the core package dependencies, along with `cython` and `pytest` required for development and testing.
+<!--or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `cython` and `pytest`).-->
 
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
@@ -68,7 +69,8 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
     ```bash
     uv run pytest
     ```
-    You can also include coverage options such as `--cov` if desired. If you previously use `uv sync --no-dev`, you will need to run `uv sync` again to install the packages in the *dev* dependency group.
+    You can also include coverage options such as `--cov` if desired.
+    <!--If you previously use `uv sync --no-dev`, you will need to run `uv sync` again to install the packages in the *dev* dependency group.-->
 
 **Notes:** 
 > * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
@@ -97,9 +99,9 @@ The returned object `diag` is a Python `dict` containing these quantities.
 
 
 ### Featured examples
-To run the example scripts and notebooks in [`examples`](/examples), you need to install at least one additional dependency `tqdm`.
+To run the example scripts and notebooks in [`examples`](/examples), you need to install at least one additional dependency `tqdm` for progress bars.
 
-For local development using `uv`: in the project root, run `uv add tqdm`. Then you can simply run any script in [`examples`](/examples/) with
+For local development using `uv`: in the project root, run `uv add tqdm` or `uv pip install tqdm`. Then you can simply run any script in [`examples`](/examples/) with
 ```bash
 uv run <script_name>.py
 ```
