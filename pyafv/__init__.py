@@ -6,8 +6,7 @@ from importlib.metadata import version, PackageNotFoundError
 try:
     __version__ = version("pyafv")
 except PackageNotFoundError:
-    # package is not installed
-    __version__ = "unknown"
+    __version__ = "unknown"  # package is not installed
 
 __all__ = [
     "PhysicalParams",
