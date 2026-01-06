@@ -1,0 +1,6 @@
+# Include the actual code and C-extensions
+recursive-include pyafv *.pyx *.pxd *.py
+
+# Include the extra folders in the tar.gz
+recursive-include tests *.py
+recursive-include examples *.py

@@ -15,7 +15,7 @@ from Cython.Build import cythonize
 
 ext = Extension(
     "pyafv.cell_geom",                # extension module name
-    sources=["pyafv/cell_geom.cpp"],  # it's possible to remove Cython dependency by using the pre-generated C++ file
+    sources=["pyafv/cell_geom.pyx"],  # it's possible to remove Cython dependency by using the pre-generated C++ file
     extra_compile_args=[],
     extra_link_args=[],
     include_dirs=[np.get_include()],
@@ -25,6 +25,5 @@ ext = Extension(
 
 setup(
     # name="pyafv",    # project name
-    # ext_modules=cythonize([ext], language_level="3", build_dir="build"),
-    ext_modules=[ext],
+    ext_modules=cythonize([ext], language_level="3", build_dir="build"),
 )
