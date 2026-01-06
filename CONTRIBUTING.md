@@ -20,20 +20,16 @@ cd pyafv
 
 ### 2. Set up your development environment
 
-PyAFV uses [`uv`](https://docs.astral.sh/uv/) for package management. After cloning, synchronize dependencies:
+PyAFV uses [`uv`](https://docs.astral.sh/uv/) for package management. After cloning, install it in "editable" mode and synchronize dependencies:
 
 ```bash
 uv sync
 ```
 
-This installs the core package dependencies along with `cython` and `pytest` required for development and testing.
+This installs the core package dependencies along with `pytest` required for development and testing.
 
 **Notes:**
-- If you modify the Cython source file [`pyafv/cell_geom.pyx`](pyafv/cell_geom.pyx), regenerate the `.cpp` file:
-  ```bash
-  uv run cython -3 --cplus pyafv/cell_geom.pyx -o pyafv/cell_geom.cpp
-  ```
-  Then reinstall: `uv sync --reinstall-package pyafv --inexact`
+- If you modify the Cython source file [`pyafv/cell_geom.pyx`](pyafv/cell_geom.pyx), reinstall the package: `uv sync --reinstall-package pyafv --inexact`.
 - For Windows MinGW GCC users, add a `setup.cfg` file at the repository root:
   ```ini
   # setup.cfg

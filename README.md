@@ -26,17 +26,16 @@ This project uses [`uv`](https://docs.astral.sh/uv/) for Python package manageme
 
 > If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.11) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
-After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can synchronize the dependencies with
+After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can install `PyAFV` in "editable" mode and synchronize the dependencies with
 ```bash
 uv sync
 ```
-This command installs the core package dependencies, along with `cython` and `pytest` required for development and testing.
-<!--or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `cython` and `pytest`).-->
+or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `pytest` for running tests).
 
 **Notes:**
 > * You can install additional packages as needed using `uv add <package_name>`.
 > * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-> * The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented. If the compiled C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning**), you can reinstall the package with `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
+> * The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented.
 > * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
 
 
@@ -54,11 +53,8 @@ This command installs the core package dependencies, along with `cython` and `py
 
 #### Editing the Cython file
 
-If you modify the Cython source file [pyafv/cell_geom.pyx](/pyafv/cell_geom.pyx), you must regenerate the corresponding `.cpp` file by running
-```bash
-uv run cython -3 --cplus pyafv/cell_geom.pyx -o pyafv/cell_geom.cpp
-```
-Afterward, reinstall the package to ensure the changes take effect: `uv sync --reinstall-package pyafv --inexact`.
+* If you modify the Cython source file [pyafv/cell_geom.pyx](/pyafv/cell_geom.pyx), you must reinstall the package to ensure the changes take effect: `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
+* If the compiled C/C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning** about falling back to the pure-Python implementation), you can also reinstall the package.
 
 
 ### Running tests
@@ -74,7 +70,7 @@ Current CI status of the test suite, run via [GitHub Actions](/.github/workflows
 
 **Notes:** 
 > * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
-> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
+> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
 ## Usage

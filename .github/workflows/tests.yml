@@ -46,12 +46,11 @@ jobs:
 
       - name: Sync dependencies
         run: |
-          uv sync --no-dev
-          uv pip install "pytest>=8.3.4" "pytest-cov>=6.0.0"
+          uv sync --dev
 
       - name: Run tests
         run: |
-          uv run --no-dev pytest --cov=pyafv --cov-branch --cov-report=xml
+          uv run pytest --cov=pyafv --cov-branch --cov-report=xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
