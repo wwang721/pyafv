@@ -1,13 +1,21 @@
-[![PyPi](https://img.shields.io/pypi/v/pyafv?color=brightgreen)](https://pypi.org/project/pyafv/)
-[![DOI](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
+[![PyPi](https://img.shields.io/pypi/v/pyafv)](https://pypi.org/project/pyafv/)
+[![Downloads](https://img.shields.io/pypi/dm/pyafv.svg)](https://pypi.org/project/pyafv/)
+[![Zenodo](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 <!--[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+<!--
+[![arXiv:2503.03126](https://img.shields.io/badge/arXiv-2503.03126-grey.svg?colorA=a42c25&colorB=grey)](https://doi.org/10.48550/arXiv.2503.03126)
+[![PhysRevE.109.054408](https://img.shields.io/badge/Phys.%20Rev.%20E-109.054408-grey.svg?colorA=8c6040)](https://doi.org/10.1103/PhysRevE.109.054408)
+[![Soft Matter](https://img.shields.io/badge/Soft%20Matter-XXXXX-63a7c2.svg?colorA=63a7c2&colorB=grey)](https://doi.org/10.1103/PhysRevE.109.054408)
+-->
 
 
 # PyAFV
 
-Python code that implements the **active-finite-Voronoi (AFV) model**.
+Python code that implements the **active-finite-Voronoi (AFV) model** in 2D.
 The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
 
@@ -17,7 +25,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-Developed using Python 3.11.11, so Python 3.11+ is set as the minimum requirement. If you just want to use the package, skip directly to the [**Usage**](#usage) section.
+This package requires Python ≥ 3.9 and < 3.15. If you just want to use the package, skip the [**#Local development**](#local-development) section and proceed directly to the [**#Usage**](#usage) section.
 
 
 ## Local development
