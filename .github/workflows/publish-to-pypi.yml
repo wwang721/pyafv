@@ -25,9 +25,9 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         env:
-          CIBW_BUILD: "cp311-* cp312-* cp313-*" #cp314-*"
+          CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-*"
           CIBW_BUILD_FRONTEND: "build[uv]"
-          # CIBW_PRERELEASE_PYTHONS: True
+          CIBW_ENABLE: "cpython-prerelease"
 
       - uses: actions/upload-artifact@v4
         with:
