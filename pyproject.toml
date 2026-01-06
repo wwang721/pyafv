@@ -38,7 +38,9 @@ dev = [
 
 [tool.setuptools]
 packages = ["pyafv"]  # optional but explicit
-include-package-data = true
+
+[tool.setuptools.exclude-package-data]
+pyafv = ["*.pyx"]  # exclude from the installation wheel
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
