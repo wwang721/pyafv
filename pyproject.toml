@@ -12,11 +12,27 @@ authors = [
 ]
 license = "MIT"
 license-files = ["LICENSE"] # Explicitly include the file
-requires-python = ">=3.11"
+requires-python = ">=3.9,<3.15"
 dependencies = [
     "numpy>=1.26.4",
     "scipy>=1.13.1",
     "matplotlib>=3.8.4",
+]
+
+keywords = ["voronoi-model", "cellular-patterns", "biological-modeling"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
 ]
 
 [project.urls]

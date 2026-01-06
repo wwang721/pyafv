@@ -15,7 +15,7 @@
 
 # PyAFV
 
-Python code that implements the **active-finite-Voronoi (AFV) model**.
+Python code that implements the **active-finite-Voronoi (AFV) model** in 2D.
 The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
 
@@ -25,7 +25,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-Developed using Python 3.11.11, so Python 3.11+ is set as the minimum requirement. If you just want to use the package, skip directly to the [**Usage**](#usage) section.
+This package requires Python ≥ 3.9 and < 3.15. If you just want to use the package, skip the [**#Local development**](#local-development) section and proceed directly to the [**#Usage**](#usage) section.
 
 
 ## Local development
