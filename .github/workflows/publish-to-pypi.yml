@@ -12,22 +12,52 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # Building for all 3 major OS platforms
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # Building for all major OS platforms
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
+      - name: Set up MSVC for ARM64 Windows
+        if: matrix.os == 'windows-11-arm'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_arm64
 
       # Add this step to make 'uv' available to cibuildwheel
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+        with:
+          # This tells the action to watch your project file instead of a lockfile
+          cache-dependency-glob: "pyproject.toml"
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+      # IMPORTANT: do PATH fix + build in the SAME step so it actually applies
+      - name: Build wheels (Windows ARM64)
+        if: matrix.os == 'windows-11-arm'
+        shell: pwsh
+        run: |
+          Write-Host "Before PATH fix:"
+          where.exe link || $true
+
+          # Remove Git's usr\bin (contains the fake link.exe)
+          $env:PATH = (($env:PATH -split ';') | Where-Object { $_ -ne 'C:\Program Files\Git\usr\bin' }) -join ';'
+
+          Write-Host "After PATH fix:"
+          where.exe link
+          where.exe cl
+
+          python -m pip install -U pip
+          python -m pip install -U cibuildwheel
+
+          # Build wheels
+          python -m cibuildwheel --output-dir wheelhouse
+
+      - name: Build wheels (non-Windows-ARM)
+        if: matrix.os != 'windows-11-arm'
+        uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-*"
           CIBW_BUILD_FRONTEND: "build[uv]"
-          CIBW_ENABLE: "cpython-prerelease"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -40,6 +70,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+        with:
+          # This tells the action to watch your project file instead of a lockfile
+          cache-dependency-glob: "pyproject.toml"
+
       - run: uv build --sdist # Build the .tar.gz file
       - uses: actions/upload-artifact@v4
         with:
