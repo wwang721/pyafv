@@ -1,4 +1,4 @@
-[![PyPi](https://img.shields.io/pypi/v/pyafv)](https://pypi.org/project/pyafv/)
+[![PyPi](https://img.shields.io/pypi/v/pyafv?cacheSeconds=300)](https://pypi.org/project/pyafv/)
 [![Downloads](https://img.shields.io/pypi/dm/pyafv.svg)](https://pypi.org/project/pyafv/)
 [![Zenodo](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 <!--[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
@@ -21,18 +21,24 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 
 ## Installation
 
-`PyAFV` is now available on [**PyPI**](https://pypi.org/project/pyafv/), so you should be able to install it through `pip`:
+`PyAFV` is available on [**PyPI**](https://pypi.org/project/pyafv/) and can be installed using `pip`:
 ```bash
 pip install pyafv
 ```
-This package requires Python ≥ 3.9 and < 3.15. If you just want to use the package, skip the [**#Local development**](#local-development) section and proceed directly to the [**#Usage**](#usage) section.
+The package supports Python ≥ 3.9 and < 3.15.
+To verify that the installation was successful and that the correct version is installed, run the following in Python:
+```python
+import pyafv
+print(pyafv.__version__)
+```
+If you only intend to use the package, skip the [**#Local development**](#local-development) section and proceed directly to the [**#Usage**](#usage) section.
 
 
 ## Local development
 
 This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
 
-> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.11) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
+> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.9) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
 After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can install `PyAFV` in "editable" mode and synchronize the dependencies with
 ```bash
