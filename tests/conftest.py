@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 
 import pyafv as afv
-from pyafv.finite_voronoi_fallback import FiniteVoronoiSimulator as FallbackSimulator
 
 
 @pytest.fixture(scope="session")
@@ -40,5 +39,7 @@ def simulator(request, phys):
         return sim
 
     else:
-        sim = FallbackSimulator(pts, phys)
+        sim = afv.FiniteVoronoiSimulator(pts, phys, backend="python")
+
+        assert sim._BACKEND == "python", "Fallback backend is not in use."
         return sim

@@ -7,7 +7,7 @@ from libc.math cimport atan2, cos
 cimport cython
 
 # Routine used in _build_voronoi_with_extensions()
-def build_vertexpair_and_vertexpoints_cy(object ridge_vertices_all,
+def build_vertexpair_and_vertexpoints(object ridge_vertices_all,
                                       object ridge_points,
                                       long num_vertices,
                                       long N):
@@ -60,7 +60,7 @@ def build_vertexpair_and_vertexpoints_cy(object ridge_vertices_all,
 # Part 1
 # ---------------------------------------------------------------------------------------
 
-def pad_regions_cy(object regions):
+def pad_regions(object regions):
     cdef Py_ssize_t n = len(regions)
     cdef Py_ssize_t i, j, m, kmax = 0
     cdef list r
@@ -93,7 +93,7 @@ cdef inline long long pack_pair_ll(long a, long b) nogil:
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def build_point_edges_cy(
+def build_point_edges(
     cnp.int64_t[:, :] vor_regions,
     cnp.int64_t[:] point_region,
     cnp.float64_t[:, :] vertices_all,
@@ -270,7 +270,7 @@ cdef inline void perp(double ux, double uy, double* outx, double* outy) noexcept
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def compute_vertex_derivatives_cy(
+def compute_vertex_derivatives(
     object point_edges_type,               # list of 1D int arrays/lists
     object point_vertices_f_idx,           # list of 1D int arrays/lists
     cnp.float64_t[:, :] vertices_all,      # (num_vertices_ext + 2*num_ridges, 2)

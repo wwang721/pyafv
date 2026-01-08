@@ -11,7 +11,7 @@ The AFV framework was introduced and developed in, for example, Refs. :cite:`hua
 .. and offers a *simple* and *intuitive* API.
 
 Check out the :doc:`usage` and :doc:`api` section for further information, including
-how to :ref:`install` the project.
+how to :ref:`installation` the project.
 
 .. note::
 

@@ -1,16 +1,20 @@
 # chooses fast vs fallback implementation
 
 try:
-    from . import finite_voronoi_fast as _impl
+    from . import cell_geom as _impl
     _BACKEND_NAME = "cython"
-except ImportError:             # pragma: no cover
+    _IMPORT_ERROR = None
+except Exception as e:             # pragma: no cover
+    from . import cell_geom_fallback as _impl
     _BACKEND_NAME = "python"
-    from . import finite_voronoi_fallback as _impl
+    _IMPORT_ERROR = e
+
 
 # ---- for explicit API ----
-backend_simulator = _impl.FiniteVoronoiSimulator
+backend_impl = _impl
 
 __all__ = [
-    "backend_simulator",
+    "backend_impl",
     "_BACKEND_NAME",
+    "_IMPORT_ERROR"
 ]

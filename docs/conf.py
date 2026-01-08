@@ -23,6 +23,7 @@ project = "PyAFV"
 author = "Wei Wang"
 copyright = f"(c) {datetime.now(timezone.utc).year} {author}"
 
+
 # -- General configuration ---------------------------------------------------
 # -- General configuration
 

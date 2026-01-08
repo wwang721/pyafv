@@ -50,7 +50,7 @@ or use `uv sync --no-dev` if you only intend to run the core Python code without
 > * You can install additional packages as needed using `uv add <package_name>`.
 > * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
 > * The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/finite_voronoi_fallback.py) (based on early pure-Python release) is also implemented.
-> * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`.
+> * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`; for PyAFV v0.3.4 and later, the pure-Python backend can be selected by passing `backend="python"` when creating the simulator instance.
 
 
 #### Windows MinGW GCC
@@ -142,6 +142,7 @@ See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue
 *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
+Full documentation on [readthedocs](https://pyafv.readthedocs.io/en/latest/)!
 
 ## Zenodo
 

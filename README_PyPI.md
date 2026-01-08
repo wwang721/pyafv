@@ -57,6 +57,7 @@ See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue
 *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
+Full documentation on [readthedocs](https://pyafv.readthedocs.io/en/latest/)!
 
 ## References
 

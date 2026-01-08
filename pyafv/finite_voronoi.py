@@ -12,16 +12,14 @@ Key public entry points:
 - update_params(): update physical parameters.
 """
 
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Literal
 import numpy as np
 from scipy.spatial import Voronoi
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 
 from .physical_params import PhysicalParams
-
-from .cell_geom import build_vertexpair_and_vertexpoints_cy
-from .cell_geom import pad_regions_cy, build_point_edges_cy, compute_vertex_derivatives_cy
+from .backend import backend_impl, _BACKEND_NAME
 
 
 # ---- tiny helpers to avoid tiny allocations in hot loops ----
@@ -31,10 +29,57 @@ def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 class FiniteVoronoiSimulator:
-    def __init__(self, pts: np.ndarray, phys: PhysicalParams):
+    """Simulator for the active-finite-Voronoi (AFV) model.
+
+    This class provides an interface to simulate finite Voronoi models.
+    It wraps around the two backend implementations, which may be
+    either a Cython-accelerated version or a pure Python fallback.
+
+    """
+
+    def __init__(self, pts: np.ndarray, phys: PhysicalParams, backend: Optional[Literal["cython", "python"]] = None):
+        """
+        Constructor of the simulator.
+        Generates a warning if the pure Python implementation is used unless explicitly requested.
+
+        :param pts: (N,2) array of initial cell center positions.
+        :type pts: numpy.ndarray
+        
+        :param phys: Physical parameters used within this simulator.
+        :type phys: PhysicalParams
+
+        :param backend: Optional, specify "python" to force the use of the pure Python fallback implementation.
+        :type backend: str or None
+        """
+        pts = np.asarray(pts, dtype=float)
+        N, dim = pts.shape
+        if dim != 2:
+            raise ValueError("pts must have shape (N,2)")
+        if not isinstance(phys, PhysicalParams):
+            raise TypeError("phys must be an instance of PhysicalParams")
+        
         self.pts = pts.copy()            # (N,2) array of initial points
-        self.N = pts.shape[0]            # Number of points
+        self.N = N                       # Number of points
         self.phys = phys
+        
+        if backend != "python":
+            self._BACKEND = _BACKEND_NAME
+            self._impl = backend_impl
+
+            if self._BACKEND not in {"cython", "numba"}:                 # pragma: no cover
+                # raise warning to inform user about fallback
+                import warnings
+                warnings.warn(
+                    "Could not import the Cython-built extension module. "
+                    "Falling back to the pure Python implementation, which may be slower. "
+                    "To enable the accelerated version, ensure that all dependencies are installed. ",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+        else:  # force the use of the pure Python fallback implementation.
+            self._BACKEND = "python"
+            from . import cell_geom_fallback as _impl
+            self._impl = _impl
 
     # --------------------- Voronoi construction & extension ---------------------
     def _build_voronoi_with_extensions(self) -> Tuple[Voronoi, np.ndarray, List[List[int]], int, Dict[Tuple[int,int], int], Dict[int, List[int]]]:
@@ -189,8 +234,8 @@ class FiniteVoronoiSimulator:
             # number of native (finite) vertices
             num_vertices = len(vor.vertices)
 
-        # Build vertexpair2ridge and vertex_points using Cython function
-        vertexpair2ridge, vertex_points = build_vertexpair_and_vertexpoints_cy(ridge_vertices_all, vor.ridge_points, num_vertices, N)
+        # Build vertexpair2ridge and vertex_points using Cython/Python backend function
+        vertexpair2ridge, vertex_points = self._impl.build_vertexpair_and_vertexpoints(ridge_vertices_all, vor.ridge_points, num_vertices, N)
 
         return vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge, vertex_points
 
@@ -339,8 +384,8 @@ class FiniteVoronoiSimulator:
         # --------------------------------------------------
         # Part 1 in Cython
         # --------------------------------------------------
-        vor_regions = pad_regions_cy(vor.regions)            # (R, Kmax) int64 with -1 padding
-        point_edges_type, point_vertices_f_idx = build_point_edges_cy(
+        vor_regions = self._impl.pad_regions(vor.regions)            # (R, Kmax) int64 with -1 padding
+        point_edges_type, point_vertices_f_idx = self._impl.build_point_edges(
             vor_regions, vor.point_region.astype(np.int64),
             vertices_all.astype(np.float64), pts.astype(np.float64),
             int(num_vertices), vertexpair2ridge, 
@@ -351,7 +396,7 @@ class FiniteVoronoiSimulator:
         # --------------------------------------------------
         # Part 2 in Cython
         # --------------------------------------------------
-        vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list = compute_vertex_derivatives_cy(
+        vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list = self._impl.compute_vertex_derivatives(
             point_edges_type,            # list-of-lists / arrays of edge types
             point_vertices_f_idx,        # list-of-lists / arrays of vertex ids
             vertices_all.astype(np.float64, copy=False),
@@ -802,11 +847,13 @@ class FiniteVoronoiSimulator:
         :param pts: ndarray of shape (N,2)
         :type pts: numpy.ndarray
         """
-        self.N, dim = pts.shape
+        pts = np.asarray(pts, dtype=float)
+        N, dim = pts.shape
         if dim != 2:
-            raise ValueError("Positions must have shape (N,2)")
+            raise ValueError("pts must have shape (N,2)")
         
         self.pts = pts
+        self.N = N
 
     # --------------------- Update physical parameters ---------------------
     def update_params(self, phys: PhysicalParams) -> None:
@@ -816,4 +863,7 @@ class FiniteVoronoiSimulator:
         :param phys: PhysicalParams object
         :type phys: PhysicalParams
         """
+        if not isinstance(phys, PhysicalParams):
+            raise TypeError("phys must be an instance of PhysicalParams")
+        
         self.phys = phys
