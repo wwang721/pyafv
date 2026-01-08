@@ -1,5 +1,5 @@
-Getting stated
-==============
+Getting started
+===============
 
 .. _install:
 
