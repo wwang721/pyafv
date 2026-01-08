@@ -26,7 +26,7 @@ class PhysicalParams:
     """Radius (maximal) of the Voronoi cells."""
 
     A0: float = np.pi
-    """Preferred area of the Voronoi cells"""
+    """Preferred area of the Voronoi cells."""
     
     P0: float = 4.8
     """Preferred perimeter of the Voronoi cells."""
@@ -38,7 +38,7 @@ class PhysicalParams:
     """Perimeter elasticity constant."""
 
     lambda_tension: float = 0.2
-    """Tension difference between non-contacting edges and non-contacting edges."""
+    """Tension difference between non-contacting edges and contacting edges."""
 
     delta: float = 0.0
     """Small offset to avoid singularities in computations."""

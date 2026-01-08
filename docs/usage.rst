@@ -3,7 +3,7 @@ Getting started
 
 .. _installation:
 
-Install
+Installation
 ------------
 
 **PyAFV** supports *Python* ≥ 3.9, < 3.15. You can install the package directly using *pip*:
@@ -41,7 +41,7 @@ Next, create a :py:class:`pyafv.PhysicalParams` object to specify the physical p
 
    params = pyafv.PhysicalParams(r=1.0)              # use default parameter values
 
-Finally, initialize the simulator by constructing :py:class:`pyafv.FiniteVoronoiSimulator` instance and visualize the resulting Voronoi diagram:
+Finally, initialize the simulator by constructing a :py:class:`pyafv.FiniteVoronoiSimulator` instance and visualize the resulting Voronoi diagram:
 
 .. code-block:: python
 

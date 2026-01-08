@@ -20,7 +20,11 @@ PyAFV - A Python implementation of the active-finite-Voronoi (AFV) model in 2D.
 from .physical_params import PhysicalParams, target_delta
 from .finite_voronoi import FiniteVoronoiSimulator
 
-__version__ = "0.3.4"
+try:
+    from ._version import __version__
+except ImportError:
+    __version__ = "unknown"
+
 
 __all__ = [
     "PhysicalParams",

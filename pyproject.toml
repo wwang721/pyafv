@@ -56,7 +56,7 @@ dev = [
 packages = ["pyafv"]  # optional but explicit
 
 [tool.setuptools.dynamic]
-version = {attr = "pyafv.__version__"}
+version = {attr = "pyafv._version.__version__"}
 
 [tool.setuptools.exclude-package-data]
 pyafv = ["*.pyx"]  # exclude from the installation wheel
