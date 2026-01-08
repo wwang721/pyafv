@@ -31,4 +31,8 @@ htmlcov/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
+# Sphinx documentation
+docs/generated/
+docs/_build/
+
 # Some custom ignores

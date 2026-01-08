@@ -10,13 +10,26 @@ class FiniteVoronoiSimulator(backend_simulator):
     It wraps around the backend simulator implementation, which may be
     either a Cython-accelerated version or a pure Python fallback.
 
-    Attributes:
-        See `backend_simulator` for details.
+    .. Attributes:
+         See `backend_simulator` for details.
     """
     # Define as a class attribute
     _BACKEND = _BACKEND_NAME
 
     def __init__(self, *args, **kwargs):
+        """
+        Call the constructor of the backend simulator.
+        Generates a warning if the pure Python implementation is used.
+
+        For each ``backend_simulator.__init__(pts, phys)``:
+
+        :param pts: (N,2) array of initial cell center positions.
+        :type pts: numpy.ndarray
+        
+        :param phys: Physical parameters used within this simulator.
+        :type phys: PhysicalParams
+        """
+
         # Ensure you call the parent constructor
         super().__init__(*args, **kwargs)
 

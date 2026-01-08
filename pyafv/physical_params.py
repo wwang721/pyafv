@@ -1,3 +1,4 @@
+from __future__ import annotations
 import numpy as np
 from scipy.optimize import minimize
 from dataclasses import dataclass, replace
@@ -15,30 +16,63 @@ def sigmoid(x):
 
 @dataclass(frozen=True)
 class PhysicalParams:
-    # Radius (maximal) of the Voronoi cells
+    """Physical parameters for the active-finite-Voronoi (AFV) model.
+    
+    Caveat:
+        Frozen dataclass is used to ensure immutability of instances.
+    """
+    
     r: float = 1.0
-    A0: float = np.pi                    # Preferred area of the Voronoi cells
-    P0: float = 4.8                      # Preferred perimeter of the Voronoi cells
-    KA: float = 1.0                      # Area elasticity
-    KP: float = 1.0                      # Perimeter elasticity
-    lambda_tension: float = 0.2          # Tension difference
-    delta: float = 0.                    # Small offset to avoid singularities
+    """Radius (maximal) of the Voronoi cells."""
 
-    def get_steady_state(self):
-        # compute steady-state (l,d) given physical params
+    A0: float = np.pi
+    """Preferred area of the Voronoi cells"""
+    
+    P0: float = 4.8
+    """Preferred perimeter of the Voronoi cells."""
+
+    KA: float = 1.0
+    """Area elasticity constant."""
+
+    KP: float = 1.0
+    """Perimeter elasticity constant."""
+
+    lambda_tension: float = 0.2
+    """Tension difference between non-contacting edges and non-contacting edges."""
+
+    delta: float = 0.0
+    """Small offset to avoid singularities in computations."""
+
+    def get_steady_state(self) -> tuple[float, float]:
+        """Compute steady-state (l,d) given physical params.
+        
+        :return: Tuple of (l, d) at steady state.
+        :rtype: tuple[float, float]
+        """
         params = [self.KA, self.KP, self.A0, self.P0, self.lambda_tension]
         result = self._minimize_energy(params, restarts=10)
         l, d = result[0]
         return l, d
 
-    def with_optimal_radius(self):
-        """Returns a new instance with the radius updated to steady state."""
+    def with_optimal_radius(self) -> PhysicalParams:
+        """Returns a new instance with the radius updated to steady state.
+        
+        :return: New instance with optimal radius.
+        :rtype: PhysicalParams
+        """
         l, d = self.get_steady_state()
         new_params = replace(self, r=l)
         return new_params
 
-    def with_delta(self, delta_new: float):
-        """Returns a new instance with the specified delta."""
+    def with_delta(self, delta_new: float) -> PhysicalParams:
+        """Returns a new instance with the specified delta.
+        
+        :param delta_new: New delta value.
+        :type delta_new: float
+
+        :return: New instance with updated delta.
+        :rtype: PhysicalParams
+        """
         return replace(self, delta=delta_new)
 
     def _energy_unconstrained(self, z, params):
@@ -81,6 +115,15 @@ class PhysicalParams:
 def target_delta(params: PhysicalParams, target_force: float) -> float:
     """
     Given physical parameters and a target detachment force, compute the corresponding delta.
+
+    :param params: Physical parameters of the AFV model.
+    :type params: PhysicalParams
+
+    :param target_force: Target detachment force.
+    :type target_force: float
+
+    :return: Corresponding delta value.
+    :rtype: float
     """
     KP, A0, P0, Lambda = params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r
