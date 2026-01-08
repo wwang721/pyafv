@@ -608,14 +608,26 @@ class FiniteVoronoiSimulator:
         return F
 
     # --------------------- One integration step ---------------------
-    def build(self) -> Dict:
-        """
+    def build(self) -> dict:
+        """ Build the finite-Voronoi structure and compute forces, returning a dictionary of diagnostics.
+
         Do the following:
           - Build Voronoi (+ extensions)
           - Get cell connectivity
           - Compute per-cell quantities and derivatives
           - Assemble forces
-        Returns a dictionary of diagnostics.
+        
+
+        :return: A dictionary containing the geometric properties:
+        
+            * **forces**: (N,2) array of forces on cell centers
+            * **areas**: (N,) array of cell areas
+            * **perimeters**: (N,) array of cell perimeters
+            * **vertices**: (M,2) array of all Voronoi + extension vertices
+            * **edges_type**: list-of-lists of edge types per cell (1=straight, 0=circular arc)
+            * **regions**: list-of-lists of vertex indices per cell
+            * **connections**: (M',2) array of connected cell index pairs
+        :rtype: dict
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -652,18 +664,17 @@ class FiniteVoronoiSimulator:
     # --------------------- 2D plotting utilities ---------------------
     def plot_2d(self, ax: Optional[Axes] = None, show: bool = False) -> Axes:
         """
-        Build the Voronoi(+extensions) and render a 2D snapshot.
+        Build the finite-Voronoi structure and render a 2D snapshot.
 
-        Parameters
-        ----------
-        ax : matplotlib.axes.Axes or None
-            If provided, draw into this axes; otherwise get the current axes.
-        show : bool
-            Whether to call plt.show() at the end.
+        Basically a wrapper of :py:func:`build()` function + plot.
 
-        Returns
-        -------
-        ax : matplotlib.axes.Axes
+        :param ax: If provided, draw into this axes; otherwise get the current axes.
+        :type ax: matplotlib.axes.Axes or None
+        :param show: Whether to call plt.show() at the end.
+        :type show: bool
+
+        :return: The matplotlib axes containing the plot.
+        :rtype: matplotlib.axes.Axes
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -787,6 +798,9 @@ class FiniteVoronoiSimulator:
     def update_positions(self, pts: np.ndarray) -> None:
         """
         Update cell center positions.
+
+        :param pts: ndarray of shape (N,2)
+        :type pts: numpy.ndarray
         """
         self.N, dim = pts.shape
         if dim != 2:
@@ -798,5 +812,8 @@ class FiniteVoronoiSimulator:
     def update_params(self, phys: PhysicalParams) -> None:
         """
         Update physical parameters.
+
+        :param phys: PhysicalParams object
+        :type phys: PhysicalParams
         """
         self.phys = phys
