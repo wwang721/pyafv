@@ -39,9 +39,16 @@ def test_physical_params(phys):
     l, d = phys.get_steady_state()
     params = phys.with_optimal_radius()
 
-    target_force = 2.5
+    # For the default physical params in the fixture
+    l_real = 0.87
+    d_real = 0.87 - 0.12
+    delta_t_real = 0.179
+
+    target_force = 4.0
     delta_t = target_delta(params, target_force)
 
+    assert np.abs(l - l_real) < 1.0e-3 and np.abs(d - d_real) < 1.0e-3, "Optimal radius not correct."
     assert np.abs(params.r - l) < 1.0e-6, "Optimal radius not set correctly."
-    assert d >= 0, "Optimal d should be non-negative."
+    assert l >= 0 and d >= 0, "Optimal (l,d) should be non-negative."
+    assert np.abs(delta_t - delta_t_real) < 1.0e-3, "Computed delta not correct."
     assert delta_t >= 0, "Computed delta should be non-negative."
