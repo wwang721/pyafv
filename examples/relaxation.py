@@ -6,7 +6,7 @@ import pyafv as afv
 np.random.seed(42)
 
 N = 100         # number of cells
-radius = 1.0    # Maximal radius
+radius = 1.0    # maximal radius
 mu = 1.0        # mobility
 dt = 0.01       # time step
 

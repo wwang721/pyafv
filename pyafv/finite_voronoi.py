@@ -12,7 +12,7 @@ Key public entry points:
 - update_params(): update physical parameters.
 """
 
-from typing import Dict, List, Tuple, Optional, Literal
+from typing import Literal
 import numpy as np
 from scipy.spatial import Voronoi
 from matplotlib import pyplot as plt
@@ -31,36 +31,34 @@ def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 class FiniteVoronoiSimulator:
     """Simulator for the active-finite-Voronoi (AFV) model.
 
-    This class provides an interface to simulate finite Voronoi models.
+    This class provides an interface to simulate the finite Voronoi model.
     It wraps around the two backend implementations, which may be
     either a Cython-accelerated version or a pure Python fallback.
 
+    Args:
+        pts: (N,2) array of initial cell center positions.
+        phys: Physical parameters used within this simulator.
+        backend: Optional, specify "python" to force the use of the pure Python fallback implementation.
+
+    Raises:
+        ValueError: If *pts* does not have shape (N,2).
+        TypeError: If *phys* is not an instance of PhysicalParams.
     """
 
-    def __init__(self, pts: np.ndarray, phys: PhysicalParams, backend: Optional[Literal["cython", "python"]] = None):
+    def __init__(self, pts: np.ndarray, phys: PhysicalParams, backend: Literal["cython", "python"] | None = None):
         """
         Constructor of the simulator.
-        Generates a warning if the pure Python implementation is used unless explicitly requested.
-
-        :param pts: (N,2) array of initial cell center positions.
-        :type pts: numpy.ndarray
-        
-        :param phys: Physical parameters used within this simulator.
-        :type phys: PhysicalParams
-
-        :param backend: Optional, specify "python" to force the use of the pure Python fallback implementation.
-        :type backend: str or None
         """
         pts = np.asarray(pts, dtype=float)
-        N, dim = pts.shape
-        if dim != 2:
+        if pts.ndim != 2 or pts.shape[1] != 2:
             raise ValueError("pts must have shape (N,2)")
         if not isinstance(phys, PhysicalParams):
             raise TypeError("phys must be an instance of PhysicalParams")
         
         self.pts = pts.copy()            # (N,2) array of initial points
-        self.N = N                       # Number of points
+        self.N = pts.shape[0]            # Number of points
         self.phys = phys
+        self._preferred_areas = np.full(self.N, phys.A0, dtype=float)    # (N,) preferred areas A0
         
         if backend != "python":
             self._BACKEND = _BACKEND_NAME
@@ -82,11 +80,27 @@ class FiniteVoronoiSimulator:
             self._impl = _impl
 
     # --------------------- Voronoi construction & extension ---------------------
-    def _build_voronoi_with_extensions(self) -> Tuple[Voronoi, np.ndarray, List[List[int]], int, Dict[Tuple[int,int], int], Dict[int, List[int]]]:
+    def _build_voronoi_with_extensions(self) -> tuple[Voronoi, np.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]]:
         """
-        Build SciPy Voronoi for current points. For N<=2, emulate regions.
-        For N>=3, extend infinite ridges by adding long rays and update
-        regions accordingly. Return augmented structures.
+        Build standard Voronoi structure for current points.
+
+        For N<=2, emulate regions.
+        For N>=3, extend infinite ridges, add extension vertices, and update
+        regions accordingly. Return the augmented structures.
+        
+        .. warning::
+            
+            This is an internal method. Use with caution.
+
+        Returns: 
+            tuple[scipy.spatial.Voronoi, numpy.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]] : A tuple containing:
+            
+                - **vor**: SciPy Voronoi object for current points with extensions.
+                - **vertices_all**: (M,2) array of all Voronoi vertices including extensions.
+                - **ridge_vertices_all**: list of lists of vertex indices for each ridge, including extensions.
+                - **num_vertices**: Number of Voronoi vertices before adding extension.
+                - **vertexpair2ridge**: dict mapping vertex index pairs to ridge index.
+                - **vertex_points**: dict mapping vertex index to list of associated point indices.
         """
         r = self.phys.r
         pts = self.pts
@@ -240,18 +254,47 @@ class FiniteVoronoiSimulator:
         return vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge, vertex_points
 
     # --------------------- Geometry & energy contributions per cell ---------------------
-    def _per_cell_geometry(self, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray, num_vertices: int, vertexpair2ridge: Dict[Tuple[int, int], int]) -> Dict:
+    def _per_cell_geometry(self, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray, num_vertices: int, vertexpair2ridge: dict[tuple[int, int], int]) -> dict[str,object]:
         """
-        Iterate cells to:
+        Build the finite-Voronoi per-cell geometry and energy contributions.
+
+        Iterate each cell to:
           - sort polygon/arc vertices around each cell
           - classify edges (1 = straight Voronoi edge; 0 = circular arc)
           - compute area/perimeter for each cell
           - accumulate derivatives w.r.t. vertices (dA_poly/dh, dP_poly/dh)
-          - register 'outer' vertices created at arc intersections and track their point pairs
+          - register "outer" vertices created at arc intersections and track their point pairs
+
+        .. warning::
+            This is an internal method. Use with caution.
+
+        Args:
+            vor: SciPy Voronoi object for current points with extensions.
+            vertices_all: (M,2) array of all Voronoi vertices including extensions.
+            ridge_vertices_all: list of lists of vertex indices for each ridge, including extensions.
+            num_vertices: Number of Voronoi vertices before adding extension.
+            vertexpair2ridge: dict mapping vertex index pairs to ridge index.
+        
+        Returns:
+            dict[str, object]: A diagnostics dictionary containing:
+
+                - **vertex_in_id**: set of inner vertex ids.
+                - **vertex_out_id**: set of outer vertex ids.
+                - **vertices_out**: (L,2) array of outer vertex coordinates.
+                - **vertex_out_points**: (L,2) array of point index pairs associated with each outer vertex.
+                - **vertex_out_da_dtheta**: array of dA/dtheta for all outer vertices.
+                - **vertex_out_dl_dtheta**: array of dL/dtheta for all outer vertices.
+                - **dA_poly_dh**: array of dA_polygon/dh for each vertex.
+                - **dP_poly_dh**: array of dP_polygon/dh for each vertex.
+                - **area_list**: array of polygon areas for each cell.
+                - **perimeter_list**: array of polygon perimeters for each cell.
+                - **point_edges_type**: list of lists of edge types per cell.
+                - **point_vertices_f_idx**: list of lists of vertex ids per cell.
+                - **num_vertices_ext**: number of vertices including infinite extension vertices.
         """
         N = self.N
         r = self.phys.r
-        A0 = self.phys.A0
+        A0_list = self._preferred_areas
         P0 = self.phys.P0
         pts = self.pts
 
@@ -382,7 +425,7 @@ class FiniteVoronoiSimulator:
         vertices_all = np.vstack([vertices_all, vertices_out])
 
         # --------------------------------------------------
-        # Part 1 in Cython
+        # Part 1 in Cython/Python backend
         # --------------------------------------------------
         vor_regions = self._impl.pad_regions(vor.regions)            # (R, Kmax) int64 with -1 padding
         point_edges_type, point_vertices_f_idx = self._impl.build_point_edges(
@@ -394,7 +437,7 @@ class FiniteVoronoiSimulator:
         )
 
         # --------------------------------------------------
-        # Part 2 in Cython
+        # Part 2 in Cython/Python backend
         # --------------------------------------------------
         vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list = self._impl.compute_vertex_derivatives(
             point_edges_type,            # list-of-lists / arrays of edge types
@@ -402,7 +445,7 @@ class FiniteVoronoiSimulator:
             vertices_all.astype(np.float64, copy=False),
             pts.astype(np.float64, copy=False),
             float(r),
-            float(A0),
+            A0_list.astype(np.float64, copy=False),
             float(P0),
             int(num_vertices_ext),
             int(num_ridges),
@@ -428,8 +471,8 @@ class FiniteVoronoiSimulator:
 
     # --------------------- Force assembly ---------------------
     def _assemble_forces(self, vertices_all: np.ndarray, num_vertices_ext: int,
-                         vertex_points: Dict[int, List[int]], vertex_in_id: List[int], vertex_out_id: List[int],
-                         vertex_out_points: List[List[int]], vertex_out_da_dtheta: np.ndarray,
+                         vertex_points: dict[int, list[int]], vertex_in_id: list[int], vertex_out_id: list[int],
+                         vertex_out_points: list[list[int]], vertex_out_da_dtheta: np.ndarray,
                          vertex_out_dl_dtheta: np.ndarray, dA_poly_dh: np.ndarray, dP_poly_dh: np.ndarray,
                          area_list: np.ndarray, perimeter_list: np.ndarray) -> np.ndarray:
         """
@@ -437,7 +480,7 @@ class FiniteVoronoiSimulator:
         """
         N = self.N
         r = self.phys.r
-        A0 = self.phys.A0
+        A0_list = self._preferred_areas
         P0 = self.phys.P0
         KA = self.phys.KA
         KP = self.phys.KP
@@ -614,8 +657,8 @@ class FiniteVoronoiSimulator:
                 v_da = vertex_out_da_dtheta[h_idx]   # (M,2)
                 v_dl = vertex_out_dl_dtheta[h_idx]   # (M,2)
 
-                Ai_w_i = (area_list[I]      - A0) * v_da[:, 0]
-                Aj_w_j = (area_list[J]      - A0) * v_da[:, 1]
+                Ai_w_i = (area_list[I]      - A0_list[I]) * v_da[:, 0]
+                Aj_w_j = (area_list[J]      - A0_list[J]) * v_da[:, 1]
                 Pi_w_i = (perimeter_list[I] - P0) * v_dl[:, 0]
                 Pj_w_j = (perimeter_list[J] - P0) * v_dl[:, 1]
 
@@ -653,7 +696,7 @@ class FiniteVoronoiSimulator:
         return F
 
     # --------------------- One integration step ---------------------
-    def build(self) -> dict:
+    def build(self) -> dict[str, object]:
         """ Build the finite-Voronoi structure and compute forces, returning a dictionary of diagnostics.
 
         Do the following:
@@ -662,17 +705,17 @@ class FiniteVoronoiSimulator:
           - Compute per-cell quantities and derivatives
           - Assemble forces
         
+          
+        Returns:
+            dict[str, object]: A dictionary containing geometric properties with keys:
 
-        :return: A dictionary containing the geometric properties:
-        
-            * **forces**: (N,2) array of forces on cell centers
-            * **areas**: (N,) array of cell areas
-            * **perimeters**: (N,) array of cell perimeters
-            * **vertices**: (M,2) array of all Voronoi + extension vertices
-            * **edges_type**: list-of-lists of edge types per cell (1=straight, 0=circular arc)
-            * **regions**: list-of-lists of vertex indices per cell
-            * **connections**: (M',2) array of connected cell index pairs
-        :rtype: dict
+                - **forces**: (N,2) array of forces on cell centers
+                - **areas**: (N,) array of cell areas
+                - **perimeters**: (N,) array of cell perimeters
+                - **vertices**: (M,2) array of all Voronoi + extension vertices
+                - **edges_type**: list-of-lists of edge types per cell (1=straight, 0=circular arc)
+                - **regions**: list-of-lists of vertex indices per cell
+                - **connections**: (M',2) array of connected cell index pairs
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -707,19 +750,18 @@ class FiniteVoronoiSimulator:
         )
 
     # --------------------- 2D plotting utilities ---------------------
-    def plot_2d(self, ax: Optional[Axes] = None, show: bool = False) -> Axes:
+    def plot_2d(self, ax: Axes | None = None, show: bool = False) -> Axes:
         """
         Build the finite-Voronoi structure and render a 2D snapshot.
 
-        Basically a wrapper of :py:func:`build()` function + plot.
+        Basically a wrapper of :py:func:`_build_voronoi_with_extensions` and :py:func:`_per_cell_geometry` functions + plot.
 
-        :param ax: If provided, draw into this axes; otherwise get the current axes.
-        :type ax: matplotlib.axes.Axes or None
-        :param show: Whether to call plt.show() at the end.
-        :type show: bool
-
-        :return: The matplotlib axes containing the plot.
-        :rtype: matplotlib.axes.Axes
+        Args:
+            ax: If provided, draw into this axes; otherwise get the current axes.
+            show: Whether to call ``plt.show()`` at the end.
+        
+        Returns:
+            The matplotlib axes containing the plot.
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -737,8 +779,8 @@ class FiniteVoronoiSimulator:
         return ax
 
     # --------------------- Paradigm of plotting ---------------------
-    def _plot_routine(self, ax: Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: List[List[int]],
-                      point_edges_type: List[List[int]], point_vertices_f_idx: List[List[int]]) -> None:
+    def _plot_routine(self, ax: Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: list[list[int]],
+                      point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]]) -> None:
         """
         Low-level plot routine. Draws:
           - All Voronoi edges (solid for finite, dashed for formerly-infinite)
@@ -802,7 +844,7 @@ class FiniteVoronoiSimulator:
         ax.set_ylim(center[1]-L, center[1]+L)
 
     # --------------------- Connections between cells ---------------------
-    def _get_connections(self, ridge_points: List[List[int]], vertices_all: np.ndarray, ridge_vertices_all: List[List[int]]) -> np.ndarray:
+    def _get_connections(self, ridge_points: list[list[int]], vertices_all: np.ndarray, ridge_vertices_all: list[list[int]]) -> np.ndarray:
         """
         Determine which pairs of cells are connected, i.e.,
         the distance from the cell center to its corresponding Voronoi ridge
@@ -840,30 +882,91 @@ class FiniteVoronoiSimulator:
         return connect
 
     # --------------------- Update positions ---------------------
-    def update_positions(self, pts: np.ndarray) -> None:
+    def update_positions(self, pts: np.ndarray, A0: float | np.ndarray | None = None) -> None:
         """
         Update cell center positions.
 
-        :param pts: ndarray of shape (N,2)
-        :type pts: numpy.ndarray
+        .. note::
+            If the number of points changes, the preferred areas for all cells
+            are reset to the default value (set when initializing the simulator
+            instance or by :py:func:`update_params`) unless specified via the
+            *A0* argument.
+
+        Args:
+            pts: New cell center positions.
+            A0: Optional, set new preferred area(s).
+
+        Raises:
+            ValueError: If *pts* does not have shape (N,2).
+            ValueError: If *A0* is an array and does not have shape (N,).
         """
         pts = np.asarray(pts, dtype=float)
-        N, dim = pts.shape
-        if dim != 2:
+        if pts.ndim != 2 or pts.shape[1] != 2:
             raise ValueError("pts must have shape (N,2)")
         
+        N = pts.shape[0]
         self.pts = pts
-        self.N = N
+
+        if N != self.N:
+            self.N = N
+            if A0 is None:
+                self._preferred_areas = np.full(N, self.phys.A0, dtype=float)
+            else:
+                self.update_preferred_areas(A0)
+        else:
+            if A0 is not None:
+                self.update_preferred_areas(A0)
 
     # --------------------- Update physical parameters ---------------------
     def update_params(self, phys: PhysicalParams) -> None:
         """
         Update physical parameters.
 
-        :param phys: PhysicalParams object
-        :type phys: PhysicalParams
+        Args:
+            phys: New PhysicalParams object.
+        
+        Raises:
+            TypeError: If *phys* is not an instance of PhysicalParams.
+
+        .. warning::
+            This also resets all preferred cell areas to the new value of *A0*.
         """
         if not isinstance(phys, PhysicalParams):
             raise TypeError("phys must be an instance of PhysicalParams")
         
         self.phys = phys
+        self.update_preferred_areas(phys.A0)
+
+    # --------------------- Update preferred area list ---------------------
+    def update_preferred_areas(self, A0: float | np.ndarray) -> None:
+        """
+        Update the preferred areas for all cells.
+
+        Args:
+            A0: New preferred area(s) for all cells.
+
+        Raises:
+            ValueError: If *A0* does not match cell number.
+        """
+        arr = np.asarray(A0, dtype=float)
+
+        # Accept scalar (0-d) or length-1 array as "uniform"
+        if arr.ndim == 0:
+            arr = np.full(self.N, float(arr), dtype=float)
+        elif arr.shape == (1,):
+            arr = np.full(self.N, float(arr[0]), dtype=float)
+        else:
+            if arr.shape != (self.N,):
+                raise ValueError(f"A0 must be scalar or have shape ({self.N},)")
+        
+        self._preferred_areas = arr
+
+    @property
+    def preferred_areas(self) -> np.ndarray:
+        """
+        Preferred areas for all cells (read-only).
+
+        Returns:
+            numpy.ndarray: A copy of the internal preferred area array.
+        """
+        return self._preferred_areas.copy()

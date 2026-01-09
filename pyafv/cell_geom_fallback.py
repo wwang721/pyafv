@@ -124,7 +124,7 @@ def compute_vertex_derivatives(
             point_edges_type,            # list-of-lists / arrays of edge types
             point_vertices_f_idx,        # list-of-lists / arrays of vertex ids
             vertices_all,
-            pts, r, A0, P0, num_vertices_ext, num_ridges,
+            pts, r, A0_list, P0, num_vertices_ext, num_ridges,
             vertex_out_points):
 
     N = pts.shape[0]
@@ -208,7 +208,7 @@ def compute_vertex_derivatives(
         if np.any(mask_prev_str):
             dPi_v1[mask_prev_str] += seg10[mask_prev_str] / l10[mask_prev_str][:, None]
 
-        np.add.at(dA_poly_dh, v1_idx, (Ai - A0) * dAi_v1)
+        np.add.at(dA_poly_dh, v1_idx, (Ai - A0_list[idx]) * dAi_v1)
         np.add.at(dP_poly_dh, v1_idx, (Pi - P0) * dPi_v1)
 
         # ----- arc endpoint sensitivities at outer vertices -----

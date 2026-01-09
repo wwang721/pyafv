@@ -25,7 +25,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 ```bash
 pip install pyafv
 ```
-The package supports Python ≥ 3.9 and < 3.15.
+The package supports Python ≥ 3.10 and < 3.15.
 To verify that the installation was successful and that the correct version is installed, run the following in Python:
 ```python
 import pyafv
@@ -38,7 +38,7 @@ If you only intend to use the package, skip the [**#Local development**](#local-
 
 This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
 
-> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.9) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
+> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.10) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
 After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can install `PyAFV` in "editable" mode and synchronize the dependencies with
 ```bash

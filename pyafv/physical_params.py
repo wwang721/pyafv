@@ -17,37 +17,34 @@ def sigmoid(x):
 @dataclass(frozen=True)
 class PhysicalParams:
     """Physical parameters for the active-finite-Voronoi (AFV) model.
-    
+
     Caveat:
-        Frozen dataclass is used to ensure immutability of instances.
+        Frozen dataclass is used for :py:class:`PhysicalParams` to ensure immutability of instances.
+
+    Args:
+        r: Radius (maximal) of the Voronoi cells.
+        A0: Preferred area of the Voronoi cells.
+        P0: Preferred perimeter of the Voronoi cells.
+        KA: Area elasticity constant.
+        KP: Perimeter elasticity constant.
+        lambda_tension: Tension difference between non-contacting edges and contacting edges.
+        delta: Small offset to avoid singularities in computations.
     """
     
-    r: float = 1.0
-    """Radius (maximal) of the Voronoi cells."""
+    r: float = 1.0               #: Radius (maximal) of the Voronoi cells.
+    A0: float = np.pi            #: Preferred area of the Voronoi cells.
+    P0: float = 4.8              #: Preferred perimeter of the Voronoi cells.
+    KA: float = 1.0              #: Area elasticity constant.
+    KP: float = 1.0              #: Perimeter elasticity constant.
+    lambda_tension: float = 0.2  #: Tension difference between non-contacting edges and contacting edges.
+    delta: float = 0.0           #: Small offset to avoid singularities in computations.
 
-    A0: float = np.pi
-    """Preferred area of the Voronoi cells."""
-    
-    P0: float = 4.8
-    """Preferred perimeter of the Voronoi cells."""
-
-    KA: float = 1.0
-    """Area elasticity constant."""
-
-    KP: float = 1.0
-    """Perimeter elasticity constant."""
-
-    lambda_tension: float = 0.2
-    """Tension difference between non-contacting edges and contacting edges."""
-
-    delta: float = 0.0
-    """Small offset to avoid singularities in computations."""
 
     def get_steady_state(self) -> tuple[float, float]:
-        """Compute steady-state (l,d) given physical params.
+        r"""Compute steady-state (l,d) for the given physical parameters.
         
-        :return: Tuple of (l, d) at steady state.
-        :rtype: tuple[float, float]
+        Returns:
+            Steady-state :math:`(\ell,d)` values.
         """
         params = [self.KA, self.KP, self.A0, self.P0, self.lambda_tension]
         result = self._minimize_energy(params, restarts=10)
@@ -57,8 +54,8 @@ class PhysicalParams:
     def with_optimal_radius(self) -> PhysicalParams:
         """Returns a new instance with the radius updated to steady state.
         
-        :return: New instance with optimal radius.
-        :rtype: PhysicalParams
+        Returns:
+            New instance with optimal radius.
         """
         l, d = self.get_steady_state()
         new_params = replace(self, r=l)
@@ -67,11 +64,11 @@ class PhysicalParams:
     def with_delta(self, delta_new: float) -> PhysicalParams:
         """Returns a new instance with the specified delta.
         
-        :param delta_new: New delta value.
-        :type delta_new: float
+        Args:
+            delta_new: New delta value.
 
-        :return: New instance with updated delta.
-        :rtype: PhysicalParams
+        Returns:
+            New instance with updated delta.
         """
         return replace(self, delta=delta_new)
 
@@ -113,17 +110,15 @@ class PhysicalParams:
 
 
 def target_delta(params: PhysicalParams, target_force: float) -> float:
-    """
-    Given physical parameters and a target detachment force, compute the corresponding delta.
+    r"""
+    Given the physical parameters and a target detachment force, compute the corresponding delta.
 
-    :param params: Physical parameters of the AFV model.
-    :type params: PhysicalParams
+    Args:
+        params: Physical parameters of the AFV model.
+        target_force: Target detachment force.
 
-    :param target_force: Target detachment force.
-    :type target_force: float
-
-    :return: Corresponding delta value.
-    :rtype: float
+    Returns:
+        Corresponding small cutoff :math:`\delta`'s value.
     """
     KP, A0, P0, Lambda = params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r

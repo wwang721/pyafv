@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 
 project = "PyAFV"
 author = "Wei Wang"
-copyright = f"(c) {datetime.now(timezone.utc).year} {author}"
+copyright = f"{datetime.now(timezone.utc).year} {author}"
 
 
 # -- General configuration ---------------------------------------------------
@@ -33,10 +33,16 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
+    # added extensions
     'sphinxcontrib.bibtex',
+    "sphinx.ext.napoleon",
 ]
 
 bibtex_bibfiles = ['main.bib']
+
+# Make Sphinx show type hints (from function signatures)
+autodoc_typehints = "description"  # or "signature"
+
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
@@ -44,6 +50,7 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
     'numpy': ('https://numpy.org/doc/stable/', None),
     'matplotlib': ('https://matplotlib.org/stable/', None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
 }
 intersphinx_disabled_domains = ["std"]
 
@@ -64,7 +71,13 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 #
 html_theme = "sphinx_rtd_theme"
 
+html_theme_options = {
+    'version_selector': True
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ["_static"]
+
+toc_object_entries = False

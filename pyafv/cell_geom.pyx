@@ -276,7 +276,7 @@ def compute_vertex_derivatives(
     cnp.float64_t[:, :] vertices_all,      # (num_vertices_ext + 2*num_ridges, 2)
     cnp.float64_t[:, :] pts,               # (N, 2)
     double r,
-    double A0,
+    cnp.float64_t[:] A0_list,              # (N,)
     double P0,
     long num_vertices_ext,
     long num_ridges,
@@ -474,8 +474,8 @@ def compute_vertex_derivatives(
                     dPi_v1_y += s10y / l10
 
             vidx = v1_idx[j]
-            dA_poly_dh[vidx, 0] += (Ai - A0) * dAi_v1_x
-            dA_poly_dh[vidx, 1] += (Ai - A0) * dAi_v1_y
+            dA_poly_dh[vidx, 0] += (Ai - A0_list[i]) * dAi_v1_x
+            dA_poly_dh[vidx, 1] += (Ai - A0_list[i]) * dAi_v1_y
             dP_poly_dh[vidx, 0] += (Pi - P0) * dPi_v1_x
             dP_poly_dh[vidx, 1] += (Pi - P0) * dPi_v1_y
 
