@@ -1,0 +1,79 @@
+name: Tests on all platforms
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    # Only run this job on the main branches
+    if: github.ref == 'refs/heads/main'
+    name: Test on ${{ matrix.os }} (py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false  # Continue other jobs even if one fails
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - windows-11-arm
+          - macos-15-intel
+          - macos-latest
+        python:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+        exclude:
+          # Not supported by github runners
+          - os: windows-11-arm
+            python: "3.10"  
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Set up MSVC for ARM64 Windows
+        if: matrix.os == 'windows-11-arm'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_arm64
+
+      # Add this step to make 'uv' available to cibuildwheel
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          # This tells the action to watch your project file instead of a lockfile
+          cache-dependency-glob: "pyproject.toml"
+
+      # IMPORTANT: do PATH fix + build in the SAME step so it actually applies
+      - name: Sync dependencies (Windows ARM64)
+        if: matrix.os == 'windows-11-arm'
+        shell: pwsh
+        run: |
+          Write-Host "Before PATH fix:"
+          where.exe link || $true
+
+          # Remove Git's usr\bin (contains the fake link.exe)
+          $env:PATH = (($env:PATH -split ';') | Where-Object { $_ -ne 'C:\Program Files\Git\usr\bin' }) -join ';'
+
+          Write-Host "After PATH fix:"
+          where.exe link
+          where.exe cl
+
+          uv sync --dev
+
+      - name: Sync dependencies (non-Windows-ARM)
+        if: matrix.os != 'windows-11-arm'
+        run: |
+          uv sync --dev
+
+      - name: Run tests
+        run: |
+          uv run pytest --cov=pyafv --cov-branch
