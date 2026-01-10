@@ -109,7 +109,7 @@ Coding standards
 
 3. **Minimize dependencies**: Avoid adding new libraries unless absolutely necessary. If required, discuss with maintainers first.
 
-4. **Code style**: Follow `PEP 8 <https://peps.python.org/pep-0008/>`_ style guidelines for Python code..
+4. **Code style**: Follow `PEP 8 <https://peps.python.org/pep-0008/>`_ style guidelines for Python code.
 
 
 Documentation requirements

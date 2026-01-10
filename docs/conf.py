@@ -77,7 +77,7 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ["_static"]
 
-# Create table of contents entries for domain objects(e.g. functions, classes, attributes, etc.).
+# Create table of contents entries for domain objects (e.g. functions, classes, attributes, etc.).
 toc_object_entries = False
 
 autodoc_type_aliases = {

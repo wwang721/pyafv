@@ -14,7 +14,7 @@ Installation
 
 .. note::
 
-   Only Python 3.10 on *Windows ARM64* (not *x86-64*) is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
+   Python 3.10 on *Windows ARM64* (not *x86-64*) is the only configuration that is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
 
 
 Install using pip
