@@ -29,14 +29,14 @@ uv sync
 This installs the core package dependencies along with `pytest` required for development and testing.
 
 **Notes:**
-- If you modify the Cython source file [`pyafv/cell_geom.pyx`](pyafv/cell_geom.pyx), reinstall the package: `uv sync --reinstall-package pyafv --inexact`.
+- If you modify the Cython source file [`./pyafv/cell_geom.pyx`](pyafv/cell_geom.pyx), reinstall the package: `uv sync --reinstall-package pyafv --inexact`.
 - For Windows MinGW GCC users, add a `setup.cfg` file at the repository root:
   ```ini
   # setup.cfg
   [build_ext]
   compiler=mingw32
   ```
-- See more notes for local development in the [README](/README.md).
+- See more notes for local development in the [README](/README.md#local-development).
 
 ### 3. Create a feature branch
 
@@ -90,7 +90,8 @@ Note: We use `rebase` to keep the commit history clean.
    ```python
    positions = np.zeros((100, 2))  # N x dimension
    ```
-3. **Docstrings**: Each function should have a docstring following [PEP 257](https://peps.python.org/pep-0257/) that explains:
+3. **Docstrings**: Each function should have a docstring following [PEP 257](https://peps.python.org/pep-0257/) and written in either [**Google style**](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html#example-google) (currently used) or [**Numpy style**](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html) so that it can be parsed by **Sphinx** via ``sphinx.ext.napoleon``. The docstring should explain:
+
    - Purpose of the function
    - All input parameters
    - Return values

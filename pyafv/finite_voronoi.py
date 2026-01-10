@@ -754,7 +754,7 @@ class FiniteVoronoiSimulator:
         """
         Build the finite-Voronoi structure and render a 2D snapshot.
 
-        Basically a wrapper of :py:func:`_build_voronoi_with_extensions` and :py:func:`_per_cell_geometry` functions + plot.
+        Basically a wrapper of :py:meth:`_build_voronoi_with_extensions` and :py:meth:`_per_cell_geometry` functions + plot.
 
         Args:
             ax: If provided, draw into this axes; otherwise get the current axes.
@@ -887,10 +887,9 @@ class FiniteVoronoiSimulator:
         Update cell center positions.
 
         .. note::
-            If the number of points changes, the preferred areas for all cells
-            are reset to the default value (set when initializing the simulator
-            instance or by :py:func:`update_params`) unless specified via the
-            *A0* argument.
+            If the number of cells changes, the preferred areas for all cells
+            are reset to the default value---defined either at simulator instantiation 
+            or by :py:meth:`update_params`---unless *A0* is explicitly specified.
 
         Args:
             pts: New cell center positions.
