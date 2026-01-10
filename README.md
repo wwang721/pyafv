@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 <!--
-[![arXiv:2503.03126](https://img.shields.io/badge/arXiv-2503.03126-grey.svg?colorA=a42c25&colorB=grey)](https://doi.org/10.48550/arXiv.2503.03126)
+[![arXiv:2503.03126](https://img.shields.io/badge/arXiv-2503.03126-grey.svg?colorA=a42c25&colorB=grey&logo=arxiv)](https://doi.org/10.48550/arXiv.2503.03126)
 [![PhysRevE.109.054408](https://img.shields.io/badge/Phys.%20Rev.%20E-109.054408-grey.svg?colorA=8c6040)](https://doi.org/10.1103/PhysRevE.109.054408)
 [![Soft Matter](https://img.shields.io/badge/Soft%20Matter-XXXXX-63a7c2.svg?colorA=63a7c2&colorB=grey)](https://doi.org/10.1103/PhysRevE.109.054408)
 -->

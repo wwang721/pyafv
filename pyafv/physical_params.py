@@ -1,6 +1,5 @@
 from __future__ import annotations
 import numpy as np
-from scipy.optimize import minimize
 from dataclasses import dataclass, replace
 
 
@@ -86,6 +85,9 @@ class PhysicalParams:
         return KA * (A - A0)**2 + KP * (P - P0)**2 + Lambda * ln
 
     def _minimize_energy(self, params, restarts=10, seed=None):
+
+        from scipy.optimize import minimize
+        
         rng = np.random.default_rng(seed)
         best = None
         for _ in range(restarts):

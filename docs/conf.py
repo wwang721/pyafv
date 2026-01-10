@@ -36,13 +36,10 @@ extensions = [
     # added extensions
     'sphinxcontrib.bibtex',
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
 ]
 
 bibtex_bibfiles = ['main.bib']
-
-# Make Sphinx show type hints (from function signatures)
-autodoc_typehints = "description"  # or "signature"
-
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
@@ -80,4 +77,23 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ["_static"]
 
+# Create table of contents entries for domain objects(e.g. functions, classes, attributes, etc.).
 toc_object_entries = False
+
+autodoc_type_aliases = {
+    # 'np.ndarray': 'numpy.ndarray',
+    # 'Axes': 'matplotlib.axes.Axes',
+    'Voronoi': 'scipy.spatial.Voronoi',
+    # Somehow numpy/matplotlib not working,
+    # only scipy.spatial.Voronoi works here.
+}
+
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+
+# Make Sphinx show type hints (from function signatures)
+autodoc_typehints = "description"  # or "signature"
+autodoc_typehints_format = "short"
+
+# Suppress the module name of the python reference if it can be resolved.
+python_use_unqualified_type_names = True

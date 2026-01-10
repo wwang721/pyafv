@@ -7,6 +7,10 @@ PyAFV
    :target: https://pypi.org/project/pyafv
    :alt: PyPI
 
+.. image:: https://img.shields.io/badge/GitHub-pyafv-brightgreen?logo=github
+   :target: https://github.com/wwang721/pyafv
+   :alt: GitHub
+
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
    :target: https://opensource.org/licenses/MIT
    :alt: MIT License

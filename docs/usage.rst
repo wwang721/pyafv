@@ -33,7 +33,7 @@ After installation, verify that it was successful by importing the package in *P
 
    >>> import pyafv
    >>> pyafv.__version__
-   '0.3.5'
+   '0.3.6'
 
 
 Install from source
