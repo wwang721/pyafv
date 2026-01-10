@@ -10,6 +10,9 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
+      CIBW_BUILD_FRONTEND: "build[uv]"
     strategy:
       matrix:
         # Building for all major OS platforms
@@ -55,9 +58,6 @@ jobs:
       - name: Build wheels (non-Windows-ARM)
         if: matrix.os != 'windows-11-arm'
         uses: pypa/cibuildwheel@v3.3.1
-        env:
-          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
-          CIBW_BUILD_FRONTEND: "build[uv]"
 
       - uses: actions/upload-artifact@v4
         with:

@@ -13,6 +13,7 @@ on:
       - '.gitattributes'
       - '.github/workflows/publish-to-pypi.yml'
       - '.github/workflows/zenodo-display.yml'
+      - '.github/workflows/tests_all_platform.yml'
 
   pull_request:
     branches: [ "main" ]
@@ -27,6 +28,7 @@ on:
       - '.gitattributes'
       - '.github/workflows/publish-to-pypi.yml'
       - '.github/workflows/zenodo-display.yml'
+      - '.github/workflows/tests_all_platform.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
