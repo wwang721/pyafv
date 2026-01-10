@@ -81,7 +81,7 @@ Custom plotting
 
 See `examples/jupyter/custom_plot.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/custom_plot.ipynb>`_ for an example of custom plotting using **PyAFV**.
 
-This example shows how to use :py:func:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths.
+This example shows how to use :py:meth:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths.
 
 .. automethod:: pyafv.FiniteVoronoiSimulator.build
    :noindex:
@@ -93,7 +93,7 @@ This example shows how to use :py:func:`pyafv.FiniteVoronoiSimulator.build` retu
 
 |
 
-This example also shows how to access additional internal information via :py:func:`pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions` and :py:func:`pyafv.FiniteVoronoiSimulator._per_cell_geometry` for advanced plotting. The public ``build()`` method serves as a higher-level wrapper around these two and other lower-level routines.
+This example also shows how to access additional internal information via :py:meth:`pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions` and :py:meth:`pyafv.FiniteVoronoiSimulator._per_cell_geometry` for advanced plotting. The public ``build()`` method serves as a higher-level wrapper around these two and other lower-level routines.
 
 .. automethod:: pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions
     :noindex:
@@ -126,7 +126,7 @@ A new read-only property :py:attr:`pyafv.FiniteVoronoiSimulator.preferred_areas`
 .. autoattribute:: pyafv.FiniteVoronoiSimulator.preferred_areas
     :noindex:
 
-To modify the preferred areas, the method :py:func:`pyafv.FiniteVoronoiSimulator.update_preferred_areas()` is provided:
+To modify the preferred areas, the method :py:meth:`pyafv.FiniteVoronoiSimulator.update_preferred_areas` is provided:
 
 .. automethod:: pyafv.FiniteVoronoiSimulator.update_preferred_areas
     :noindex:
@@ -153,12 +153,12 @@ Here is an example usage:
 
     # Run simulation...
 
-In addition, the :py:func:`pyafv.FiniteVoronoiSimulator.update_positions()` method now accepts an optional second argument to update the preferred areas:
+In addition, the :py:meth:`pyafv.FiniteVoronoiSimulator.update_positions` method now accepts an optional second argument to update the preferred areas:
 
 .. automethod:: pyafv.FiniteVoronoiSimulator.update_positions
     :noindex:
 
-And the :py:func:`pyafv.FiniteVoronoiSimulator.update_params()` method will also re-initialize the preferred areas for all cells using the supplied value of *A0* in *phys*:
+And the :py:meth:`pyafv.FiniteVoronoiSimulator.update_params` method will also re-initialize the preferred areas for all cells using the supplied value of *A0* in *phys*:
 
 .. automethod:: pyafv.FiniteVoronoiSimulator.update_params
     :noindex:

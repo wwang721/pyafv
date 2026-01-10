@@ -8,6 +8,15 @@ Installation
 
 **PyAFV** supports *Python* ≥ 3.10, < 3.15, and has been tested on major operating systems including *Linux*, *macOS*, and *Windows*, for both *x86-64* and *ARM64* architectures.
 
+.. image:: https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg
+   :target: https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml
+   :alt: Tests on all platforms
+
+.. note::
+
+   Only Python 3.10 on *Windows ARM64* (not *x86-64*) is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
+
+
 Install using pip
 ^^^^^^^^^^^^^^^^^^
 
