@@ -1,8 +1,11 @@
 name: Zenodo Deployment Display
 
 on:
-  release:
-    types: [published] # Triggers when you create a release
+  # release:
+  #   types: [published] # Triggers when you create a release
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   fake-deploy:
