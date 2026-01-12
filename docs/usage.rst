@@ -36,6 +36,10 @@ After installation, verify that it was successful by importing the package in *P
    >>> pyafv.__version__
    '0.3.8'
 
+.. note::
+
+   On HPC clusters, global Python path can contaminate the project environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
+
 
 Install from source
 ^^^^^^^^^^^^^^^^^^^^
@@ -126,6 +130,19 @@ The plotting routine ``plot_2d()`` is provided by:
    :align: center
 
 |
+
+To compute the conservative forces and extract detailed geometric information (e.g., cell areas, vertices, and edges), call:
+
+.. code-block:: python
+
+   sim.build()                                       # compute forces and geometry
+
+The returned object ``diag`` is a Python ``dict`` containing these quantities.
+
+.. automethod:: pyafv.FiniteVoronoiSimulator.build
+   :noindex:
+
+For more examples and detailed usage instructions, please refer to the :doc:`examples` and :doc:`api/index` sections.
 
 .. To retrieve a list of random ingredients,
 .. you can use the ``lumache.get_random_ingredients()`` function:

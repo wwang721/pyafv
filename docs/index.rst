@@ -26,7 +26,7 @@ The AFV framework was introduced and developed in, for example, Refs. :cite:`hua
 .. It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
 .. and offers a *simple* and *intuitive* API.
 
-Check out the :doc:`usage`, :doc:`examples`, and :doc:`api/index` section for further information, including
+Check out the :doc:`usage`, :doc:`examples`, and :doc:`api/index` sections for further information, including
 how to :ref:`install <installation>` the project, usage examples, and the complete API reference.
 
 .. |GitHub| replace:: **GitHub**

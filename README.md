@@ -23,9 +23,7 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 
 ## Installation
 
-### Install using pip
-
-Install **PyAFV** using `pip`:
+**PyAFV** is available on **PyPI** and can be installed using *pip* directly:
 ```bash
 pip install pyafv
 ```
@@ -36,6 +34,7 @@ import pyafv
 print(pyafv.__version__)
 ```
 
+> On HPC clusters, global Python path can contaminate the project environment. You may need to clear it explicitly using `unset PYTHONPATH` or prefixing the *pip* command with `PYTHONPATH=""`.
 
 ### Install from source
 
@@ -49,7 +48,7 @@ pip install .
 
 #### Windows MinGW GCC
 
-If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a `setup.cfg` at the repository root before running the installation command above, with the following content:
+If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a `setup.cfg` at the repository root before running `pip install .`, with the following content:
 ```ini
 # setup.cfg
 [build_ext]
@@ -76,8 +75,6 @@ diag = sim.build()
 ```
 The returned object `diag` is a Python `dict` containing these quantities.
 
-> Full documentation on [readthedocs](https://pyafv.readthedocs.io)!
-
 
 ## Simulation previews
 
@@ -85,35 +82,25 @@ Below are representative simulation snapshots generated using the code:
 
 | Model illustration | Periodic boundary conditions |
 |-----------------|-----------------|
-| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/model_illustration.png" height="373"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/pbc.png" height="385">|
+| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/model_illustration.png" width="540"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/pbc.png" width="385">|
 
 | Initial configuration | After relaxation | Active dynamics enabled |
 |-----------------------|-----------------------|-----------------------|
-| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/initial_configuration.png" height="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/relaxed_configuration.png" height="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/active_FV.png" height="300"> |
-
-
-## Development
-
-See [CONTRIBUTING.md](https://github.com/wwang721/pyafv/blob/main/CONTRIBUTING.md) or [Documentation](https://pyafv.readthedocs.io/stable/contributing.html) for local development instructions.
+| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/initial_configuration.png" width="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/relaxed_configuration.png" width="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/active_FV.png" width="300"> |
 
 
 ## More information
 
-See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
-* [QhullError when 3+ points are collinear #1](https://github.com/wwang721/pyafv/issues/1) [Closed - see [comments](https://github.com/wwang721/pyafv/issues/1#issuecomment-3701355742)]
-*  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
-* [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
+- **Full documentation** on [readthedocs](https://pyafv.readthedocs.io) or as [a single PDF file](https://pyafv.readthedocs.io/_/downloads/en/latest/pdf/).
 
+- See [CONTRIBUTING.md](https://github.com/wwang721/pyafv/blob/main/CONTRIBUTING.md) or the [documentation](https://pyafv.readthedocs.io/latest/contributing.html) for **local development instructions**.
 
-## Zenodo
+- See some important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
+    * [QhullError when 3+ points are collinear #1](https://github.com/wwang721/pyafv/issues/1) [Closed - see [comments](https://github.com/wwang721/pyafv/issues/1#issuecomment-3701355742)]
+    *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
+    * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
-The releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
-
-
-## License
-
-This project is licensed under the [MIT License](https://github.com/wwang721/pyafv/blob/main/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
-
+- Some releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
 
 ## References
 
