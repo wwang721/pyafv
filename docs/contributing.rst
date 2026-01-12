@@ -16,14 +16,14 @@ How to contribute
 Create a fork
 ^^^^^^^^^^^^^^^^
 
-Click the "Fork" button on the PyAFV GitHub page:
+Click the "Fork" button on the **PyAFV** *GitHub* page:
 https://github.com/wwang721/pyafv
 
 Then clone **your fork** to your local machine and enter the repository directory
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd pyafv
+   (.venv) $ cd pyafv
 
 
 Set up your development environment
@@ -32,15 +32,15 @@ Set up your development environment
 .. |uv| replace:: **uv**
 .. _uv: https://docs.astral.sh/uv/
 
-**PyAFV** uses |uv|_ for Python package management --- a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`,
+**PyAFV** uses |uv|_ for Python package management---a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`.
 
 - If you'd like to use your own Python, ensure the ``which python`` version meets the requirement so **uv** doesn't automatically download a different interpreter; otherwise, I recommend letting **uv** manage everything, including the Python interpreter.
 
 After cloning, install **PyAFV** in editable mode and synchronize dependencies:
 
-.. code-block:: bash
+.. code-block:: console
 
-    uv sync
+   (.venv) $ uv sync
 
 This installs the core package dependencies along with **pytest** required for development and testing.
 
@@ -50,7 +50,7 @@ This installs the core package dependencies along with **pytest** required for d
     - In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the ``PYTHONPATH=""`` prefix to all ``uv`` commands to isolate the project.
     - The current version uses **Cython** to translate ``.pyx`` files into ``.cpp``, (and therefore requires a working C/C++ compiler), though a fallback backend (based on early pure-Python release) is also implemented.
 
-    - For Windows MinGW GCC users, add a ``setup.cfg`` file at the repository root
+    - For *Windows* **MinGW GCC** users (rather than **MSVC**), add a ``setup.cfg`` file at the repository root
 
         .. code-block:: ini
 
@@ -66,10 +66,10 @@ Create a feature branch and start development
 
 Always branch from ``main``, not from another feature branch
 
-.. code-block:: bash
+.. code-block:: console
 
-    git checkout main
-    git checkout -b your-feature-name
+   (.venv) $ git checkout main
+   (.venv) $ git checkout -b your-feature-name
 
 You may then begin editing the codebase and developing new features.
 
@@ -86,25 +86,25 @@ Keeping your fork up to date
 
 Add the upstream repository as a remote (do this once):
 
-.. code-block:: bash
+.. code-block:: console
 
-    git remote add upstream https://github.com/wwang721/pyafv.git
-    git remote -v
+   (.venv) $ git remote add upstream https://github.com/wwang721/pyafv.git
+   (.venv) $ git remote -v
 
 To sync with upstream (do this regularly):
 
-.. code-block:: bash
+.. code-block:: console
 
-    git fetch upstream
-    git checkout main
-    git merge upstream/main
+   (.venv) $ git fetch upstream
+   (.venv) $ git checkout main
+   (.venv) $ git merge upstream/main
 
 If needed, update your feature branch with the latest changes:
 
-.. code-block:: bash
+.. code-block:: console
 
-    git checkout your-feature-name
-    git rebase main
+   (.venv) $ git checkout your-feature-name
+   (.venv) $ git rebase main
 
 .. note::
     We use ``rebase`` to keep the commit history clean.
@@ -152,23 +152,27 @@ Writing tests
    :target: https://github.com/wwang721/pyafv/actions/workflows/tests.yml
    :alt: pytest
 
+.. image:: https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS
+   :target: https://codecov.io/github/wwang721/pyafv/tree/main
+   :alt: Codecov
+
 Tests are located in the ``tests/`` directory. Run the test suite with
 
-.. code-block:: bash
+.. code-block:: console
 
-    uv run pytest
+   (.venv) $ uv run pytest
 
 For coverage reports:
 
-.. code-block:: bash
+.. code-block:: console
 
-    uv run pytest --cov
+   (.venv) $ uv run pytest --cov
 
 Current CI status of the test suite, run via **GitHub Actions** on Python 3.12 (with additional test jobs covering all supported platforms and Python versions), is shown in the badges above.
 
 .. note::
 
-   - A comparison against the MATLAB implementation from Ref. :cite:`huang2023bridging` is included in current test suite.
+   - A comparison against the **MATLAB** implementation from Ref. :cite:`huang2023bridging` is included in current test suite.
    - Unlike `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_, the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
@@ -190,9 +194,9 @@ Featured examples
 To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras``.
 Then you can simply run the scripts with
 
-.. code-block:: bash
+.. code-block:: console
    
-   uv run <script_name>.py
+   (.venv) $ uv run <script_name>.py
 
 
 - For developers to launch Jupyter Notebook: after ``uv`` has synced all extra dependencies, start Jupyter with ``uv run jupyter notebook``. Do not use your system-level Jupyter, as the Python kernel of the current ``uv`` environment is not registered there.
@@ -202,7 +206,7 @@ Then you can simply run the scripts with
 
 .. note::
 
-   Jupyter notebooks and media are stored via |Git LFS|_. If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install **Git LFS** to fetch them automatically or download the files manually (or download the repository as a ZIP archive) from the **GitHub** web interface.
+   Jupyter notebooks and media are stored via |Git LFS|_. If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install **Git LFS** to fetch them automatically or download the files manually (e.g., download the repository as a ZIP archive) from the **GitHub** web interface.
 
 
 Submitting a pull request
@@ -223,9 +227,9 @@ Pull request process
 
 1. Push your feature branch to your fork:
 
-.. code-block:: bash
+.. code-block:: console
 
-    git push origin your-feature-name
+   (.venv) $ git push origin your-feature-name
 
 2. Go to the `PyAFV repository <https://github.com/wwang721/pyafv>`_ and click "Pull Request".
 

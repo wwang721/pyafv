@@ -3,7 +3,7 @@
 PyAFV
 ======
 
-.. image:: https://img.shields.io/pypi/v/pyafv?cacheSeconds=300
+.. image:: https://img.shields.io/pypi/v/pyafv?label=Version&cacheSeconds=300
    :target: https://pypi.org/project/pyafv
    :alt: PyPI
 
@@ -27,7 +27,7 @@ The AFV framework was introduced and developed in, for example, Refs. :cite:`hua
 .. and offers a *simple* and *intuitive* API.
 
 Check out the :doc:`usage`, :doc:`examples`, and :doc:`api/index` sections for further information, including
-how to :ref:`install <installation>` the project, usage examples, and the complete API reference.
+how to :ref:`install <installation>` the package, usage examples, and the complete API reference.
 
 .. |GitHub| replace:: **GitHub**
 .. _GitHub: https://github.com/wwang721/pyafv

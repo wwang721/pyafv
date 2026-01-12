@@ -120,7 +120,7 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
         target_force: Target detachment force.
 
     Returns:
-        Corresponding small cutoff :math:`\delta`'s value.
+        Corresponding value of the small cutoff :math:`\delta`.
     """
     KP, A0, P0, Lambda = params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r

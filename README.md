@@ -1,11 +1,10 @@
 [![PyPi](https://img.shields.io/pypi/v/pyafv?cacheSeconds=300)](https://pypi.org/project/pyafv/)
-[![Downloads](https://img.shields.io/pypi/dm/pyafv.svg)](https://pypi.org/project/pyafv/)
-[![doc](https://img.shields.io/badge/documentation-pyafv.readthedocs.io-yellow.svg?logo=readthedocs)](https://pyafv.readthedocs.io)
-[![Zenodo](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
+[![Downloads](https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=21600)](https://pypi.org/project/pyafv/)
+[![Documentation](https://img.shields.io/badge/documentation-pyafv.readthedocs.io-yellow.svg?logo=readthedocs)](https://pyafv.readthedocs.io)
 <!--[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
 [![Tests on all platforms](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml)
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
+[![Codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 <!--
@@ -34,11 +33,11 @@ import pyafv
 print(pyafv.__version__)
 ```
 
-> On HPC clusters, global Python path can contaminate the project environment. You may need to clear it explicitly using `unset PYTHONPATH` or prefixing the *pip* command with `PYTHONPATH=""`.
+> On HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using `unset PYTHONPATH` or prefixing the *pip* command with `PYTHONPATH=""`.
 
 ### Install from source
 
-Installing from source can be necessary if pip installation does not work. First, download and unzip the source code, then navigate to the project directory and run:
+Installing from source can be necessary if *pip* installation does not work. First, download and unzip the source code, then navigate to the root directory of the package and run:
 ```bash
 pip install .
 ```
@@ -48,7 +47,7 @@ pip install .
 
 #### Windows MinGW GCC
 
-If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a `setup.cfg` at the repository root before running `pip install .`, with the following content:
+If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a `setup.cfg` at the repository root before running `pip install .` with the following content:
 ```ini
 # setup.cfg
 [build_ext]
@@ -100,7 +99,10 @@ Below are representative simulation snapshots generated using the code:
     *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
     * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
-- Some releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659).
+- Some releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659):
+
+  [![Zenodo](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
+
 
 ## References
 

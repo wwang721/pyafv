@@ -14,12 +14,20 @@ Installation
 
 .. note::
    
-   - Python 3.14t, the **free-threaded** build that runs without the *Global Interpreter Lock (GIL)*, is also supported starting with **PyAFV** v0.3.7.
-   - Python 3.10 on *Windows ARM64* (not *x86-64*) is the only configuration that is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
+   - Python 3.14t, the **free-threaded** build that runs without the *Global Interpreter Lock (GIL)*, is also supported starting with **PyAFV** v0.3.8.
+   - Python 3.10 on *Windows ARM64* (not *x86-64*) is the only untested configuration. The build succeeds and the wheel is available on |PyPI|_, but automated testing is unavailable due to the absence of a supported **GitHub Actions** runner for this configuration.
 
 
 Install using pip
 ^^^^^^^^^^^^^^^^^^
+
+.. image:: https://img.shields.io/pypi/v/pyafv?cacheSeconds=300
+   :target: https://pypi.org/project/pyafv
+   :alt: PyPI
+
+.. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=21600
+   :target: https://pypi.org/project/pyafv
+   :alt: Downloads
 
 The package is available on |PyPI|_, so you should be able to install it using *pip* directly:
 
@@ -38,7 +46,7 @@ After installation, verify that it was successful by importing the package in *P
 
 .. note::
 
-   On HPC clusters, global Python path can contaminate the project environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
+   On HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
 
 
 Install from source
@@ -68,7 +76,7 @@ The required packages are listed in the table below:
 | matplotlib     | 3.8.4                         | Plotting and visualization    |
 +----------------+-------------------------------+-------------------------------+
 
-Unzip the downloaded source code and navigate to the root directory of the project. Then, run the following command to install the package:
+Unzip the downloaded source code and navigate to the root directory of the package. Then, run the following command to install:
 
 .. code-block:: console
 
@@ -80,7 +88,7 @@ Unzip the downloaded source code and navigate to the root directory of the proje
 
 Windows MinGW GCC
 """""""""""""""""""""""""""
-If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a ``setup.cfg`` at the repository root before running the installation command above, with the following content:
+If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a ``setup.cfg`` at the repository root before running ``pip install .`` with the following content:
 
 .. code-block:: ini
 

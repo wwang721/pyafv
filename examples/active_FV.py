@@ -9,7 +9,7 @@ np.random.seed(42)
 N = 100         # number of cells
 radius = 1.0    # maximal radius
 mu = 1.0        # mobility
-va = 2.4        # self-propulsion speed
+v0 = 2.4        # self-propulsion speed
 Dr = 0.3        # rotational diffusion constant
 dt = 0.01       # time step
 
@@ -42,7 +42,7 @@ for _ in tqdm.tqdm(range(1000), desc="Active dynamics"):
     diag = sim.build()
     forces = diag["forces"]
 
-    active_velocity = va * np.column_stack((np.cos(theta), np.sin(theta)))
+    active_velocity = v0 * np.column_stack((np.cos(theta), np.sin(theta)))
 
     pts += (mu * forces + active_velocity) * dt
 

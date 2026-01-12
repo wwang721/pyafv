@@ -116,9 +116,9 @@ See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv
 Varying cell target areas from cell to cell
 -------------------------------------------
 
-Starting from **PyAFV** v0.3.5, the simulator supports cell-specific preferred areas, allowing the target area :math:`A_0` to vary from cell to cell.
+Starting from **PyAFV** v0.3.5, the simulator supports cell-specific preferred areas, allowing the target area :math:`A_0` to vary from cell to cell, i.e., :math:`\{A_{0,i}\}` .
 
-A new read-only property :py:attr:`pyafv.FiniteVoronoiSimulator.preferred_areas` has been added. It returns the current preferred areas of all cells:
+A new read-only property :py:attr:`pyafv.FiniteVoronoiSimulator.preferred_areas` has been added. It returns the current preferred areas for all cells:
 
 .. autoattribute:: pyafv.FiniteVoronoiSimulator.preferred_areas
     :noindex:

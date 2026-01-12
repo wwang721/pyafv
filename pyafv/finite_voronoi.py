@@ -102,14 +102,14 @@ class FiniteVoronoiSimulator:
             This is an internal method. Use with caution.
 
         Returns: 
-            tuple[scipy.spatial.Voronoi, numpy.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]] : A tuple containing:
+            tuple[scipy.spatial.Voronoi, numpy.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]] : A *tuple* containing:
             
                 - **vor**: SciPy Voronoi object for current points with extensions.
                 - **vertices_all**: (M,2) array of all Voronoi vertices including extensions.
-                - **ridge_vertices_all**: list of lists of vertex indices for each ridge, including extensions.
+                - **ridge_vertices_all**: List of lists of vertex indices for each ridge, including extensions.
                 - **num_vertices**: Number of Voronoi vertices before adding extension.
-                - **vertexpair2ridge**: dict mapping vertex index pairs to ridge index.
-                - **vertex_points**: dict mapping vertex index to list of associated point indices.
+                - **vertexpair2ridge**: *dict* mapping vertex index pairs to ridge index.
+                - **vertex_points**: *dict* mapping vertex index to list of associated point indices.
         """
 
         Voronoi = self._voronoi
@@ -283,9 +283,9 @@ class FiniteVoronoiSimulator:
         Args:
             vor: SciPy Voronoi object for current points with extensions.
             vertices_all: (M,2) array of all Voronoi vertices including extensions.
-            ridge_vertices_all: list of lists of vertex indices for each ridge, including extensions.
+            ridge_vertices_all: (R,2) array of vertex indices for each ridge.
             num_vertices: Number of Voronoi vertices before adding extension.
-            vertexpair2ridge: dict mapping vertex index pairs to ridge index.
+            vertexpair2ridge: *dict* mapping vertex index pairs to ridge index.
         
         Returns:
             dict[str, object]: A diagnostics dictionary containing:
@@ -725,9 +725,9 @@ class FiniteVoronoiSimulator:
                 - **areas**: (N,) array of cell areas
                 - **perimeters**: (N,) array of cell perimeters
                 - **vertices**: (M,2) array of all Voronoi + extension vertices
-                - **edges_type**: list-of-lists of edge types per cell (1=straight, 0=circular arc)
-                - **regions**: list-of-lists of vertex indices per cell
-                - **connections**: (M',2) array of connected cell index pairs
+                - **edges_type**: List-of-lists of edge types per cell (1=straight, 0=circular arc)
+                - **regions**: List-of-lists of vertex indices per cell
+                - **connections**: (K,2) array of connected cell index pairs
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -977,7 +977,7 @@ class FiniteVoronoiSimulator:
     @property
     def preferred_areas(self) -> np.ndarray:
         """
-        Preferred areas for all cells (read-only).
+        Preferred areas :math:`\{A_{0,i}\}` for all cells (read-only).
 
         Returns:
             numpy.ndarray: A copy of the internal preferred area array.
