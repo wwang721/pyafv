@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import tqdm
 import pyafv as afv
 
+
 np.random.seed(42)
 
 N = 100         # number of cells

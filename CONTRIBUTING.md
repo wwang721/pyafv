@@ -2,7 +2,7 @@
 
 > *This contributing guide was drafted by **GitHub Copilot** and approved by the maintainer.*
 
-First off, **THANK YOU** for considering contributing to PyAFV! We welcome contributions from the community.
+First off, **THANK YOU** for considering contributing to **PyAFV**! We welcome contributions from the community.
 
 Before working on a feature or major change, please raise an [issue](https://github.com/wwang721/pyafv/issues) and/or get in touch with the developers. They may have insights on how to implement the feature or useful advice to save you time.
 
@@ -20,7 +20,7 @@ cd pyafv
 
 ### 2. Set up your development environment
 
-**PyAFV** uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`,
+**PyAFV** uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`.
 
 > If you'd like to use your own Python, ensure the `which python` version meets the requirement so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
@@ -34,7 +34,7 @@ This installs the core package dependencies along with `pytest` required for dev
 - You can install additional packages as needed using `uv add <package_name>`.
 - In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
 - The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/cell_geom_fallback.py) (based on early pure-Python release) is also implemented.
-- For Windows MinGW GCC users, add a `setup.cfg` file at the repository root:
+- For *Windows* **MinGW GCC** users (rather than **MSVC**), add a `setup.cfg` file at the repository root:
   ```ini
   # setup.cfg
   [build_ext]
@@ -123,10 +123,10 @@ For coverage reports:
 uv run pytest --cov
 ```
 
-Current CI status of the test suite, run via [GitHub Actions](/.github/workflows/tests.yml) on Python 3.12 (with additional test jobs covering all supported platforms and Python versions), is shown in the badges at the top of [README.md](/README.md).
+Current CI status of the test suite, run via [**GitHub Actions**](/.github/workflows/tests.yml) on Python 3.12 (with additional test jobs covering all supported platforms and Python versions), is shown in the badges at the top of [README.md](/README.md).
 
 **Notes:**
-* A comparison against the MATLAB implementation from [Huang *et al.*, Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B) is included in [test_core.py](/tests/test_core.py) and [test_vary_A0.py](/tests/test_vary_A0.py).
+* A comparison against the **MATLAB** implementation from [Huang *et al.*, Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B) is included in [test_core.py](/tests/test_core.py) and [test_vary_A0.py](/tests/test_vary_A0.py).
 * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
@@ -148,7 +148,7 @@ uv run <script_name>.py
 
 * For developers to launch Jupyter Notebook: after `uv` has synced all extra dependencies, start Jupyter with `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
 
-    > Jupyter notebooks and media are stored via [**Git LFS**](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage). If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install **Git LFS** to fetch them automatically or download the files manually (or download the repository as a ZIP archive) from the **GitHub** web interface.
+    > Jupyter notebooks and media are stored via [**Git LFS**](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage). If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install **Git LFS** to fetch them automatically or download the files manually (e.g., download the repository as a ZIP archive) from the **GitHub** web interface.
 
 
 ## Submitting a pull request
