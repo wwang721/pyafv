@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     # Only run this job on the main branches
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/docs'
     name: Test on ${{ matrix.os }} (py${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -26,6 +26,7 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.14t"
         exclude:
           # Not supported by github runners
           - os: windows-11-arm
@@ -38,6 +39,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+
+      - name: Verify free-threaded runtime (pre-import)
+        if: matrix.python == '3.14t'
+        shell: bash
+        run: |
+          python -VV
+          python - <<'EOF'
+          import sys, sysconfig
+          print("Py_GIL_DISABLED =", sysconfig.get_config_var("Py_GIL_DISABLED"))
+          print("sys._is_gil_enabled() =", sys._is_gil_enabled())
+          assert sysconfig.get_config_var("Py_GIL_DISABLED") == 1
+          assert sys._is_gil_enabled() is False
+          EOF
 
       - name: Set up MSVC for ARM64 Windows
         if: matrix.os == 'windows-11-arm'
@@ -77,3 +91,14 @@ jobs:
       - name: Run tests
         run: |
           uv run pytest --cov=pyafv --cov-branch
+
+      - name: Verify free-threaded runtime (after importing pyafv)
+        if: matrix.python == '3.14t'
+        shell: bash
+        run: |
+          uv run python - <<'EOF'
+          import sys
+          import pyafv.cell_geom  # or whatever module triggers the warning
+          print("sys._is_gil_enabled() after import =", sys._is_gil_enabled())
+          assert sys._is_gil_enabled() is False
+          EOF

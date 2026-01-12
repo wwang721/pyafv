@@ -1,5 +1,6 @@
 [![PyPi](https://img.shields.io/pypi/v/pyafv?cacheSeconds=300)](https://pypi.org/project/pyafv/)
 [![Downloads](https://img.shields.io/pypi/dm/pyafv.svg)](https://pypi.org/project/pyafv/)
+[![doc](https://img.shields.io/badge/documentation-pyafv.readthedocs.io-yellow.svg?logo=readthedocs)](https://pyafv.readthedocs.io)
 [![Zenodo](https://zenodo.org/badge/1124385738.svg)](https://doi.org/10.5281/zenodo.18091659)
 <!--[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
 [![Tests on all platforms](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml)
@@ -22,76 +23,43 @@ The AFV framework was introduced and developed in, for example, Refs. [[1](#huan
 
 ## Installation
 
-`PyAFV` is available on [**PyPI**](https://pypi.org/project/pyafv/) and can be installed using `pip`:
+### Install using pip
+
+Install **PyAFV** using `pip`:
 ```bash
 pip install pyafv
 ```
-The package supports Python ≥ 3.10 and < 3.15.
+The package supports Python ≥ 3.10 and < 3.15, including Python 3.14t (the free-threaded, no-GIL build).
 To verify that the installation was successful and that the correct version is installed, run the following in Python:
 ```python
 import pyafv
 print(pyafv.__version__)
 ```
-If you only intend to use the package, skip the [**#Local development**](#local-development) section and proceed directly to the [**#Usage**](#usage) section.
 
 
-## Local development
+### Install from source
 
-This project uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster) and `venv`.
-
-> If you'd like to use your own Python, ensure the `which python` version meets the requirement (>=3.10) so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
-
-After cloning the repository, Linux/macOS users (Windows users: see [below](#windows-mingw-gcc)) can install `PyAFV` in "editable" mode and synchronize the dependencies with
+Installing from source can be necessary if pip installation does not work. First, download and unzip the source code, then navigate to the project directory and run:
 ```bash
-uv sync
+pip install .
 ```
-or use `uv sync --no-dev` if you only intend to run the core Python code without development dependencies (like `pytest` for running tests).
 
-**Notes:**
-> * You can install additional packages as needed using `uv add <package_name>`.
-> * In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-> * The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/cell_geom_fallback.py) (based on early pure-Python release) is also implemented.
-> * For the old pure-Python implementation with no C/C++ compiled dependencies, see [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0) (also on [GitLab](https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0)). Alternatively, remove [setup.py](/setup.py) in the root folder before running `uv sync`; for PyAFV v0.3.4 and later, the pure-Python backend can be selected by passing `backend="python"` when creating the simulator instance.
+> **Note:** A C/C++ compiler is required if you are building from source, since some components of **PyAFV** are implemented in Cython for performance optimization.
 
 
 #### Windows MinGW GCC
 
-* If you are using **MinGW GCC** (rather than MSVC) on Windows, add a `setup.cfg` at the repository root
-    ```ini
-    # setup.cfg
-    [build_ext]
-    compiler=mingw32
-    ```
-    It will then work in the same way.
-    <!--With this configuration in place, you even no longer need to pass the `--compiler=mingw32` flag when trying to compile with `uv run python setup.py build_ext --inplace`.-->
-
-
-#### Editing the Cython file
-
-* If you modify the Cython source file [pyafv/cell_geom.pyx](/pyafv/cell_geom.pyx), you must reinstall the package to ensure the changes take effect: `uv sync --reinstall-package pyafv --inexact` (the `--inexact` flag prevents uv from removing any installed packages).
-* If the compiled C/C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning** about falling back to the pure-Python implementation), you can also reinstall the package.
-
-
-### Running tests
-
-Current CI status of the test suite, run via [GitHub Actions](/.github/workflows/tests.yml) on Python 3.12, is shown in the badge at the top of this file.
-
-* To run the full test suite locally (located in [`tests`](/tests/)):
-    ```bash
-    uv run pytest
-    ```
-    You can also include coverage options such as `--cov` if desired.
-    <!--If you previously use `uv sync --no-dev`, you will need to run `uv sync` again to install the packages in the *dev* dependency group.-->
-
-**Notes:** 
-> * A comparison against the MATLAB implementation from Ref. [[1](#huang2023bridging)] is included in [test_core.py](/tests/test_core.py).
-> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
+If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a `setup.cfg` at the repository root before running the installation command above, with the following content:
+```ini
+# setup.cfg
+[build_ext]
+compiler=mingw32
+```
 
 
 ## Usage
 
-<!--Using `uv run python`, you should be able to import `pyafv` from anywhere within the repository directory.-->
-The following example demonstrates how to construct a finite-Voronoi diagram:
+Here is a simple example to get you started, demonstrating how to construct a finite-Voronoi diagram:
 ```python
 import numpy as np
 import pyafv as afv
@@ -108,32 +76,25 @@ diag = sim.build()
 ```
 The returned object `diag` is a Python `dict` containing these quantities.
 
-
-### Featured examples
-To run the example scripts and notebooks in [`examples`](/examples), you need to install at least one additional dependency `tqdm` for progress bars.
-
-For local development using `uv`: in the project root, run `uv add tqdm` or `uv pip install tqdm`. Then you can simply run any script in [`examples`](/examples/) with
-```bash
-uv run <script_name>.py
-```
-You can also install all optional dependencies (e.g., `tqdm`, `jupyter`) via `uv sync --extra examples` or `uv sync --all-extras`.
-
-* For developers to launch Jupyter Notebook: after `uv` has synced all extra dependencies, start Jupyter with `uv run jupyter notebook`. Do not use your system-level Jupyter, as the Python kernel of the current `uv` environment is not registered there.
-
-    > Jupyter notebooks and media are stored via [**Git LFS**](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage). If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install Git LFS to fetch them automatically or download the files manually (or download the repository as a ZIP archive) from the GitHub web interface.
+> Full documentation on [readthedocs](https://pyafv.readthedocs.io)!
 
 
-### Simulation previews
+## Simulation previews
 
 Below are representative simulation snapshots generated using the code:
 
-| Model illustration | Periodic boundary conditions[*](/examples/jupyter/periodic_plotting.ipynb) |
+| Model illustration | Periodic boundary conditions |
 |-----------------|-----------------|
-| <img src="./assets/model_illustration.png" height="373"> | <img src="./assets/pbc.png" height="385">|
+| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/model_illustration.png" height="373"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/pbc.png" height="385">|
 
 | Initial configuration | After relaxation | Active dynamics enabled |
 |-----------------------|-----------------------|-----------------------|
-| <img src="./assets/initial_configuration.png" height="300"> | <img src="./assets/relaxed_configuration.png" height="300"> | <img src="./assets/active_FV.png" height="300"> |
+| <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/initial_configuration.png" height="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/relaxed_configuration.png" height="300"> | <img src="https://media.githubusercontent.com/media/wwang721/pyafv/main/assets/active_FV.png" height="300"> |
+
+
+## Development
+
+See [CONTRIBUTING.md](https://github.com/wwang721/pyafv/blob/main/CONTRIBUTING.md) or [Documentation](https://pyafv.readthedocs.io/stable/contributing.html) for local development instructions.
 
 
 ## More information
@@ -143,7 +104,6 @@ See important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue
 *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
 * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
 
-Full documentation on [readthedocs](https://pyafv.readthedocs.io/en/latest/)!
 
 ## Zenodo
 
@@ -152,7 +112,7 @@ The releases of this repository are cross-listed on [Zenodo](https://doi.org/10.
 
 ## License
 
-This project is licensed under the [MIT License](/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
+This project is licensed under the [MIT License](https://github.com/wwang721/pyafv/blob/main/LICENSE), which permits free use, modification, and distribution of the code for nearly any purpose.
 
 
 ## References

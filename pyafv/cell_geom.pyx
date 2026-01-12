@@ -1,4 +1,5 @@
 # cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False
+# cython: freethreading_compatible = True
 # distutils: language = c++
 
 import numpy as np

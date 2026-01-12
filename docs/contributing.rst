@@ -29,24 +29,26 @@ Then clone **your fork** to your local machine and enter the repository director
 Set up your development environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PyAFV uses `uv <https://docs.astral.sh/uv/>`_ for package management:
+.. |uv| replace:: **uv**
+.. _uv: https://docs.astral.sh/uv/
 
+**PyAFV** uses |uv|_ for Python package management --- a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`,
 
-After cloning, install it in editable mode and synchronize dependencies
+- If you'd like to use your own Python, ensure the ``which python`` version meets the requirement so **uv** doesn't automatically download a different interpreter; otherwise, I recommend letting **uv** manage everything, including the Python interpreter.
+
+After cloning, install **PyAFV** in editable mode and synchronize dependencies:
 
 .. code-block:: bash
 
     uv sync
 
-This installs the core package dependencies along with ``pytest`` required for development and testing.
+This installs the core package dependencies along with **pytest** required for development and testing.
 
 .. note::
 
-    - If you modify the Cython source file ``./pyafv/cell_geom.pyx``, reinstall the package
-
-        .. code-block:: bash
-            
-            uv sync --reinstall-package pyafv --inexact
+    - You can install additional packages as needed using ``uv add <package_name>``.
+    - In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the ``PYTHONPATH=""`` prefix to all ``uv`` commands to isolate the project.
+    - The current version uses **Cython** to translate ``.pyx`` files into ``.cpp``, (and therefore requires a working C/C++ compiler), though a fallback backend (based on early pure-Python release) is also implemented.
 
     - For Windows MinGW GCC users, add a ``setup.cfg`` file at the repository root
 
@@ -56,12 +58,11 @@ This installs the core package dependencies along with ``pytest`` required for d
             [build_ext]
             compiler=mingw32
 
-    - See more *notes* for **local development** in the PyAFV's GitHub `README <https://github.com/wwang721/pyafv/blob/main/README.md#local-development>`_.
-    
+      This is equivalent to pass the ``--compiler=mingw32`` flag when invoking build commands such as ``python setup.py build_ext --inplace``.
 
 
-Create a feature branch
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create a feature branch and start development
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Always branch from ``main``, not from another feature branch
 
@@ -69,6 +70,15 @@ Always branch from ``main``, not from another feature branch
 
     git checkout main
     git checkout -b your-feature-name
+
+You may then begin editing the codebase and developing new features.
+
+.. note::
+
+    If you modify any ``*.pyx`` Cython source files, you must reinstall the package to ensure the changes take effect: ``uv sync --reinstall-package pyafv --inexact`` (the ``--inexact`` flag prevents **uv** from removing any installed packages).
+
+    - If the compiled C/C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning** about falling back to the pure-Python implementation), you can also reinstall the package.
+    - For the legacy pure-Python implementation with no C/C++ compiled dependencies, see `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_ (also on `GitLab <https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0>`_). Starting from **PyAFV** v0.3.4, the pure-Python backend can be selected by passing ``backend="python"`` when creating the simulator instance.
 
 
 Keeping your fork up to date
@@ -154,6 +164,13 @@ For coverage reports:
 
     uv run pytest --cov
 
+Current CI status of the test suite, run via **GitHub Actions** on Python 3.12 (with additional test jobs covering all supported platforms and Python versions), is shown in the badges above.
+
+.. note::
+
+   - A comparison against the MATLAB implementation from Ref. :cite:`huang2023bridging` is included in current test suite.
+   - Unlike `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_, the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
+
 
 Testing strategies (in order of preference)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -165,6 +182,27 @@ Testing strategies (in order of preference)
 3. **Regression tests:** Ensure the function runs and produces consistent results with pre-computed references.
 
 4. **Sanity checks:** Verify that results make physical sense (e.g., energies decrease after optimization).
+
+
+Featured examples
+--------------------
+
+To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras``.
+Then you can simply run the scripts with
+
+.. code-block:: bash
+   
+   uv run <script_name>.py
+
+
+- For developers to launch Jupyter Notebook: after ``uv`` has synced all extra dependencies, start Jupyter with ``uv run jupyter notebook``. Do not use your system-level Jupyter, as the Python kernel of the current ``uv`` environment is not registered there.
+
+.. |Git LFS| replace:: **Git LFS**
+.. _Git LFS: https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage
+
+.. note::
+
+   Jupyter notebooks and media are stored via |Git LFS|_. If you clone the repository without **Git LFS** installed, these files will appear as small text pointers. You can either install **Git LFS** to fetch them automatically or download the files manually (or download the repository as a ZIP archive) from the **GitHub** web interface.
 
 
 Submitting a pull request

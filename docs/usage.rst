@@ -13,8 +13,9 @@ Installation
    :alt: Tests on all platforms
 
 .. note::
-
-   Python 3.10 on *Windows ARM64* (not *x86-64*) is the only configuration that is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
+   
+   - Python 3.14t, the **free-threaded** build that runs without the *Global Interpreter Lock (GIL)*, is also supported starting with **PyAFV** v0.3.7.
+   - Python 3.10 on *Windows ARM64* (not *x86-64*) is the only configuration that is not tested, although builds succeed and wheels are available on |PyPI|_, because there is no supported *GitHub Actions* runner for this configuration.
 
 
 Install using pip
@@ -33,7 +34,7 @@ After installation, verify that it was successful by importing the package in *P
 
    >>> import pyafv
    >>> pyafv.__version__
-   '0.3.6'
+   '0.3.8'
 
 
 Install from source

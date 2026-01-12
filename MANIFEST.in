@@ -1,9 +1,0 @@
-# Include the actual code and C-extensions
-recursive-include pyafv *.pyx *.py
-
-# Include the extra folders in the tar.gz
-recursive-include tests *
-recursive-include examples *.py
-
-# Exclude unnecessary files in the tar.gz
-exclude README.md
