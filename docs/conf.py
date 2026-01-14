@@ -15,14 +15,19 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 from datetime import datetime, timezone
+import importlib.metadata
+import os.path
+import sys
 
+
+sys.path.insert(0, os.path.abspath("."))  # adds docs/ to sys.path
 
 # -- Project information -----------------------------------------------------
 
 project = "PyAFV"
 author = "Wei Wang"
 copyright = f"{datetime.now(timezone.utc).year} {author}"
-
+release = importlib.metadata.version("pyafv")
 
 # -- General configuration ---------------------------------------------------
 # -- General configuration
@@ -37,6 +42,8 @@ extensions = [
     'sphinxcontrib.bibtex',
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    # custom extensions in docs/_ext
+    "_ext.subst_release",
 ]
 
 bibtex_bibfiles = ['main.bib']
