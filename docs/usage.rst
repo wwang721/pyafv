@@ -25,7 +25,7 @@ Install using pip
    :target: https://pypi.org/project/pyafv
    :alt: PyPI
 
-.. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=21600
+.. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200
    :target: https://pypi.org/project/pyafv
    :alt: Downloads
 
@@ -37,12 +37,11 @@ The package is available on |PyPI|_, so you should be able to install it using *
 
 After installation, verify that it was successful by importing the package in *Python* and checking the version:
 
-.. doctest::
-   :options: +NORMALIZE_WHITESPACE
+.. subst-code-block:: pycon
 
    >>> import pyafv
    >>> pyafv.__version__
-   '0.3.8'
+   '|release|'
 
 .. note::
 

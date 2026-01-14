@@ -3,8 +3,8 @@
 PyAFV
 ======
 
-.. image:: https://img.shields.io/pypi/v/pyafv?label=Version&cacheSeconds=300
-   :target: https://pypi.org/project/pyafv
+.. image-release:: https://img.shields.io/badge/Version-|release|-orange.svg?logo=git
+   :target: https://wwang721.github.io/pyafv
    :alt: PyPI
 
 .. image:: https://img.shields.io/badge/GitHub-pyafv-brightgreen?logo=github

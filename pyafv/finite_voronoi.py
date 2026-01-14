@@ -976,7 +976,7 @@ class FiniteVoronoiSimulator:
 
     @property
     def preferred_areas(self) -> np.ndarray:
-        """
+        r"""
         Preferred areas :math:`\{A_{0,i}\}` for all cells (read-only).
 
         Returns:
