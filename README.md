@@ -55,6 +55,15 @@ compiler=mingw32
 ```
 
 
+### Install offline
+
+If you need to install **PyAFV** on a machine without internet access, you can download the corresponding wheel file from **PyPI** and transfer it to the target machine, and then run the following command to install using *pip*:
+```bash
+pip install pyafv-<version>-<platform>.whl
+```
+Alternatively, you can build **PyAFV** from source as described in the previous section. In this case, in addition to the required prerequisites of the package, the build-time dependencies **hatchling** and **hatch-cython** must also be available.
+
+
 ## Usage
 
 Here is a simple example to get you started, demonstrating how to construct a finite-Voronoi diagram:
