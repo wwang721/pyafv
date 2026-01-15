@@ -63,7 +63,8 @@ First, download the source code of *pyafv* from |GitHub|_ or |PyPI|_.
 Required prerequisites
 """""""""""""""""""""""""""
 
-The required packages are listed in the table below:
+In general, you do not need to manually install the dependencies, as *pip* will handle them automatically.
+We list the required packages and minimum versions below for reference:
 
 +----------------+-------------------------------+-------------------------------+
 | Package        | Minimum Version               | Usage                         |
@@ -94,6 +95,18 @@ If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build fro
    # setup.cfg
    [build_ext]
    compiler=mingw32
+
+
+Install offline
+^^^^^^^^^^^^^^^
+
+If you need to install **PyAFV** on a machine without internet access, you can download the corresponding wheel file from |PyPI|_ on another machine with internet access. Transfer the wheel file to the target machine, and then run the following command to install it using *pip* (make sure the required prerequisites listed above are already installed):
+
+.. code-block:: console
+
+   (.venv) $ pip install pyafv-<version>-<platform>.whl
+
+Alternatively, you can build **PyAFV** from source as described in the previous section. In this case, in addition to the required prerequisites listed above, the build-time dependencies **hatchling** and **hatch-cython** must also be available.
 
 
 A simple example
