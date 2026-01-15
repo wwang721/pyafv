@@ -54,7 +54,6 @@ class FiniteVoronoiSimulator:
         """
         Constructor of the simulator.
         """
-        from .backend import backend_impl, _BACKEND_NAME
         from scipy.spatial import Voronoi
         self._voronoi = Voronoi
         
@@ -70,6 +69,7 @@ class FiniteVoronoiSimulator:
         self._preferred_areas = np.full(self.N, phys.A0, dtype=float)    # (N,) preferred areas A0
         
         if backend != "python":
+            from .backend import backend_impl, _BACKEND_NAME
             self._BACKEND = _BACKEND_NAME
             self._impl = backend_impl
 
@@ -708,7 +708,7 @@ class FiniteVoronoiSimulator:
         return F
 
     # --------------------- One integration step ---------------------
-    def build(self) -> dict[str, object]:
+    def build(self, connect: bool = True) -> dict[str, object]:
         """ Build the finite-Voronoi structure and compute forces, returning a dictionary of diagnostics.
 
         Do the following:
@@ -717,6 +717,10 @@ class FiniteVoronoiSimulator:
           - Compute per-cell quantities and derivatives
           - Assemble forces
         
+        Args:
+            connect: Whether to compute cell connectivity information.
+                Setting this to ``False`` saves some computation time (though
+                very marginal) when connectivity is not needed.
           
         Returns:
             dict[str, object]: A dictionary containing geometric properties with keys:
@@ -732,7 +736,11 @@ class FiniteVoronoiSimulator:
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
         
-        connections = self._get_connections(vor.ridge_points, vertices_all, ridge_vertices_all)
+        # Get connectivity info
+        if connect:
+            connections = self._get_connections(vor.ridge_points, vertices_all, ridge_vertices_all)
+        else:           # pragma: no cover
+            connections = np.empty((0,2), dtype=int)
 
         geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
 
