@@ -53,6 +53,7 @@ examples = [
 dev = [
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
+    "pytest-benchmark[histogram]>=5.1.0",
 ]
 
 [tool.setuptools]
@@ -76,6 +77,7 @@ exclude = ["assets/", "docs/", "examples/jupyter/", "*.md", ".*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--benchmark-skip"  # skip benchmarks by default
 # pythonpath = ["."]  # not needed if package is installed
 # filter warnings from matplotlib about pyparsing
 filterwarnings = [

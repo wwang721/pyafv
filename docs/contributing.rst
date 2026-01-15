@@ -187,11 +187,22 @@ Testing strategies (in order of preference)
 
 4. **Sanity checks:** Verify that results make physical sense (e.g., energies decrease after optimization).
 
+Benchmarking
+^^^^^^^^^^^^^^^
+
+There is also an implementation of small benchmarks in ``tests/test_benchmarks.py`` comparing the Cython and pure-Python backends using **pytest-benchmark**. To run them:
+
+.. code-block:: console
+
+   (.venv) $ uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
+
+This will display the benchmark results and generate an SVG histogram file in the current directory.
+
 
 Featured examples
 --------------------
 
-To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras``.
+To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras`` (add the ``--inexact`` flag if needed).
 Then you can simply run the scripts with
 
 .. code-block:: console

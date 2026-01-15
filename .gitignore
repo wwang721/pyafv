@@ -35,4 +35,6 @@ htmlcov/
 docs/generated/
 docs/_build/
 
-# Some custom ignores
+# pytest-benchmark
+benchmark_*.svg
+.benchmarks
