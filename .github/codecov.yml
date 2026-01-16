@@ -1,0 +1,5 @@
+coverage:
+  status:
+    patch:
+      default:
+        informational: true  # Set to true to make codecov only reports patch coverage as informational

@@ -42,9 +42,9 @@ The resulting equation of motion is
 
 .. math::
 
-   \dot{\mathbf{r}}_i = -\mu \nabla_i E + v_0 \mathbf{n}_i,
+   \dot{\mathbf{r}}_i = -\mu \boldsymbol{\nabla}_{\!i} E + v_0 \mathbf{n}_i,
 
-where :math:`\mu` is the mobility, the interaction force on cell :math:`\mathbf{F}_i=-\nabla_i E`, and
+where :math:`\mu` is the mobility, the interaction force on cell :math:`\mathbf{F}_i=-\boldsymbol{\nabla}_{\!i} E`, and
 :math:`\mathbf{n}_i = (\cos \theta_i, \sin \theta_i)` is a unit orientation vector.
 The orientation evolves according to
 
