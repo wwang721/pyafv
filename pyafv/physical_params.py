@@ -3,6 +3,25 @@ import numpy as np
 from dataclasses import dataclass, replace
 
 
+def _require_float_scalar(x: object, name: str) -> float:
+    """
+    Accept Python real scalars (int/float) and NumPy real scalars.
+    Reject other types (including bool).
+    Return a normalized Python float.
+    """
+    # Reject bool explicitly (since bool is a subclass of int)
+    if isinstance(x, bool):
+        raise TypeError(f"{name} must be a real scalar (float-like), got bool")
+    elif isinstance(x, (int, float, np.integer, np.floating)):
+        xf = float(x)
+        if not np.isfinite(xf):
+            raise ValueError(f"{name} must be finite, got {x}")
+        return xf
+
+    # Reject everything else
+    raise TypeError(f"{name} must be a real scalar (float-like), got {type(x).__name__}")
+
+
 def sigmoid(x):
     # stable sigmoid that handles large |x|
     if x >= 0:
@@ -17,8 +36,9 @@ def sigmoid(x):
 class PhysicalParams:
     """Physical parameters for the active-finite-Voronoi (AFV) model.
 
-    Caveat:
-        Frozen dataclass is used for :py:class:`PhysicalParams` to ensure immutability of instances.
+    .. warning::
+        * Frozen dataclass is used for :py:class:`PhysicalParams` to ensure immutability of instances.
+        * Do not set :py:attr:`delta` unless you know what you are doing.
 
     Args:
         r: Radius (maximal) of the Voronoi cells.
@@ -27,7 +47,7 @@ class PhysicalParams:
         KA: Area elasticity constant.
         KP: Perimeter elasticity constant.
         lambda_tension: Tension difference between non-contacting edges and contacting edges.
-        delta: Small offset to avoid singularities in computations.
+        delta: Contact truncation threshold to avoid singularities in computations; if None, set to 0.45*r.
     """
     
     r: float = 1.0               #: Radius (maximal) of the Voronoi cells.
@@ -36,8 +56,24 @@ class PhysicalParams:
     KA: float = 1.0              #: Area elasticity constant.
     KP: float = 1.0              #: Perimeter elasticity constant.
     lambda_tension: float = 0.2  #: Tension difference between non-contacting edges and contacting edges.
-    delta: float = 0.0           #: Small offset to avoid singularities in computations.
+    delta: float | None = None   #: Contact truncation threshold to avoid singularities in computations.
 
+    def __post_init__(self):
+        # Normalize and validate required scalar floats
+        object.__setattr__(self, "r", _require_float_scalar(self.r, "r"))
+        object.__setattr__(self, "A0", _require_float_scalar(self.A0, "A0"))
+        object.__setattr__(self, "P0", _require_float_scalar(self.P0, "P0"))
+        object.__setattr__(self, "KA", _require_float_scalar(self.KA, "KA"))
+        object.__setattr__(self, "KP", _require_float_scalar(self.KP, "KP"))
+        object.__setattr__(self, "lambda_tension", _require_float_scalar(self.lambda_tension, "lambda_tension"))
+
+        if self.delta is None:
+            object.__setattr__(self, "delta", 0.45 * self.r)
+        else:
+            try:
+                object.__setattr__(self, "delta", _require_float_scalar(self.delta, "delta"))
+            except TypeError:
+                raise TypeError(f"delta must be a real scalar (float-like) or None, got {type(self.delta).__name__}") from None
 
     def get_steady_state(self) -> tuple[float, float]:
         r"""Compute steady-state (l,d) for the given physical parameters.
@@ -52,17 +88,19 @@ class PhysicalParams:
 
     def with_optimal_radius(self) -> PhysicalParams:
         """Returns a new instance with the radius updated to steady state.
+        Other parameters remain unchanged (with the exception that :py:attr:`delta` scaled with :py:attr:`r`).
         
         Returns:
             New instance with optimal radius.
         """
         l, d = self.get_steady_state()
-        new_params = replace(self, r=l)
+        new_params = replace(self, r=l, delta=0.45*l)
         return new_params
 
     def with_delta(self, delta_new: float) -> PhysicalParams:
         """Returns a new instance with the specified delta.
-        
+        Other parameters remain unchanged.
+
         Args:
             delta_new: New delta value.
 
@@ -120,29 +158,23 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
         target_force: Target detachment force.
 
     Returns:
-        Corresponding value of the small cutoff :math:`\delta`.
+        Corresponding value of the truncation threshold :math:`\delta`.
     """
-    KP, A0, P0, Lambda = params.KP, params.A0, params.P0, params.lambda_tension
+    KA, KP, A0, P0, Lambda = params.KA, params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r
 
-    distances = np.linspace(1e-6, 2*l-(1e-6), 10_000)
-    detachment_forces = []
-    for distance in distances:
-        epsilon = l - (distance/2.)
+    distances = np.linspace(1e-6, 2.-(1e-6), 10**6) * l
+    
+    epsilon = l - (distances/2.)
 
-        theta = 2 * np.pi - 2 * np.arctan2(np.sqrt(l**2 - (l - epsilon)**2), l - epsilon)
-        A = (l - epsilon) * np.sqrt(l**2 -
-                                    (l - epsilon)**2) + 0.5 * (l**2 * theta)
-        P = 2 * np.sqrt(l**2 - (l - epsilon)**2) + l * theta
+    theta = 2 * np.pi - 2 * np.arctan2(np.sqrt(l**2 - (l - epsilon)**2), l - epsilon)
+    A = (l - epsilon) * np.sqrt(l**2 -
+                                (l - epsilon)**2) + 0.5 * (l**2 * theta)
+    P = 2 * np.sqrt(l**2 - (l - epsilon)**2) + l * theta
 
-        f = 4. * np.sqrt((2-epsilon) * epsilon) * (A - A0 + KP * ((P - P0)/(2 - epsilon)) 
-                                                   + (Lambda/2) * (1./((2-epsilon)*epsilon)))
-        detachment_forces.append(f)
-
-    # print(detachment_forces)
-
-    detachment_forces = np.array(detachment_forces)
-
+    detachment_forces = 4. * np.sqrt((2 * l - epsilon) * epsilon) * (KA * (A - A0) + KP * ((P - P0)/(2 * l - epsilon)) 
+                                                + (Lambda/2) * l /((2 * l - epsilon) * epsilon))
+    
     idx = np.abs(detachment_forces[None, :] - target_force).argmin()
     target_distances = distances[idx]
 
