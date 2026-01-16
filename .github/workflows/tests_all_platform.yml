@@ -6,8 +6,8 @@ on:
 
 jobs:
   test:
-    # Only run this job on the main branches
-    if: github.ref == 'refs/heads/main'
+    # Only run this job on the main and dev branches
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     name: Test on ${{ matrix.os }} (py${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
