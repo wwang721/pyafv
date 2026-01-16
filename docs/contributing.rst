@@ -59,6 +59,7 @@ This installs the core package dependencies along with **pytest** required for d
             compiler=mingw32
 
       This is equivalent to pass the ``--compiler=mingw32`` flag when invoking build commands such as ``python setup.py build_ext --inplace``.
+      To avoid accidentally committing this *ad hoc* file, do not modify ``.gitignore``; instead, add it to local ``.git/info/exlude`` in the repository, which functions like ``.gitignore``.
 
 
 Create a feature branch and start development
