@@ -88,7 +88,7 @@ class PhysicalParams:
 
     def with_optimal_radius(self) -> PhysicalParams:
         """Returns a new instance with the radius updated to steady state.
-        Other parameters remain unchanged (with the exception that :py:attr:`delta` scaled with :py:attr:`r`).
+        Other parameters remain unchanged (with the exception that :py:attr:`delta` is scaled with :py:attr:`r`).
         
         Returns:
             New instance with optimal radius.
