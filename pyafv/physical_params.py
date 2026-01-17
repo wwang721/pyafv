@@ -3,7 +3,7 @@ import numpy as np
 from dataclasses import dataclass, replace
 
 
-def _require_float_scalar(x: object, name: str) -> float:
+def _require_float_scalar(x: object, name: str) -> float:       # pragma: no cover
     """
     Accept Python real scalars (int/float) and NumPy real scalars.
     Reject other types (including bool).
@@ -34,14 +34,14 @@ def sigmoid(x):
 
 @dataclass(frozen=True)
 class PhysicalParams:
-    """Physical parameters for the active-finite-Voronoi (AFV) model.
+    r"""Physical parameters for the active-finite-Voronoi (AFV) model.
 
     .. warning::
-        * Frozen dataclass is used for :py:class:`PhysicalParams` to ensure immutability of instances.
+        * **Frozen dataclass** is used for :py:class:`PhysicalParams` to ensure immutability of instances.
         * Do not set :py:attr:`delta` unless you know what you are doing.
 
     Args:
-        r: Radius (maximal) of the Voronoi cells.
+        r: Radius (maximal) of the Voronoi cells, sometimes denoted as :math:`\ell`.
         A0: Preferred area of the Voronoi cells.
         P0: Preferred perimeter of the Voronoi cells.
         KA: Area elasticity constant.
@@ -50,7 +50,7 @@ class PhysicalParams:
         delta: Contact truncation threshold to avoid singularities in computations; if None, set to 0.45*r.
     """
     
-    r: float = 1.0               #: Radius (maximal) of the Voronoi cells.
+    r: float = 1.0               #: Radius (maximal) of the Voronoi cells, sometimes denoted as :math:`\ell`.
     A0: float = np.pi            #: Preferred area of the Voronoi cells.
     P0: float = 4.8              #: Preferred perimeter of the Voronoi cells.
     KA: float = 1.0              #: Area elasticity constant.
@@ -72,14 +72,17 @@ class PhysicalParams:
         else:
             try:
                 object.__setattr__(self, "delta", _require_float_scalar(self.delta, "delta"))
-            except TypeError:
+            except TypeError:       # pragma: no cover
                 raise TypeError(f"delta must be a real scalar (float-like) or None, got {type(self.delta).__name__}") from None
 
     def get_steady_state(self) -> tuple[float, float]:
-        r"""Compute steady-state (l,d) for the given physical parameters.
-        
+        r"""Compute steady-state :math:`(\ell,d)` for the given physical parameters.
+
         Returns:
-            Steady-state :math:`(\ell,d)` values.
+            Steady-state (optimal) :math:`(\ell_0,d_0)` values.
+
+        .. note::
+            :math:`\ell` is the maximal cell radius, and :math:`2d` is the cell-center distance of a doublet (rather than :math:`d`).        
         """
         params = [self.KA, self.KP, self.A0, self.P0, self.lambda_tension]
         result = self._minimize_energy(params, restarts=10)
@@ -90,6 +93,8 @@ class PhysicalParams:
         """Returns a new instance with the radius updated to steady state.
         Other parameters remain unchanged (with the exception that :py:attr:`delta` is scaled with :py:attr:`r`).
         
+        Basically a wrapper around :py:meth:`get_steady_state` + creating a new instance.
+
         Returns:
             New instance with optimal radius.
         """
@@ -157,9 +162,20 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
         params: Physical parameters of the AFV model.
         target_force: Target detachment force.
 
+    Raises:
+        TypeError: If *params* is not an instance of :py:class:`PhysicalParams`.
+        ValueError: If the target force is not within the achievable range.
+
     Returns:
         Corresponding value of the truncation threshold :math:`\delta`.
+
+    .. note::
+        We search for the cell-cell distance at which the intercellular force matches (last one) the target force, from :math:`10^{-6}\ell` to :math:`(2-10^{-6})\ell` with a step :math:`10^{-6}\ell`.
     """
+
+    if not isinstance(params, PhysicalParams):      # pragma: no cover
+            raise TypeError("params must be an instance of PhysicalParams")
+
     KA, KP, A0, P0, Lambda = params.KA, params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r
 
@@ -175,10 +191,24 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
     detachment_forces = 4. * np.sqrt((2 * l - epsilon) * epsilon) * (KA * (A - A0) + KP * ((P - P0)/(2 * l - epsilon)) 
                                                 + (Lambda/2) * l /((2 * l - epsilon) * epsilon))
     
-    idx = np.abs(detachment_forces[None, :] - target_force).argmin()
-    target_distances = distances[idx]
+    # idx = np.abs(detachment_forces[None, :] - target_force).argmin()
+    # target_distances = distances[idx]
 
-    delta = np.sqrt(4*(l**2) - target_distances**2)
+    # ---------------------- Better way to search foot ----------------------------
+    f = detachment_forces - target_force    # find root of f=0
+    cross = (f[:-1] == 0) | (np.signbit(f[:-1]) != np.signbit(f[1:]))   # crossing points
+
+    if np.any(cross):
+        i = np.flatnonzero(cross)[-1]  # last crossing interval [i, i+1]
+        # optional: linear interpolation for a better distance estimate
+        x0, x1 = distances[i], distances[i+1]
+        f0, f1 = f[i], f[i+1]
+        target_distance = x0 if f1 == f0 else x0 + (0 - f0) * (x1 - x0) / (f1 - f0)
+    else:
+        raise ValueError("No valid delta found for the given target force.")
+    # ------------------------------------------------------------------------------
+    
+    delta = np.sqrt(4*(l**2) - target_distance**2)
 
     return delta
 

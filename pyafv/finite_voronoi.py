@@ -20,7 +20,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:                             # pragma: no cover
     from scipy.spatial import Voronoi
     import matplotlib.axes
-    import numpy
     import typing
 
 import numpy as np
@@ -41,16 +40,16 @@ class FiniteVoronoiSimulator:
     either a Cython-accelerated version or a pure Python fallback.
 
     Args:
-        pts: (N,2) array of initial cell center positions.
+        pts (numpy.ndarray): (N,2) array of initial cell center positions.
         phys: Physical parameters used within this simulator.
         backend: Optional, specify "python" to force the use of the pure Python fallback implementation.
 
     Raises:
         ValueError: If *pts* does not have shape (N,2).
-        TypeError: If *phys* is not an instance of PhysicalParams.
+        TypeError: If *phys* is not an instance of :py:class:`PhysicalParams`.
     """
 
-    def __init__(self, pts: numpy.ndarray, phys: PhysicalParams, backend: typing.Literal["cython", "python"] | None = None):
+    def __init__(self, pts: np.ndarray, phys: PhysicalParams, backend: typing.Literal["cython", "python"] | None = None):
         """
         Constructor of the simulator.
         """
@@ -290,19 +289,19 @@ class FiniteVoronoiSimulator:
         Returns:
             dict[str, object]: A diagnostics dictionary containing:
 
-                - **vertex_in_id**: set of inner vertex ids.
-                - **vertex_out_id**: set of outer vertex ids.
+                - **vertex_in_id**: *set* of inner vertex ids.
+                - **vertex_out_id**: *set* of outer vertex ids.
                 - **vertices_out**: (L,2) array of outer vertex coordinates.
                 - **vertex_out_points**: (L,2) array of point index pairs associated with each outer vertex.
-                - **vertex_out_da_dtheta**: array of dA/dtheta for all outer vertices.
-                - **vertex_out_dl_dtheta**: array of dL/dtheta for all outer vertices.
-                - **dA_poly_dh**: array of dA_polygon/dh for each vertex.
-                - **dP_poly_dh**: array of dP_polygon/dh for each vertex.
-                - **area_list**: array of polygon areas for each cell.
-                - **perimeter_list**: array of polygon perimeters for each cell.
-                - **point_edges_type**: list of lists of edge types per cell.
-                - **point_vertices_f_idx**: list of lists of vertex ids per cell.
-                - **num_vertices_ext**: number of vertices including infinite extension vertices.
+                - **vertex_out_da_dtheta**: Array of dA/dtheta for all outer vertices.
+                - **vertex_out_dl_dtheta**: Array of dL/dtheta for all outer vertices.
+                - **dA_poly_dh**: Array of dA_polygon/dh for each vertex.
+                - **dP_poly_dh**: Array of dP_polygon/dh for each vertex.
+                - **area_list**: Array of polygon areas for each cell.
+                - **perimeter_list**: Array of polygon perimeters for each cell.
+                - **point_edges_type**: List of lists of edge types per cell.
+                - **point_vertices_f_idx**: List of lists of vertex ids per cell.
+                - **num_vertices_ext**: Number of vertices including infinite extension vertices.
         """
         N = self.N
         r = self.phys.r
@@ -904,7 +903,7 @@ class FiniteVoronoiSimulator:
         return connect
 
     # --------------------- Update positions ---------------------
-    def update_positions(self, pts: numpy.ndarray, A0: float | numpy.ndarray | None = None) -> None:
+    def update_positions(self, pts: np.ndarray, A0: float | np.ndarray | None = None) -> None:
         """
         Update cell center positions.
 
@@ -914,7 +913,7 @@ class FiniteVoronoiSimulator:
             or by :py:meth:`update_params`---unless *A0* is explicitly specified.
 
         Args:
-            pts: New cell center positions.
+            pts : New cell center positions.
             A0: Optional, set new preferred area(s).
 
         Raises:
@@ -944,10 +943,10 @@ class FiniteVoronoiSimulator:
         Update physical parameters.
 
         Args:
-            phys: New PhysicalParams object.
+            phys: New :py:class:`PhysicalParams` object.
         
         Raises:
-            TypeError: If *phys* is not an instance of PhysicalParams.
+            TypeError: If *phys* is not an instance of :py:class:`PhysicalParams`.
 
         .. warning::
             This also resets all preferred cell areas to the new value of *A0*.
@@ -959,12 +958,13 @@ class FiniteVoronoiSimulator:
         self.update_preferred_areas(phys.A0)
 
     # --------------------- Update preferred area list ---------------------
-    def update_preferred_areas(self, A0: float | numpy.ndarray) -> None:
+    def update_preferred_areas(self, A0: float | np.ndarray) -> None:
         """
         Update the preferred areas for all cells.
 
         Args:
-            A0: New preferred area(s) for all cells.
+            A0: New preferred area(s) for all cells, either as a scalar or
+                as an array of shape (N,).
 
         Raises:
             ValueError: If *A0* does not match cell number.

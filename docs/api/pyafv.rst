@@ -7,11 +7,17 @@
 
    .. autosummary::
 
-        ~PhysicalParams
-        ~FiniteVoronoiSimulator
+      ~PhysicalParams
+      ~FiniteVoronoiSimulator
 
    .. rubric:: Functions
 
    .. autosummary::
 
-        ~target_delta
+      ~target_delta
+
+   .. rubric:: Subpackages
+
+   .. autosummary:: 
+
+      ~calibrate

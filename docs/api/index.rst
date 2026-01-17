@@ -4,8 +4,7 @@
 .. toctree::
 
    pyafv
-   pyafv.PhysicalParams
-   pyafv.FiniteVoronoiSimulator
-   pyafv.target_delta
-
-   
+   PhysicalParams
+   FiniteVoronoiSimulator
+   target_delta
+   calibrate/index
