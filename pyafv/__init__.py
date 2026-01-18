@@ -4,6 +4,7 @@ PyAFV - A Python implementation of the **active-finite-Voronoi (AFV) model** in 
 
 from .physical_params import PhysicalParams, target_delta
 from .finite_voronoi import FiniteVoronoiSimulator
+from . import calibrate
 
 try:
     from ._version import __version__
@@ -15,4 +16,5 @@ __all__ = [
     "PhysicalParams",
     "FiniteVoronoiSimulator",
     "target_delta",
+    "calibrate",
 ]

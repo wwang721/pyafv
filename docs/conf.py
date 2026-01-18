@@ -104,3 +104,6 @@ autodoc_typehints_format = "short"
 
 # Suppress the module name of the python reference if it can be resolved.
 python_use_unqualified_type_names = True
+
+# Disable showing module names in class/method signatures
+add_module_names = False

@@ -41,6 +41,7 @@ This installs the core package dependencies along with `pytest` required for dev
   compiler=mingw32
   ```
   This is equivalent to pass the `--compiler=mingw32` flag when invoking build commands such as `python setup.py build_ext --inplace`.
+  To avoid accidentally committing this *ad hoc* file, do not modify `.gitignore`; instead, add it to local `.git/info/exclude` in the repository, which functions like `.gitignore`.
 
 
 ### 3. Create a feature branch and start development
@@ -145,6 +146,7 @@ There is also an implementation of small benchmarks in [`tests/test_benchmarks.p
 uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
 ```
 This will display the benchmark results and generate an SVG histogram file in the current directory.
+You should write benchmarks for any new performance-critical code you add.
 
 
 ## Featured examples

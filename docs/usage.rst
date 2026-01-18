@@ -15,7 +15,7 @@ Installation
 .. note::
    
    - Python 3.14t, the **free-threaded** build that runs without the *Global Interpreter Lock (GIL)*, is also supported starting with **PyAFV** v0.3.8.
-   - Python 3.10 on *Windows ARM64* (not *x86-64*) is the only untested configuration. The build succeeds and the wheel is available on |PyPI|_, but automated testing is unavailable due to the absence of a supported **GitHub Actions** runner for this configuration.
+   - Python 3.10 and 3.14t (free-threaded) on *Windows ARM64* (not *x86-64*) are the only untested configurations. The builds succeed and the wheels are available on |PyPI|_, but automated testing is unavailable due to the absence of a supported **GitHub Actions** runners for these configurations.
 
 
 Install using pip
@@ -155,7 +155,7 @@ To compute the conservative forces and extract detailed geometric information (e
 
 .. code-block:: python
 
-   sim.build()                                       # compute forces and geometry
+   diag = sim.build()                                       # compute forces and geometry
 
 The returned object ``diag`` is a Python ``dict`` containing these quantities.
 

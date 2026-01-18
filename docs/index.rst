@@ -52,6 +52,8 @@ Contents
    Home <self>
    usage
    examples
+   calibration
+   performance
    contributing
    api/index
 
