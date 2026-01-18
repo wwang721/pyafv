@@ -146,6 +146,7 @@ There is also an implementation of small benchmarks in [`tests/test_benchmarks.p
 uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
 ```
 This will display the benchmark results and generate an SVG histogram file in the current directory.
+You should write benchmarks for any new performance-critical code you add.
 
 
 ## Featured examples

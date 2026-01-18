@@ -176,6 +176,11 @@ class DeformablePolygonSimulator:
     
     Raises:
         TypeError: If *phys* is not an instance of *PhysicalParams*.
+
+    Warnings:
+        If the target shape index (based on *phys.P0* and *phys.A0*) indicates a non-circular shape,
+        a **UserWarning** is raised since the DP model is not be valid in that regime.
+
     """
 
     def __init__(self, phys: PhysicalParams, num_vertices: int = 100):
@@ -187,6 +192,7 @@ class DeformablePolygonSimulator:
         
         self.phys = phys
         self.num_vertices = num_vertices
+        self._get_target_shape_index()                # check model validity
 
         P0 = phys.P0
         KP = phys.KP
@@ -231,6 +237,28 @@ class DeformablePolygonSimulator:
         self.contact_length : float = np.linalg.norm(pts1[0] - pts1[-1])  #: Current contact length.
         self.detach_criterion : float = 2.*np.pi*l0/num_vertices  #: Contact length at which detachment occurs; defaults to :math:`2\pi \ell_0/M`.
         self.detached : bool = True if self.contact_length <= self.detach_criterion else False  #: Indicates whether the doublet has detached.
+
+
+    def _get_target_shape_index(self) -> float:
+        """Compute the target shape index
+        """
+        P0 = self.phys.P0
+        A0 = self.phys.A0
+        target_shape_index = P0 / np.sqrt(A0)
+        
+        # 2.0 * np.sqrt(np.pi) is for circular shape
+        if target_shape_index > 2.0 * np.sqrt(np.pi):      # pragma: no cover
+            # raise warning
+            import warnings
+            warnings.warn(
+                "Target shape index indicates non-circular shape; "
+                "the deformable-polygon (DP) model may not be valid in this regime. "
+                "Do not use the DP model for calibration if this warning appears.",
+                UserWarning,
+                stacklevel=3,
+            )
+
+        return target_shape_index 
 
 
     def _step_update(self, ext_force: float, dt: float) -> None:

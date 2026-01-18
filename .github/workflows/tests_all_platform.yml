@@ -6,8 +6,8 @@ on:
 
 jobs:
   test:
-    # Only run this job on the main and dev branches
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    # Only run this job on the main branch
+    if: github.ref == 'refs/heads/main'
     name: Test on ${{ matrix.os }} (py${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,7 +30,9 @@ jobs:
         exclude:
           # Not supported by github runners
           - os: windows-11-arm
-            python: "3.10"  
+            python: "3.10"
+          - os: windows-11-arm
+            python: "3.14t"
 
     steps:
       - uses: actions/checkout@v5

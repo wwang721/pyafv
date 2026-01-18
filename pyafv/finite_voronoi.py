@@ -47,6 +47,10 @@ class FiniteVoronoiSimulator:
     Raises:
         ValueError: If *pts* does not have shape (N,2).
         TypeError: If *phys* is not an instance of :py:class:`PhysicalParams`.
+    
+    Warnings:
+        If the Cython backend cannot be imported (unless *backend* is set to "python"),
+        a **RuntimeWarning** is raised and the pure Python implementation is used instead.
     """
 
     def __init__(self, pts: np.ndarray, phys: PhysicalParams, backend: typing.Literal["cython", "python"] | None = None):
@@ -800,7 +804,7 @@ class FiniteVoronoiSimulator:
         return ax
 
     # --------------------- Paradigm of plotting ---------------------
-    def _plot_routine(self, ax: Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: list[list[int]],
+    def _plot_routine(self, ax: matplotlib.axes.Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: list[list[int]],
                       point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]]) -> None:
         """
         Low-level plot routine. Draws:

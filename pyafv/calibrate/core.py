@@ -33,7 +33,7 @@ def _tqdm(it: Iterable[T], desc: str = "") -> tuple[Iterable[T], bool]:         
 def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
                    dt: float = 1e-3, nsteps: int = 50_000, show: bool = False) -> tuple[float, PhysicalParams]:
     """
-    Auto-calibrate the PhysicalParams against the deformable-polygon (DP) model.
+    Auto-calibrate the parameters *phys* against the deformable-polygon (DP) model.
 
     In this calibration, we simulate the DP model under increasing external force dipoles, starting from 0 to max(*ext_forces*).
     We identify the detachment force as the first external force at which detachment occurs.
@@ -52,7 +52,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
         TypeError: If *phys* is not an instance of *PhysicalParams*.
     
     Returns:
-        A tuple containing the detachment force and the calibrated *PhysicalParams*.
+        A *tuple* containing the detachment force and the calibrated *PhysicalParams*.
         If detachment does not occur within the given force range, return a *NaN* force.
 
     .. warning::
@@ -61,7 +61,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
         Do not change defaults unless you understand the implications.
 
         If you only need a rough or faster calibration, you may change the external force range or interval.
-        Adjusting *dt* and *nsteps* may also speed up simulation, but may affect accuracy; test the
+        Adjusting *dt* and *nsteps* may also speed up simulations, but may affect accuracy; test the
         :py:class:`DeformablePolygonSimulator` model separately to ensure accuracy is acceptable.
     """
 
