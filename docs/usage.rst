@@ -6,7 +6,7 @@ Getting started
 Installation
 ------------
 
-**PyAFV** supports *Python* ≥ 3.10, < 3.15, and has been tested on major operating systems including *Linux*, *macOS*, and *Windows*, for both *x86-64* and *ARM64* architectures.
+**PyAFV** supports *Python* >= 3.10, < 3.15, and has been tested on major operating systems including *Linux*, *macOS*, and *Windows*, for both *x86-64* and *ARM64* architectures.
 
 .. image:: https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg
    :target: https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml
@@ -21,13 +21,15 @@ Installation
 Install using pip
 ^^^^^^^^^^^^^^^^^^
 
-.. image:: https://img.shields.io/pypi/v/pyafv?cacheSeconds=300
-   :target: https://pypi.org/project/pyafv
-   :alt: PyPI
+.. only:: html
 
-.. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200
-   :target: https://pypi.org/project/pyafv
-   :alt: Downloads
+   .. image:: https://img.shields.io/pypi/v/pyafv?cacheSeconds=300
+      :target: https://pypi.org/project/pyafv
+      :alt: PyPI
+
+   .. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200
+      :target: https://pypi.org/project/pyafv
+      :alt: Downloads
 
 The package is available on |PyPI|_, so you should be able to install it using *pip* directly:
 

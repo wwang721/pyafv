@@ -4,8 +4,8 @@ PyAFV
 ======
 
 .. image-release:: https://img.shields.io/badge/Version-|release|-orange.svg?logo=git
-   :target: https://wwang721.github.io/pyafv
-   :alt: PyPI
+   :target: https://pyafv.github.io
+   :alt: Version
 
 .. image:: https://img.shields.io/badge/GitHub-pyafv-brightgreen?logo=github
    :target: https://github.com/wwang721/pyafv
@@ -17,6 +17,7 @@ PyAFV
 
 .. image:: ../assets/model_illustration.png
    :width: 300px
+   :alt: Model illustration
    :align: right
 
 **PyAFV** is a Python implementation of the **active-finite-Voronoi (AFV) model** in 2D.
@@ -34,16 +35,16 @@ how to :ref:`install <installation>` the package, usage examples, and the comple
 
 .. note::
 
-   This project is under active development, see |GitHub|_ for the latest updates.
+   For the latest updates, see the |GitHub|_ repository.
 
 
 .. image:: ../assets/pbc.png
    :width: 300px
+   :alt: Periodic boundary conditions
    :align: right
 
 
-Contents
---------
+.. rubric:: Contents
 
 .. toctree::
    :maxdepth: 2
@@ -52,19 +53,18 @@ Contents
    Home <self>
    usage
    examples
-   calibration
    performance
+   calibration
    contributing
    api/index
 
 
 .. warning::
 
-   This is an early release of the software. Features and APIs may change in future versions.
+   Future versions may introduce changes to features and APIs.
 
 
-References
-----------
+.. rubric:: References
 
 .. bibliography:: ./main.bib
    :style: unsrt

@@ -16,6 +16,8 @@ build:
      # nodejs: "16"
      # rust: "1.55"
      # golang: "1.17"
+   apt_packages:
+      - librsvg2-bin
    jobs:
     post_checkout:
       # Download and uncompress the binary

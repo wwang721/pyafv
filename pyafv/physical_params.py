@@ -170,7 +170,10 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
         Corresponding value of the truncation threshold :math:`\delta`.
 
     .. note::
-        We search for the cell-cell distance at which the intercellular force matches (last one) the target force, from :math:`10^{-6}\ell` to :math:`(2-10^{-6})\ell` with a step :math:`10^{-6}\ell`.
+        We search for the cell-cell separation at which the intercellular force
+        equals the target force, scanning distances from :math:`10^{-6}\ell` to
+        :math:`(2-10^{-6})\ell` in steps of :math:`10^{-6}\ell`, and select the
+        **largest distance** at which the match occurs.
     """
 
     if not isinstance(params, PhysicalParams):      # pragma: no cover

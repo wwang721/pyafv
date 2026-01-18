@@ -42,6 +42,7 @@ extensions = [
     'sphinxcontrib.bibtex',
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinxcontrib.rsvgconverter",
     # custom extensions in docs/_ext
     "_ext.subst_release",
 ]
@@ -107,3 +108,34 @@ python_use_unqualified_type_names = True
 
 # Disable showing module names in class/method signatures
 add_module_names = False
+
+# # -- Options for LaTeX output ------------------------------------------------
+
+latex_elements = {
+    # The paper size ('letterpaper' or 'a4paper').
+    #
+    # 'papersize': 'letterpaper',
+    # The font size ('10pt', '11pt' or '12pt').
+    #
+    # 'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    #
+    # 'preamble': '',
+    # Latex figure (float) alignment
+    #
+    # 'figure_align': 'htbp',
+    "preamble": r"\setcounter{tocdepth}{3}"
+}
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title,
+#  author, documentclass [howto, manual, or own class]).
+latex_documents = [
+    (
+        "index",
+        f"{project}.tex",
+        f"{project} Documentation",
+        f"{author}",
+        "manual",
+    ),
+]

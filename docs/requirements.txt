@@ -58,3 +58,4 @@ urllib3>=1.26.9
     # via requests
 
 sphinxcontrib-bibtex>=2.6.5
+sphinxcontrib-svg2pdfconverter>=2.0.0

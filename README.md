@@ -101,7 +101,7 @@ Below are representative simulation snapshots generated using the code:
 
 - **Full documentation** on [readthedocs](https://pyafv.readthedocs.io) or as [a single PDF file](https://pyafv.readthedocs.io/_/downloads/en/latest/pdf/).
 
-- See [CONTRIBUTING.md](https://github.com/wwang721/pyafv/blob/main/CONTRIBUTING.md) or the [documentation](https://pyafv.readthedocs.io/latest/contributing.html) for **local development instructions**.
+- See [CONTRIBUTING.md](https://github.com/wwang721/pyafv/blob/main/.github/CONTRIBUTING.md) or the [documentation](https://pyafv.readthedocs.io/latest/contributing.html) for **local development instructions**.
 
 - See some important [**issues**](https://github.com/wwang721/pyafv/issues?q=is%3Aissue%20state%3Aclosed) for additional context, such as: 
     * [QhullError when 3+ points are collinear #1](https://github.com/wwang721/pyafv/issues/1) [Closed - see [comments](https://github.com/wwang721/pyafv/issues/1#issuecomment-3701355742)]

@@ -5,7 +5,7 @@ Calibration
 
 *To make it clear, the calibration tools described here are intended for advanced users who are familiar with the underlying assumptions and know exactly what they are doing.*
 
-In most use cases, the default value of :py:attr:`delta` in :py:class:`pyafv.PhysicalParams` is sufficient and should work well.
+In most use cases, the default value of the contact truncation threshold :py:attr:`delta` in :py:class:`pyafv.PhysicalParams` is sufficient and should work well.
 
 
 
@@ -29,11 +29,11 @@ How to calibrate against the DP model
 
 In brief, the calibration procedure is as follows:
 
-1. Match the steady-state geometry of a cell doublet in the FV and DP models by determining the optimal cell radius :math:`\ell_0`.
+1. Match the steady-state geometry of a cell doublet in the FV and DP models by determining the optimal cell radius :math:`\ell_0`; this can be done by :py:meth:`pyafv.PhysicalParams.get_steady_state` or :py:meth:`pyafv.PhysicalParams.with_optimal_radius`.
 
-2. Apply progressively increasing pulling forces to the cell doublet in the DP model until detachment occurs, and record the corresponding detachment forces.
+2. Apply progressively increasing pulling forces to the cell doublet in the DP model until detachment occurs, and record the corresponding detachment forces; this can be done by :py:class:`pyafv.calibrate.DeformablePolygonSimulator` (see :ref:`section <DP_model_simulator>` below).
 
-3. Identify the value of :py:attr:`delta` in the FV model that reproduces the same detachment forces observed in the DP model.
+3. Identify the value of :py:attr:`delta` in the FV model that reproduces the same detachment forces observed in the DP model; this can be done by :py:meth:`pyafv.target_delta`.
 
 .. list-table::
    :widths: 33 33 33
@@ -48,7 +48,7 @@ In brief, the calibration procedure is as follows:
           :width: 100%
           :align: center
 
-          External pulling forces applied
+          External forces applied
 
      - .. figure:: ../assets/DP3.svg
           :width: 100%
@@ -58,6 +58,8 @@ In brief, the calibration procedure is as follows:
 
 A detailed description of the calibration procedure and the corresponding results on tissue fracture timescales are provided in Ref. :cite:`wang2026divergence`.
 
+
+.. _DP_model_simulator:
 
 Usage of the DP simulator
 --------------------------
