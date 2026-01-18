@@ -174,7 +174,7 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
     """
 
     if not isinstance(params, PhysicalParams):      # pragma: no cover
-            raise TypeError("params must be an instance of PhysicalParams")
+        raise TypeError("params must be an instance of PhysicalParams")
 
     KA, KP, A0, P0, Lambda = params.KA, params.KP, params.A0, params.P0, params.lambda_tension
     l = params.r

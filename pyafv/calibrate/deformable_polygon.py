@@ -179,7 +179,7 @@ class DeformablePolygonSimulator:
 
     Warnings:
         If the target shape index (based on *phys.P0* and *phys.A0*) indicates a non-circular shape,
-        a **UserWarning** is raised since the DP model is not be valid in that regime.
+        a **UserWarning** is raised since the DP model is not valid in that regime.
 
     """
 
@@ -203,8 +203,6 @@ class DeformablePolygonSimulator:
         
         l0, d0 = phys.get_steady_state()
         self.phys = replace(phys, r=l0)
-
-        num_vertices = 100
 
         theta = np.arctan2(np.sqrt(l0**2 - (d0)**2), d0)
         # ---------- initial shapes ----------

@@ -1,6 +1,6 @@
 """
 This module contains benchmarks for the pyafv.FiniteVolumeSimulator.build method.
-The build method contains three main routines:
+The build method contains four main routines:
     * _build_voronoi_with_extensions
     * _per_cell_geometry
     * _assemble_forces

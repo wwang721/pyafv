@@ -9,7 +9,7 @@ def test_optimize_calibration():
     assert np.abs(df - 0.0) < 1e-8, "Calibration error is too high."
 
     params = afv.PhysicalParams(lambda_tension=0.01)
-    df, params_cal = cal.auto_calibrate(params, ext_forces=[0.5,0.6, 0.7])
+    df, params_cal = cal.auto_calibrate(params, ext_forces=[0.5, 0.6, 0.7])
     assert np.abs(df - 0.6) < 1e-8, "Calibration error is too high."
 
 def test_simulator(phys):
