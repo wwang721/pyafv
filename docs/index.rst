@@ -4,7 +4,7 @@ PyAFV
 ======
 
 .. image-release:: https://img.shields.io/badge/Version-|release|-orange.svg?logo=git
-   :target: https://wwang721.github.io/pyafv
+   :target: https://pyafv.github.io
    :alt: PyPI
 
 .. image:: https://img.shields.io/badge/GitHub-pyafv-brightgreen?logo=github

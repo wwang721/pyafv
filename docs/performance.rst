@@ -4,7 +4,7 @@ Performance
 Measuring performance
 ----------------------
 
-.. image:: ../assets/runtime_comparison.pdf
+.. image:: ../assets/runtime_comparison.png
    :alt: Runtime comparison
    :width: 50%
    :align: right

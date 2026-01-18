@@ -309,7 +309,7 @@ class DeformablePolygonSimulator:
         """
         Simulate the DP model for a number of time steps under an external force.
 
-        This basically is just a wrapper around :py:meth:`_step_update` and :py:func:`resample_polyline` with some bookkeeping.
+        This is basically a wrapper around :py:meth:`_step_update` and :py:func:`resample_polyline` with some bookkeeping.
 
         Args:
             ext_force: The external force applied to the cell doublet.
