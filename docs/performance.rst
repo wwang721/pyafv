@@ -25,11 +25,18 @@ In addition, there is a set of lightweight benchmarks in ``tests/test_benchmarks
 
    (.venv) $ uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
 
-This will display the benchmark results and generate an SVG histogram file (click to see the detailed timing results for each method):
+This will display the benchmark results and generate an interactive SVG histogram file (click to see the detailed timing results for each method):
 
 .. image:: ../assets/pytest_benchmark.svg
    :alt: Pytest benchmark histogram
    :width: 100%
    :align: center
 
-|
+The histogram above summarizes the runtimes of the core routines invoked by :py:meth:`pyafv.FiniteVoronoiSimulator.build` for a system of :math:`N=1000` cells. The ``test_scipy_voronoi`` benchmark measures the execution time of **SciPy**'s Voronoi tessellation, which serves as *a baseline for comparison*. This SciPy routine is called internally by :py:meth:`pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions`, corresponding to the ``test_build_voronoi`` benchmark shown in the histogram. From this comparison, we see that SciPy's Voronoi computation accounts for approximately half of the total runtime of that method.
+
+.. hint::
+
+   The suffixes ``[accel]`` and ``[fallback]`` in the benchmark names indicate whether the Cython backend or the pure-Python fallback implementation was used.
+
+
+The remaining dominant cost arises from the additional per-cell processing performed in :py:meth:`pyafv.FiniteVoronoiSimulator._per_cell_geometry`. As shown in the histogram, the Cython-backed implementation substantially reduces the runtime of this step, bringing it down to a level comparable to that of SciPy's Voronoi tessellation.

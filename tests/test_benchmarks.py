@@ -11,6 +11,7 @@ The first two routines depend on specific backends.
 import numpy as np
 import pytest
 import pyafv as afv
+from scipy.spatial import Voronoi
 
 
 @pytest.fixture(scope="module")
@@ -78,3 +79,13 @@ def test_assemble_forces(benchmark, initial_pts):
 def test_full_build(benchmark, simulator, initial_pts):
     simulator.update_positions(initial_pts)
     benchmark(simulator.build)
+
+def test_scipy_voronoi(benchmark, initial_pts):
+
+    def scipy_voronoi(pts: np.ndarray) -> Voronoi:
+        """ Measure only the Voronoi construction time. """
+        vor = Voronoi(pts)
+        rv_arr = np.asarray(vor.ridge_vertices, dtype=int)  # (R,2) may contain -1
+        return rv_arr.shape
+    
+    benchmark(scipy_voronoi, initial_pts)
