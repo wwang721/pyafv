@@ -82,7 +82,7 @@ def test_full_build(benchmark, simulator, initial_pts):
 
 def test_scipy_voronoi(benchmark, initial_pts):
 
-    def scipy_voronoi(pts: np.ndarray) -> Voronoi:
+    def scipy_voronoi(pts: np.ndarray) -> tuple:
         """ Measure only the Voronoi construction time. """
         vor = Voronoi(pts)
         rv_arr = np.asarray(vor.ridge_vertices, dtype=int)  # (R,2) may contain -1
