@@ -7,13 +7,14 @@ on:
       - 'examples/**'
       - 'assets/**'
       - 'docs/**'
-      - '.readthedocs.yaml'
+      - 'tests/benchmarks.py'
       - 'LICENSE'
       - '.gitignore'
       - '.gitattributes'
       - '.github/workflows/publish-to-pypi.yml'
       - '.github/workflows/zenodo-display.yml'
       - '.github/workflows/tests_all_platform.yml'
+      - '.github/codecov.yml'
 
   pull_request:
     branches: [ "main" ]
@@ -22,13 +23,14 @@ on:
       - 'examples/**'
       - 'assets/**'
       - 'docs/**'
-      - '.readthedocs.yaml'
+      - 'tests/benchmarks.py'
       - 'LICENSE'
       - '.gitignore'
       - '.gitattributes'
       - '.github/workflows/publish-to-pypi.yml'
       - '.github/workflows/zenodo-display.yml'
       - '.github/workflows/tests_all_platform.yml'
+      - '.github/codecov.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

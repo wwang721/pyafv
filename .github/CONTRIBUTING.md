@@ -219,4 +219,4 @@ If you have questions about contributing, feel free to:
 - Start a discussion in [GitHub Discussions](https://github.com/wwang721/pyafv/discussions)
 - Contact the maintainer via email: ww000721@gmail.com
 
-Thank you for helping make PyAFV better!
+Thank you for helping make **PyAFV** better!

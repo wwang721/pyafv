@@ -3,7 +3,9 @@ Calibration
 
 **PyAFV** provides a dedicated subpackage :py:mod:`pyafv.calibrate` for calibrating the physical parameters of the finite-Voronoi (FV) model against a vertex-model-like deformable-polygon (DP) model. The calibration is performed by matching the detachment forces of cell doublets between the two models :cite:`wang2026divergence`.
 
-*To make it clear, the calibration tools described here are intended for advanced users who are familiar with the underlying assumptions and know exactly what they are doing.*
+.. important::
+
+   *To make it clear, the calibration tools described here are intended for advanced users who are familiar with the underlying assumptions and know exactly what they are doing.*
 
 In most use cases, the default value of the contact truncation threshold :py:attr:`delta` in :py:class:`pyafv.PhysicalParams` is sufficient and should work well.
 
