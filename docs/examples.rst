@@ -4,7 +4,7 @@ Examples
 
 .. note::
    
-   To run the examples below, install the **tqdm** package for progress bars (using *pip*). The *Jupyter Notebooks* in `examples/jupyter/ <https://github.com/wwang721/pyafv/tree/main/examples/jupyter/>`_ additionally require **jupyter** and **ipywidgets** as well.
+   To run the examples below, you need to install the **tqdm** package for progress bars. The *Jupyter Notebooks* in `examples/jupyter/ <https://github.com/wwang721/pyafv/tree/main/examples/jupyter/>`_ additionally require **jupyter** and **ipywidgets** as well.
 
 
 Relaxation to mechanical equilibrium
