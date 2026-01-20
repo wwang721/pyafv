@@ -109,6 +109,9 @@ python_use_unqualified_type_names = True
 # Disable showing module names in class/method signatures
 add_module_names = False
 
+# This tells Sphinx to ignore 'pyafv.' when sorting the module index
+modindex_common_prefix = ['pyafv.']
+
 # # -- Options for LaTeX output ------------------------------------------------
 
 latex_engine = "xelatex"
@@ -128,6 +131,8 @@ latex_elements = {
     # 'figure_align': 'htbp',
     "preamble": r"\setcounter{tocdepth}{3}"
 }
+
+latex_use_xindy = False  # avoiding the LANG/LATIN9 xindy failure
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
