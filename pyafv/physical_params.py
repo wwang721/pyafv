@@ -99,14 +99,14 @@ class PhysicalParams:
             New instance with optimal radius.
         
         .. important::
-            In the returned instance, the contact trunction threshold :py:attr:`delta` is set to 0.45*r by default.
+            In the returned instance, the contact truncation threshold :py:attr:`delta` is set to 0.45*r by default.
         """
         l, d = self.get_steady_state()
         new_params = replace(self, r=l, delta=0.45*l)
         return new_params
 
     def with_delta(self, delta_new: float) -> PhysicalParams:
-        """Returns a new instance of :py:class:`PhysicalParams` with the new contact trunction threshold *delta_new*.
+        """Returns a new instance of :py:class:`PhysicalParams` with the new contact truncation threshold *delta_new*.
         Other parameters remain unchanged.
 
         Args:

@@ -34,7 +34,8 @@ Set up your development environment
 
 **PyAFV** uses |uv|_ for Python package management---a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`.
 
-- If you'd like to use your own Python, ensure the ``which python`` version meets the requirement so **uv** doesn't automatically download a different interpreter; otherwise, I recommend letting **uv** manage everything, including the Python interpreter.
+.. tip::
+   If you'd like to use your own Python, ensure the ``which python`` version meets the requirement so **uv** doesn't automatically download a different interpreter; otherwise, I recommend letting **uv** manage everything, including the Python interpreter.
 
 After cloning, install **PyAFV** in editable mode and synchronize dependencies:
 
