@@ -76,7 +76,7 @@ class PhysicalParams:
                 raise TypeError(f"delta must be a real scalar (float-like) or None, got {type(self.delta).__name__}") from None
 
     def get_steady_state(self) -> tuple[float, float]:
-        r"""Compute steady-state :math:`(\ell,d)` for the given physical parameters.
+        r"""Search for the steady-state :math:`(\ell,d)` of a cell doublet for the given physical parameters (by minimizing total energy).
 
         Returns:
             Steady-state (optimal) :math:`(\ell_0,d_0)` values.
@@ -90,27 +90,30 @@ class PhysicalParams:
         return l, d
 
     def with_optimal_radius(self) -> PhysicalParams:
-        """Returns a new instance with the radius updated to steady state.
-        Other parameters remain unchanged (with the exception that :py:attr:`delta` is scaled with :py:attr:`r`).
+        r"""Returns a new instance of :py:class:`PhysicalParams` with the maximum radius :math:`\ell` (or :py:attr:`r`) updated to the steady state value :math:`\ell_0` of cell doublets.
+        Other parameters (except :py:attr:`delta`) remain unchanged.
         
         Basically a wrapper around :py:meth:`get_steady_state` + creating a new instance.
 
         Returns:
             New instance with optimal radius.
+        
+        .. important::
+            In the returned instance, the contact truncation threshold :py:attr:`delta` is set to 0.45*r by default.
         """
         l, d = self.get_steady_state()
         new_params = replace(self, r=l, delta=0.45*l)
         return new_params
 
     def with_delta(self, delta_new: float) -> PhysicalParams:
-        """Returns a new instance with the specified delta.
+        """Returns a new instance of :py:class:`PhysicalParams` with the new contact truncation threshold *delta_new*.
         Other parameters remain unchanged.
 
         Args:
-            delta_new: New delta value.
+            delta_new: New :py:attr:`delta` value.
 
         Returns:
-            New instance with updated delta.
+            New instance with the updated delta value.
         """
         return replace(self, delta=delta_new)
 

@@ -172,7 +172,7 @@ class DeformablePolygonSimulator:
 
     Args:
         phys: An instance of PhysicalParams containing the physical parameters, while *phys.r* and *phys.delta* are ignored.
-        num_vertices: Number of vertices :math:`M` to use for each polygon.
+        num_vertices: Number of vertices :math:`M` to use for each cell.
     
     Raises:
         TypeError: If *phys* is not an instance of *PhysicalParams*.

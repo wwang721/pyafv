@@ -1,7 +1,7 @@
 Calibration
 ===========
 
-**PyAFV** provides a dedicated subpackage :py:mod:`pyafv.calibrate` for calibrating the physical parameters of the finite-Voronoi (FV) model against a vertex-model-like deformable-polygon (DP) model. The calibration is performed by matching the detachment forces of cell doublets between the two models :cite:`wang2026divergence`.
+Starting from v0.4.0, **PyAFV** provides a dedicated subpackage :py:mod:`pyafv.calibrate` for calibrating the physical parameters of the finite-Voronoi (FV) model against a vertex-model-like deformable-polygon (DP) model :cite:`lv2024active`. The calibration is performed by matching the steady states and detachment forces of cell doublets between the two models :cite:`wang2026divergence`.
 
 .. important::
 
@@ -66,7 +66,7 @@ A detailed description of the calibration procedure and the corresponding result
 Usage of the DP simulator
 --------------------------
 
-In addition to the FV simulator, **PyAFV** includes a :py:class:`pyafv.calibrate.DeformablePolygonSimulator` class for simulating the DP model, which can be used for calibration as well as standalone analyses.
+In addition to the FV simulator, **PyAFV** includes a :py:class:`pyafv.calibrate.DeformablePolygonSimulator` class for simulating cell doublets with the DP model, which can be used for calibration as well as standalone analyses.
 
 .. autoclass:: pyafv.calibrate.DeformablePolygonSimulator
    :noindex:

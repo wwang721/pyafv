@@ -22,6 +22,7 @@ cd pyafv
 
 **PyAFV** uses [`uv`](https://docs.astral.sh/uv/) for Python package management &ndash; a single tool to replace `pip` (⚡️10-100x faster), `venv`, and even `conda`.
 
+> [!TIP]
 > If you'd like to use your own Python, ensure the `which python` version meets the requirement so `uv` doesn't automatically download a different interpreter; otherwise, I recommend letting `uv` manage everything, including the Python interpreter.
 
 After cloning, install **PyAFV** in the **editable** mode and synchronize dependencies:
@@ -30,18 +31,19 @@ uv sync
 ```
 This installs the core package dependencies along with `pytest` required for development and testing.
 
-**Notes:**
-- You can install additional packages as needed using `uv add <package_name>`.
-- In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
-- The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/cell_geom_fallback.py) (based on early pure-Python release) is also implemented.
-- For *Windows* **MinGW GCC** users (rather than **MSVC**), add a `setup.cfg` file at the repository root:
-  ```ini
-  # setup.cfg
-  [build_ext]
-  compiler=mingw32
-  ```
-  This is equivalent to pass the `--compiler=mingw32` flag when invoking build commands such as `python setup.py build_ext --inplace`.
-  To avoid accidentally committing this *ad hoc* file, do not modify `.gitignore`; instead, add it to local `.git/info/exclude` in the repository, which functions like `.gitignore`.
+> [!NOTE]
+> - You can install additional packages as needed using `uv add <package_name>`.
+> - You can install additional packages as needed using `uv add <package_name>`.
+> - In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
+> - The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/cell_geom_fallback.py) (based on early pure-Python release) is also implemented.
+> - For *Windows* **MinGW GCC** users (rather than **MSVC**), add a `setup.cfg` file at the repository root:
+>   ```ini
+>   # setup.cfg
+>   [build_ext]
+>   compiler=mingw32
+>   ```
+>   This is equivalent to pass the `--compiler=mingw32` flag when invoking build commands such as `python setup.py build_ext --inplace`.
+>   To avoid accidentally committing this *ad hoc* file, do not modify `.gitignore`; instead, add it to local `.git/info/exclude` in the repository, which functions like `.gitignore`.
 
 
 ### 3. Create a feature branch and start development
@@ -126,9 +128,9 @@ uv run pytest --cov
 
 Current CI status of the test suite, run via [**GitHub Actions**](/.github/workflows/tests.yml) on Python 3.12 (with additional test jobs covering all supported platforms and Python versions), is shown in the badges at the top of [README.md](/README.md).
 
-**Notes:**
-* A comparison against the **MATLAB** implementation from [Huang *et al.*, Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B) is included in [test_core.py](/tests/test_core.py) and [test_vary_A0.py](/tests/test_vary_A0.py).
-* Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
+> [!NOTE]
+> * A comparison against the **MATLAB** implementation from [Huang *et al.*, Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B) is included in [test_core.py](/tests/test_core.py) and [test_vary_A0.py](/tests/test_vary_A0.py).
+> * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
 
 
 ### Testing strategies (in order of preference)
@@ -145,7 +147,7 @@ There is also an implementation of small benchmarks in [`tests/test_benchmarks.p
 ```bash
 uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
 ```
-This will display the benchmark results and generate an SVG histogram file in the current directory.
+This will display the benchmark results and generate an SVG histogram file in the current directory (see [here](https://pyafv.readthedocs.io/latest/performance.html#benchmarking-backends)).
 You should write benchmarks for any new performance-critical code you add.
 
 
