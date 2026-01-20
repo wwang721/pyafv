@@ -35,7 +35,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
     """
     Auto-calibrate the parameters *phys* against the deformable-polygon (DP) model.
 
-    In this calibration, we simulate the DP model under increasing external force dipoles, starting from 0 to max(*ext_forces*).
+    In this calibration, we simulate an initially steady-state cell doublet under increasing external force dipoles using the DP model; the external force starts from 0 to max(*ext_forces*).
     We identify the detachment force as the first external force at which detachment occurs.
     We then search for the :py:attr:`delta` value in the finite-Voronoi (FV) model to match this detachment force.
 

@@ -59,7 +59,7 @@ how to :ref:`install <installation>` the package, usage examples, and the comple
    api/index
 
 
-.. warning::
+.. caution::
 
    Future versions may introduce changes to features and APIs.
 
