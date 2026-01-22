@@ -68,3 +68,10 @@ how to :ref:`install <installation>` the package, usage examples, benchmarks, lo
 
 .. bibliography:: ./main.bib
    :style: unsrt
+
+
+.. rubric:: Indices
+
+* :ref:`genindex`
+* :ref:`modindex`
+
