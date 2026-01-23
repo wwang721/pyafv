@@ -80,7 +80,7 @@ You may then begin editing the codebase and developing new features.
     If you modify any ``*.pyx`` Cython source files, you must reinstall the package to ensure the changes take effect: ``uv sync --reinstall-package pyafv --inexact`` (the ``--inexact`` flag prevents **uv** from removing any installed packages).
 
     - If the compiled C/C++ extension is accidentally removed or corrupted (you will see a **RuntimeWarning** about falling back to the pure-Python implementation), you can also reinstall the package.
-    - For the legacy pure-Python implementation with no C/C++ compiled dependencies, see `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_ (also on `GitLab <https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0>`_). Starting from **PyAFV** v0.3.4, the pure-Python backend can be selected by passing ``backend="python"`` when creating the simulator instance.
+    - For the legacy pure-Python implementation with no C/C++ compiled dependencies, see `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_ (also on `GitLab <https://gitlab.com/wwang721/py-afv/-/releases/v0.1.0>`_). Starting from **PyAFV** v0.3.4, the pure-Python backend can be selected by passing ``backend="python"`` when creating the :py:class:`pyafv.FiniteVoronoiSimulator` instance.
 
 
 Keeping your fork up to date
@@ -176,6 +176,7 @@ Current CI status of the test suite, run via **GitHub Actions** on Python 3.12 (
 
    - A comparison against the **MATLAB** implementation from Ref. :cite:`huang2023bridging` is included in current test suite.
    - Unlike `v0.1.0 <https://github.com/wwang721/pyafv/releases/tag/v0.1.0>`_, the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
+   - **Pytest** and related plugins (**pytest-cov**, **pytest-benchmark**) are included in the *dev* dependency group and are installed by default when running ``uv sync``.
 
 
 Testing strategies (in order of preference)
@@ -207,6 +208,19 @@ Featured examples
 --------------------
 
 To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras`` (add the ``--inexact`` flag if needed).
+
+.. rubric:: Extra dependencies: ``examples``
+
++----------------+-------------------------------+-------------------------------+
+| Package        | Minimum Version               | Usage                         |
++================+===============================+===============================+
+| tqdm           | 4.67.1                        | Progree bars                  |
++----------------+-------------------------------+-------------------------------+
+| jupyter        | 1.1.0                         | Jupyter Notebook / JupyterLab |
++----------------+-------------------------------+-------------------------------+
+| ipywidgets     | 8.1.5                         | Jupyter HTML widgets          |
++----------------+-------------------------------+-------------------------------+
+
 Then you can simply run the scripts with
 
 .. code-block:: console

@@ -43,6 +43,7 @@ class FiniteVoronoiSimulator:
         pts (numpy.ndarray): (N,2) array of initial cell center positions.
         phys: Physical parameters used within this simulator.
         backend: Optional, specify "python" to force the use of the pure Python fallback implementation.
+            Otherwise, the "cython" backend is used.
 
     Raises:
         ValueError: If *pts* does not have shape (N,2).
@@ -726,7 +727,7 @@ class FiniteVoronoiSimulator:
                 very marginal) when connectivity is not needed.
           
         Returns:
-            dict[str, object]: A dictionary containing geometric properties with keys:
+            dict[str, object]: A dictionary containing forces and geometric properties with keys:
 
                 - **forces**: (N,2) array of forces on cell centers
                 - **areas**: (N,) array of cell areas

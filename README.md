@@ -1,6 +1,7 @@
 [![PyPi](https://img.shields.io/pypi/v/pyafv?cacheSeconds=300)](https://pypi.org/project/pyafv/)
 [![Downloads](https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200)](https://pypi.org/project/pyafv/)
 [![Documentation](https://img.shields.io/badge/documentation-pyafv.readthedocs.io-yellow.svg?logo=readthedocs)](https://pyafv.readthedocs.io)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb)
 <!--[![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml?query=branch:main)-->
 [![Tests on all platforms](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml)
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
@@ -66,7 +67,9 @@ Alternatively, you can build **PyAFV** from source as described in the previous 
 
 ## Usage
 
-Here is a simple example to get you started, demonstrating how to construct a finite-Voronoi diagram:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb)
+
+Here is a simple example to get you started, demonstrating how to construct a finite-Voronoi diagram (click the **Google Colab** badge above to run the notebook directly):
 ```python
 import numpy as np
 import pyafv as afv

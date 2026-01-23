@@ -79,7 +79,11 @@ Connectivity between cells
 Custom plotting
 ----------------
 
-See `examples/jupyter/custom_plot.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/custom_plot.ipynb>`_ for an example of custom plotting using **PyAFV**.
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/custom_plot.ipynb
+   :alt: Open In Colab
+
+See `examples/jupyter/custom_plot.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/custom_plot.ipynb>`_ for an example of custom plotting using **PyAFV**, or you can run the notebook directly in **Google Colab** by clicking the badge above.
 
 This example shows how to use :py:meth:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths.
 
@@ -103,8 +107,12 @@ This notebook also shows how to access additional internal information via :py:m
 Periodic boundary conditions
 ----------------------------
 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/periodic_plotting.ipynb
+   :alt: Open In Colab
+
 **PyAFV** uses open boundary conditions in 2D by default, but it is also possible to implement periodic boundary conditions via a tiling of the edge regions.
-See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example, and the generated figure is shown below:
+See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly in **Google Colab** by clicking the badge above), and the generated figure is shown below:
 
 .. image:: ../assets/pbc.png
    :alt: PBC example

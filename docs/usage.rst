@@ -114,7 +114,11 @@ Alternatively, you can build **PyAFV** from source as described in the previous 
 A simple example
 ----------------
 
-Now that you have installed **PyAFV**, here is a simple example to get you started.
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb
+   :alt: Open In Colab
+
+Now that you have installed **PyAFV**, here is a simple example to get you started (click the **Google Colab** badge above to run the notebook directly).
 Begin by importing the required libraries and generating 100 random points in two dimensions:
 
 .. code-block:: python

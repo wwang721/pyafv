@@ -131,7 +131,7 @@ Current CI status of the test suite, run via [**GitHub Actions**](/.github/workf
 > [!NOTE]
 > * A comparison against the **MATLAB** implementation from [Huang *et al.*, Soft Matter **19**, 9389 (2023)](https://doi.org/10.1039/D3SM00327B) is included in [test_core.py](/tests/test_core.py) and [test_vary_A0.py](/tests/test_vary_A0.py).
 > * Unlike [v0.1.0](https://github.com/wwang721/pyafv/releases/tag/v0.1.0), the current test suite is designed to raise errors if the Cython-compiled C/C++ backend is not available, even though a pure-Python fallback implementation is provided and tested.
-
+> * **Pytest** and related plugins (**pytest-cov**, **pytest-benchmark**) are included in the *dev* dependency group and are installed by default when running ``uv sync``.
 
 ### Testing strategies (in order of preference)
 
