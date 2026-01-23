@@ -10,6 +10,12 @@ Before working on a feature or major change, please raise an `issue <https://git
     Much of this guide is based on the `pyqmc CONTRIBUTING.md <https://github.com/WagnerGroup/pyqmc/blob/master/CONTRIBUTING.md>`_, which itself draws from `this excellent guide <https://gist.github.com/Chaser324/ce0505fbed06b947d962>`_.
 
 
+Code of Conduct
+---------------
+
+By participating in this project, you agree to abide by the `PyAFV Code of Conduct <https://github.com/wwang721/pyafv/blob/main/.github/CODE_OF_CONDUCT.md>`_.
+
+
 How to contribute
 -----------------
 
@@ -309,3 +315,4 @@ If you have questions about contributing, feel free to:
 - Contact the maintainer via email: ww000721@gmail.com
 
 Thank you for helping make **PyAFV** better!
+
