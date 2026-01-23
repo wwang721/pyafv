@@ -38,6 +38,7 @@ def test_MATLAB(data_dir, simulator):
 def test_physical_params(phys):
     l, d = phys.get_steady_state()
     params = phys.with_optimal_radius()
+    params2 = phys.with_optimal_radius(digits=1, delta=0.5)
 
     # For the default physical params in the fixture
     l_real = 0.87
@@ -52,3 +53,5 @@ def test_physical_params(phys):
     assert l >= 0 and d >= 0, "Optimal (l,d) should be non-negative."
     assert np.abs(delta_t - delta_t_real) < 1.0e-4, f"Computed delta not correct."
     assert delta_t >= 0, "Computed delta should be non-negative."
+    assert params2.r == round(l, 1), "Optimal radius with digits not set correctly."
+    assert params2.delta == 0.5, "Delta not set correctly in with_optimal_radius."

@@ -89,11 +89,16 @@ class PhysicalParams:
         l, d = result[0]
         return l, d
 
-    def with_optimal_radius(self) -> PhysicalParams:
+    def with_optimal_radius(self, digits: int | None = None, delta: float | None = None) -> PhysicalParams:
         r"""Returns a new instance of :py:class:`PhysicalParams` with the maximum radius :math:`\ell` (or :py:attr:`r`) updated to the steady state value :math:`\ell_0` of cell doublets.
         Other parameters (except :py:attr:`delta`) remain unchanged.
         
         Basically a wrapper around :py:meth:`get_steady_state` + creating a new instance.
+
+        Args:
+            digits: If not None, round the optimal radius :math:`\ell_0` to the specified number of decimal places.
+                Only intended for randomized tests to avoid floating-point precision issues.
+            delta: If not None, set the contact truncation threshold :py:attr:`delta` to this value in the returned instance.
 
         Returns:
             New instance with optimal radius.
@@ -102,7 +107,16 @@ class PhysicalParams:
             In the returned instance, the contact truncation threshold :py:attr:`delta` is set to 0.45*r by default.
         """
         l, d = self.get_steady_state()
-        new_params = replace(self, r=l, delta=0.45*l)
+
+        if digits is not None:
+            l = round(l, digits)
+
+        if delta is not None:
+            delta_new = delta
+        else:
+            delta_new = 0.45 * l
+
+        new_params = replace(self, r=l, delta=delta_new)
         return new_params
 
     def with_delta(self, delta_new: float) -> PhysicalParams:
