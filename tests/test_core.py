@@ -7,7 +7,7 @@ def test_MATLAB(data_dir, simulator):
 
     # temporarily change delta to 0.0 for this test
     original_phys = simulator.phys
-    new_phys = original_phys.with_delta(0.0)
+    new_phys = original_phys.replace(delta=0.0)
     simulator.update_params(new_phys)
 
     pts = np.loadtxt(data_dir / "init_pts.csv", delimiter=',')

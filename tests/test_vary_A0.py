@@ -6,7 +6,7 @@ def test_MATLAB_varying_A0(data_dir, simulator):
     # Now with varying preferred areas A0
     # temporarily change delta to 0.0 for this test
     original_phys = simulator.phys
-    new_phys = original_phys.with_delta(0.0)
+    new_phys = original_phys.replace(delta=0.0)
 
     assert np.max(simulator.preferred_areas - original_phys.A0) < 1.0e-12, "Preferred areas not initialized correctly."
 

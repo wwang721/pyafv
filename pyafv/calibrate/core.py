@@ -69,7 +69,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
 
     if sim.detached: # already detached at zero force (steady state)
         detachment_force = 0.0
-        return float(detachment_force), sim.phys.with_delta(0.0)
+        return float(detachment_force), sim.phys.replace(delta=0.0)
     else:
         if ext_forces is None:           # pragma: no cover
             ext_forces = np.linspace(0, 10, 101)[1:]
@@ -84,7 +84,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
             sim.simulate(ext_force, dt, nsteps)
             if sim.detached:
                 detachment_force = ext_force
-                return float(detachment_force), sim.phys.with_delta(target_delta(sim.phys, detachment_force))
+                return float(detachment_force), sim.phys.replace(delta=target_delta(sim.phys, detachment_force))
         
         # did not detach within given forces
-        return float('nan'), sim.phys.with_delta(0.45 * sim.phys.r)    # pragma: no cover
+        return float('nan'), sim.phys.replace(delta=0.45*sim.phys.r)    # pragma: no cover

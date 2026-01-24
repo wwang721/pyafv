@@ -25,7 +25,7 @@ phys = afv.PhysicalParams(
 
 # Do not set delta unless you know what you are doing.
 # We set it to zero here for comparison with the our primitive results.
-phys = phys.with_delta(0.0)
+phys = phys.replace(delta=0.0)
 
 # Initial positions and orientations
 pts = np.random.rand(N, 2)*0.3 + 0.35  # shape (N,2)

@@ -119,17 +119,20 @@ class PhysicalParams:
         new_params = replace(self, r=l, delta=delta_new)
         return new_params
 
-    def with_delta(self, delta_new: float) -> PhysicalParams:
-        """Returns a new instance of :py:class:`PhysicalParams` with the new contact truncation threshold *delta_new*.
-        Other parameters remain unchanged.
+    def replace(self, **changes: float | None) -> PhysicalParams:
+        """Returns a new instance of :py:class:`PhysicalParams` with specified fields replaced by new values.
 
         Args:
-            delta_new: New :py:attr:`delta` value.
+            **changes: Field names and their new values to be replaced.
 
         Returns:
-            New instance with the updated delta value.
+            New instance with the updated fields.
+
+        .. hint::
+            This is a convenience method wrapping :py:func:`dataclasses.replace`,
+            e.g., to change :py:attr:`A0` and :py:attr:`delta` of an existing instance *phys*: ``phys_new = phys.replace(A0=5.0, delta=0.3)``.
         """
-        return replace(self, delta=delta_new)
+        return replace(self, **changes)
 
     def _energy_unconstrained(self, z, params):
         v, u = float(z[0]), float(z[1])

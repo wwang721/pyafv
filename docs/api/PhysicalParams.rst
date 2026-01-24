@@ -25,5 +25,4 @@
 
       ~PhysicalParams.get_steady_state
       ~PhysicalParams.with_optimal_radius
-      ~PhysicalParams.with_delta
-
+      ~PhysicalParams.replace
