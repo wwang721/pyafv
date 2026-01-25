@@ -189,6 +189,9 @@ class FiniteVoronoiSimulator:
             # Convert ridge_vertices to (R,2) array with -1 for infinite vertices
             vor.ridge_vertices = self._impl.list_to_Nx2_int_array(vor.ridge_vertices)
 
+            # somehow scipy uses int32 by default, make it int64 for consistency (vor.point_region is already int64)
+            vor.ridge_points = vor.ridge_points.astype(int)
+
             center = np.mean(pts, axis=0)
 
             span_x = np.ptp(vor.vertices[:, 0])  # span in x
