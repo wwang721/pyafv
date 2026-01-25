@@ -21,11 +21,11 @@ Measuring performance
 Benchmarking backends
 ---------------------
 
-In addition, there is a set of lightweight benchmarks in ``tests/test_benchmarks.py`` that compare the **PyAFV** Cython backend with the pure-Python implementation using **pytest-benchmark**. To run them:
+In addition, there is a set of lightweight benchmarks in ``tests`` using **pytest-benchmark**, e.g., ``test_bench_build.py`` compares the runtimes of the Cython and pure-Python backends . To run it:
 
 .. code-block:: console
 
-   (.venv) $ uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
+   (.venv) $ uv run pytest tests/test_bench_build.py --benchmark-only --benchmark-warmup on --benchmark-histogram
 
 This will display the benchmark results and generate an interactive SVG histogram file (click to see the detailed timing results for each method):
 
@@ -34,7 +34,7 @@ This will display the benchmark results and generate an interactive SVG histogra
    :width: 100%
    :align: center
 
-The histogram above summarizes the runtimes of the core routines invoked by :py:meth:`pyafv.FiniteVoronoiSimulator.build` for a system of :math:`N=1000` cells. The ``test_scipy_voronoi`` benchmark measures the execution time of **SciPy**'s Voronoi tessellation, which serves as *a baseline for comparison*. This SciPy routine is called internally by :py:meth:`pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions`, corresponding to the ``test_build_voronoi`` benchmark shown in the histogram. From this comparison, we see that SciPy's Voronoi computation accounts for approximately half of the total runtime of that method.
+The histogram above summarizes the runtimes of the core routines invoked by :py:meth:`pyafv.FiniteVoronoiSimulator.build` for a system of :math:`N=1000` cells. The ``test_scipy_voronoi`` benchmark measures the execution time of **SciPy**'s Voronoi tessellation, which serves as *a baseline for comparison*. This SciPy routine is called internally by :py:meth:`pyafv.FiniteVoronoiSimulator._build_voronoi_with_extensions`, corresponding to the ``test_build_voronoi`` benchmark shown in the histogram. From this comparison, we see that SciPy's Voronoi computation accounts for approximately 60% of the total runtime of that method.
 
 .. hint::
 

@@ -93,7 +93,7 @@ class FiniteVoronoiSimulator:
             self._impl = _impl
 
     # --------------------- Voronoi construction & extension ---------------------
-    def _build_voronoi_with_extensions(self) -> tuple[Voronoi, np.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]]:
+    def _build_voronoi_with_extensions(self) -> tuple[Voronoi, np.ndarray, np.ndarray, int, dict[tuple[int,int], int], dict[int, list[int]]]:
         """
         Build standard Voronoi structure for current points.
 
@@ -106,11 +106,11 @@ class FiniteVoronoiSimulator:
             This is an internal method. Use with caution.
 
         Returns: 
-            tuple[scipy.spatial.Voronoi, numpy.ndarray, list[list[int]], int, dict[tuple[int,int], int], dict[int, list[int]]] : A *tuple* containing:
+            tuple[scipy.spatial.Voronoi, numpy.ndarray, numpy.ndarray, int, dict[tuple[int,int], int], dict[int, list[int]]] : A *tuple* containing:
             
                 - **vor**: SciPy Voronoi object for current points with extensions.
                 - **vertices_all**: (M,2) array of all Voronoi vertices including extensions.
-                - **ridge_vertices_all**: List of lists of vertex indices for each ridge, including extensions.
+                - **ridge_vertices_all**: (R,2) array of vertex indices for each ridge, including extensions.
                 - **num_vertices**: Number of Voronoi vertices before adding extension.
                 - **vertexpair2ridge**: *dict* mapping vertex index pairs to ridge index.
                 - **vertex_points**: *dict* mapping vertex index to list of associated point indices.
@@ -185,6 +185,13 @@ class FiniteVoronoiSimulator:
             vor.point_region   # for each input point, the region index
             vor.regions        # list of regions; each is a list of vertex indices (may include -1)
             """
+
+            # Convert ridge_vertices to (R,2) array with -1 for infinite vertices
+            vor.ridge_vertices = self._impl.list_to_Nx2_int_array(vor.ridge_vertices)
+
+            # somehow scipy uses int32 by default, make it int64 for consistency (vor.point_region is already int64)
+            vor.ridge_points = vor.ridge_points.astype(int)
+
             center = np.mean(pts, axis=0)
 
             span_x = np.ptp(vor.vertices[:, 0])  # span in x
@@ -247,7 +254,7 @@ class FiniteVoronoiSimulator:
                 rv_sub[~pos0, 1] = ext_ids[~pos0]
                 rv_new[inf_mask] = rv_sub
 
-                ridge_vertices_all = rv_new.tolist()
+                ridge_vertices_all = rv_new
 
                 # Append extension id to both adjacent regions (list-of-lists => tiny loop)
                 for m in range(num_inf):
@@ -259,7 +266,7 @@ class FiniteVoronoiSimulator:
                     vor.regions[region_id].append(e)
             else:
                 vertices_all = vertices_base.copy()
-                ridge_vertices_all = rv_arr.tolist()
+                ridge_vertices_all = rv_arr
 
             # number of native (finite) vertices
             num_vertices = len(vor.vertices)
@@ -488,7 +495,7 @@ class FiniteVoronoiSimulator:
     # --------------------- Force assembly ---------------------
     def _assemble_forces(self, vertices_all: np.ndarray, num_vertices_ext: int,
                          vertex_points: dict[int, list[int]], vertex_in_id: list[int], vertex_out_id: list[int],
-                         vertex_out_points: list[list[int]], vertex_out_da_dtheta: np.ndarray,
+                         vertex_out_points: np.ndarray, vertex_out_da_dtheta: np.ndarray,
                          vertex_out_dl_dtheta: np.ndarray, dA_poly_dh: np.ndarray, dP_poly_dh: np.ndarray,
                          area_list: np.ndarray, perimeter_list: np.ndarray) -> np.ndarray:
         """
@@ -805,7 +812,7 @@ class FiniteVoronoiSimulator:
         return ax
 
     # --------------------- Paradigm of plotting ---------------------
-    def _plot_routine(self, ax: matplotlib.axes.Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: list[list[int]],
+    def _plot_routine(self, ax: matplotlib.axes.Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray,
                       point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]]) -> None:
         """
         Low-level plot routine. Draws:
@@ -870,7 +877,7 @@ class FiniteVoronoiSimulator:
         ax.set_ylim(center[1]-L, center[1]+L)
 
     # --------------------- Connections between cells ---------------------
-    def _get_connections(self, ridge_points: list[list[int]], vertices_all: np.ndarray, ridge_vertices_all: list[list[int]]) -> np.ndarray:
+    def _get_connections(self, ridge_points: np.ndarray, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray) -> np.ndarray:
         """
         Determine which pairs of cells are connected, i.e.,
         the distance from the cell center to its corresponding Voronoi ridge
