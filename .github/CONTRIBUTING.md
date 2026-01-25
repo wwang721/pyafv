@@ -114,7 +114,7 @@ Note: We use `rebase` to keep the commit history clean.
 
 ## Writing tests
 
-Tests are located in the [`tests/`](tests/) directory. Run the test suite with:
+Tests are located in the [`tests/`](/tests/) directory. Run the test suite with:
 
 ```bash
 uv run pytest
@@ -143,11 +143,11 @@ Current CI status of the test suite, run via [**GitHub Actions**](/.github/workf
 
 ### Benchmarking
 
-There is also an implementation of small benchmarks in [`tests/test_benchmarks.py`](tests/test_benchmarks.py) comparing the Cython and pure-Python backends using **pytest-benchmark**. To run them:
+There is also a set of lightweight benchmarks in [`tests`](/tests/) using **pytest-benchmark**, e.g., [`test_bench_build.py`](/tests/test_bench_build.py) compares the runtimes of the Cython and pure-Python backends. To run them:
 ```bash
 uv run pytest --benchmark-only --benchmark-warmup on --benchmark-histogram
 ```
-This will display the benchmark results and generate an SVG histogram file in the current directory (see [here](https://pyafv.readthedocs.io/latest/performance.html#benchmarking-backends)).
+This will display the benchmark results and generate an SVG histogram file in the current directory (see an example [here](https://pyafv.readthedocs.io/latest/performance.html#benchmarking-backends)).
 You should write benchmarks for any new performance-critical code you add.
 
 
