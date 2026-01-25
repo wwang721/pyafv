@@ -8,6 +8,12 @@ import numpy as np
 from collections import defaultdict
 
 
+def list_to_Nx2_int_array(input_list: list[list[int]]) -> np.ndarray:
+    """Convert a list of lists of two integers into an (N,2) integer numpy array.
+        The input_list must be well-formed (each inner list has exactly two integers).
+    """
+    return np.asarray(input_list, dtype=int)
+
 def build_vertexpair_and_vertexpoints(ridge_vertices_all, ridge_points, num_vertices, N):
     # Build ridge incidence per vertex, and a lookup for (v1,v2) -> ridge id
     vertex_incident_ridges = defaultdict(list)

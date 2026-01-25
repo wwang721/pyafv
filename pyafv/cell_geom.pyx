@@ -6,6 +6,37 @@ import numpy as np
 cimport numpy as cnp
 from libc.math cimport atan2, cos
 cimport cython
+from cpython.list cimport PyList_GET_ITEM, PyList_GET_SIZE
+from cpython.long cimport PyLong_AsLong
+
+cnp.import_array() # recommended step
+
+def list_to_Nx2_int_array(list input_list):
+    # 1. Get size using C-API
+    cdef int n = PyList_GET_SIZE(input_list)
+    
+    # 2. Allocate array using Python module (np)
+    #    Declare type using C module (cnp)
+    cdef cnp.ndarray[cnp.int64_t, ndim=2] arr = np.empty((n, 2), dtype=np.int64)
+    
+    cdef int i
+    cdef list row
+    cdef long val0, val1
+
+    # 3. The Unsafe/Fast Loop
+    for i in range(n):
+        # Cast item to list (assumes input is List[List])
+        row = <list>PyList_GET_ITEM(input_list, i)
+        
+        # Grab integers directly
+        val0 = PyLong_AsLong(<object>PyList_GET_ITEM(row, 0))
+        val1 = PyLong_AsLong(<object>PyList_GET_ITEM(row, 1))
+        
+        # Write directly to memory view
+        arr[i, 0] = val0
+        arr[i, 1] = val1
+        
+    return arr
 
 # Routine used in _build_voronoi_with_extensions()
 def build_vertexpair_and_vertexpoints(object ridge_vertices_all,
