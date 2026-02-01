@@ -47,7 +47,7 @@ After installation, verify that it was successful by importing the package in *P
 
 .. note::
 
-   On HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
+   On some HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
 
 
 Install from source
@@ -68,15 +68,15 @@ Required prerequisites
 In general, you do not need to manually install the dependencies, as *pip* will handle them automatically.
 We list the required packages and minimum versions below for reference:
 
-+----------------+-------------------------------+-------------------------------+
-| Package        | Minimum Version               | Usage                         |
-+================+===============================+===============================+
-| numpy          | 1.26.4                        | Numerical computations        |
-+----------------+-------------------------------+-------------------------------+
-| scipy          | 1.13.1                        | Scientific computations       |
-+----------------+-------------------------------+-------------------------------+
-| matplotlib     | 3.8.4                         | Plotting and visualization    |
-+----------------+-------------------------------+-------------------------------+
++----------------+-------------------------------+------------------------------------+
+| Package        | Minimum Version               | Usage                              |
++================+===============================+====================================+
+| numpy          | 1.26.4                        | Numerical computations             |
++----------------+-------------------------------+------------------------------------+
+| scipy          | 1.13.1                        | Miscellaneous scientific functions |
++----------------+-------------------------------+------------------------------------+
+| matplotlib     | 3.8.4                         | Plotting and visualization         |
++----------------+-------------------------------+------------------------------------+
 
 Unzip the downloaded source code and navigate to the root directory of the package. Then, run the following command to install:
 
