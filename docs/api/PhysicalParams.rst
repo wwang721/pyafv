@@ -15,7 +15,7 @@
       ~PhysicalParams.P0
       ~PhysicalParams.KA
       ~PhysicalParams.KP
-      ~PhysicalParams.lambda_tension
+      ~PhysicalParams.Lambda
       ~PhysicalParams.delta
 
    .. rubric:: Methods

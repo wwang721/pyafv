@@ -196,7 +196,7 @@ class DeformablePolygonSimulator:
 
         P0 = phys.P0
         KP = phys.KP
-        Lambda = phys.lambda_tension
+        Lambda = phys.Lambda
 
         lambda_c = -P0 * 2 * KP
         lambda_n = Lambda + lambda_c

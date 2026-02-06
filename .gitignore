@@ -37,5 +37,5 @@ docs/_build/
 
 # pytest-benchmark
 benchmark_*.svg
+tests/*.svg
 .benchmarks
-
