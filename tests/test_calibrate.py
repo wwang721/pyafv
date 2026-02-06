@@ -4,11 +4,11 @@ import numpy as np
 
 
 def test_optimize_calibration():
-    params = afv.PhysicalParams(lambda_tension=0.0)
+    params = afv.PhysicalParams(Lambda=0.0)
     df, params_cal = cal.auto_calibrate(params)
     assert np.abs(df - 0.0) < 1e-8, "Calibration error is too high."
 
-    params = afv.PhysicalParams(lambda_tension=0.01)
+    params = afv.PhysicalParams(Lambda=0.01)
     df, params_cal = cal.auto_calibrate(params, ext_forces=[0.5, 0.6, 0.7])
     assert np.abs(df - 0.6) < 1e-8, "Calibration error is too high."
 

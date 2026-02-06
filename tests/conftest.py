@@ -20,7 +20,7 @@ def phys() -> afv.PhysicalParams:
         P0=4.8,
         KA=1.0,
         KP=1.0,
-        lambda_tension=0.2,
+        Lambda=0.2,
         delta=None,
     )
 

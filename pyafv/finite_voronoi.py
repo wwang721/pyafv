@@ -507,7 +507,7 @@ class FiniteVoronoiSimulator:
         P0 = self.phys.P0
         KA = self.phys.KA
         KP = self.phys.KP
-        Lambda = self.phys.lambda_tension
+        Lambda = self.phys.Lambda
         pts = self.pts
 
         dE_poly_dh = 2.0 * (KA * dA_poly_dh + KP * dP_poly_dh)

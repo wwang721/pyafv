@@ -46,7 +46,7 @@ class PhysicalParams:
         P0: Preferred perimeter of the Voronoi cells.
         KA: Area elasticity constant.
         KP: Perimeter elasticity constant.
-        lambda_tension: Tension difference between non-contacting edges and contacting edges.
+        Lambda: Tension difference between non-contacting edges and contacting edges.
         delta: Contact truncation threshold to avoid singularities in computations; if None, set to 0.45*r.
     """
     
@@ -55,7 +55,7 @@ class PhysicalParams:
     P0: float = 4.8              #: Preferred perimeter of the Voronoi cells.
     KA: float = 1.0              #: Area elasticity constant.
     KP: float = 1.0              #: Perimeter elasticity constant.
-    lambda_tension: float = 0.2  #: Tension difference between non-contacting edges and contacting edges.
+    Lambda: float = 0.2  #: Tension difference between non-contacting edges and contacting edges.
     delta: float | None = None   #: Contact truncation threshold to avoid singularities in computations.
 
     def __post_init__(self):
@@ -65,7 +65,7 @@ class PhysicalParams:
         object.__setattr__(self, "P0", _require_float_scalar(self.P0, "P0"))
         object.__setattr__(self, "KA", _require_float_scalar(self.KA, "KA"))
         object.__setattr__(self, "KP", _require_float_scalar(self.KP, "KP"))
-        object.__setattr__(self, "lambda_tension", _require_float_scalar(self.lambda_tension, "lambda_tension"))
+        object.__setattr__(self, "Lambda", _require_float_scalar(self.Lambda, "Lambda"))
 
         if self.delta is None:
             object.__setattr__(self, "delta", 0.45 * self.r)
@@ -84,7 +84,7 @@ class PhysicalParams:
         .. note::
             :math:`\ell` is the maximal cell radius, and :math:`2d` is the cell-center distance of a doublet (rather than :math:`d`).        
         """
-        params = [self.KA, self.KP, self.A0, self.P0, self.lambda_tension]
+        params = [self.KA, self.KP, self.A0, self.P0, self.Lambda]
         result = self._minimize_energy(params, restarts=10)
         l, d = result[0]
         return l, d
@@ -199,7 +199,7 @@ def target_delta(params: PhysicalParams, target_force: float) -> float:
     if not isinstance(params, PhysicalParams):      # pragma: no cover
         raise TypeError("params must be an instance of PhysicalParams")
 
-    KA, KP, A0, P0, Lambda = params.KA, params.KP, params.A0, params.P0, params.lambda_tension
+    KA, KP, A0, P0, Lambda = params.KA, params.KP, params.A0, params.P0, params.Lambda
     l = params.r
 
     distances = np.linspace(1e-6, 2.-(1e-6), 10**6) * l
