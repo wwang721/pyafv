@@ -31,7 +31,7 @@ def _tqdm(it: Iterable[T], desc: str = "") -> tuple[Iterable[T], bool]:         
 
 
 def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
-                   dt: float = 1e-3, nsteps: int = 50_000, show: bool = False) -> tuple[float, PhysicalParams]:
+                   dt: float = 1e-3, nsteps: int = 50_000, show: bool | None = None) -> tuple[float, PhysicalParams]:
     """
     Auto-calibrate the parameters *phys* against the deformable-polygon (DP) model.
 
@@ -46,7 +46,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
             should start from a small positive value.
         dt: Time step for each simulation step.
         nsteps: Number of simulation steps to run for each external force.
-        show: Whether to print progress information; no need to use it if **tqdm** is installed.
+        show: Whether to print progress information; no need to set it if **tqdm** is installed.
     
     Raises:
         TypeError: If *phys* is not an instance of *PhysicalParams*.
@@ -58,8 +58,8 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
     .. warning::
         This function may take some time to run, depending on the parameters.
         (If **tqdm** is installed, a progress bar will be shown automatically.)
+        
         Do not change defaults unless you understand the implications.
-
         If you only need a rough or faster calibration, you may change the external force range or interval.
         Adjusting *dt* and *nsteps* may also speed up simulations, but may affect accuracy; test the
         :py:class:`DeformablePolygonSimulator` model separately to ensure accuracy is acceptable.
@@ -73,18 +73,27 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
     else:
         if ext_forces is None:           # pragma: no cover
             ext_forces = np.linspace(0, 10, 101)[1:]
-        pbar, has_tqdm = _tqdm(ext_forces, desc="Calibrating")
+        
+        if show is False:                    # pragma: no cover
+            pbar, has_tqdm = ext_forces, False
+        else:                                # pragma: no cover
+            pbar, has_tqdm = _tqdm(ext_forces, desc="Calibrating")
 
         for ext_force in pbar:
             if has_tqdm:    # with tqdm                     # pragma: no cover
                 pbar.set_description(f"Applying F={ext_force:.1f}")
-            elif show:  # no tqdm, but show is True         # pragma: no cover
+            elif show is True:  # no tqdm, but show is True         # pragma: no cover
                 print(f"Applying F={ext_force:.1f}")
 
             sim.simulate(ext_force, dt, nsteps)
             if sim.detached:
+                if has_tqdm:                     # pragma: no cover
+                    pbar.close()
+
                 detachment_force = ext_force
                 return float(detachment_force), sim.phys.replace(delta=target_delta(sim.phys, detachment_force))
         
         # did not detach within given forces
+        if has_tqdm:                     # pragma: no cover
+            pbar.close()
         return float('nan'), sim.phys.replace(delta=0.45*sim.phys.r)    # pragma: no cover

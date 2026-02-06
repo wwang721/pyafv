@@ -90,7 +90,7 @@ Unzip the downloaded source code and navigate to the root directory of the packa
 
 Windows MinGW GCC
 """""""""""""""""""""""""""
-If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a ``setup.cfg`` at the repository root before running ``pip install .`` with the following content:
+If you are using **MinGW GCC** (rather than **MSVC**) on *Windows*, to build from the source code, add a ``setup.cfg`` file at the repository root before running ``pip install .`` with the following content:
 
 .. code-block:: ini
 

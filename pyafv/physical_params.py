@@ -156,8 +156,9 @@ class PhysicalParams:
         for _ in range(restarts):
             z0 = rng.normal(size=2)
 
-            res = minimize(lambda z: self._energy_unconstrained(z, params), z0, method="BFGS",
-                           options={"gtol": 1e-8, "maxiter": 1e4})
+            with np.errstate(over='ignore', invalid='ignore'):    # suppress overflow warnings in exp() during optimization
+                res = minimize(lambda z: self._energy_unconstrained(z, params), z0, method="BFGS",
+                            options={"gtol": 1e-8, "maxiter": 1e4})
             val = res.fun
             z = res.x
 

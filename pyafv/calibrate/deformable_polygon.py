@@ -7,8 +7,6 @@ if TYPE_CHECKING:                             # pragma: no cover
     import matplotlib.axes
 
 import numpy as np
-from dataclasses import replace
-
 from ..physical_params import PhysicalParams
 
 
@@ -190,10 +188,6 @@ class DeformablePolygonSimulator:
         if not isinstance(phys, PhysicalParams):      # pragma: no cover
             raise TypeError("phys must be an instance of PhysicalParams")
         
-        self.phys = phys
-        self.num_vertices = num_vertices
-        self._get_target_shape_index()                # check model validity
-
         P0 = phys.P0
         KP = phys.KP
         Lambda = phys.Lambda
@@ -202,7 +196,10 @@ class DeformablePolygonSimulator:
         lambda_n = Lambda + lambda_c
         
         l0, d0 = phys.get_steady_state()
-        self.phys = replace(phys, r=l0)
+        self.phys = phys.replace(r=l0)
+
+        self.num_vertices = num_vertices
+        self._get_target_shape_index()                # check model validity
 
         theta = np.arctan2(np.sqrt(l0**2 - (d0)**2), d0)
         # ---------- initial shapes ----------
