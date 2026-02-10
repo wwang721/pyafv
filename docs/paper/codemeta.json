@@ -1,0 +1,30 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "https://orcid.org/0000-0002-0053-1069",
+      "@type": "Person",
+      "email": "wei.wang@jhu.edu",
+      "name": "Wei Wang",
+      "affiliation": "Johns Hopkins University"
+    },
+    {
+        "@id": "https://orcid.org/0000-0002-0765-6956",
+        "@type": "Person",
+        "email": "bcamley@jhu.edu",
+        "name": "Brian A. Camley",
+        "affiliation": "Johns Hopkins University"
+    }
+  ],
+  "identifier": "http://dx.doi.org/10.5281/zenodo.18091659",
+  "codeRepository": "https://github.com/wwang721/pyafv",
+  "datePublished": "2026-02-10",
+  "dateModified": "2026-02-10",
+  "dateCreated": "2026-02-10",
+  "description": "Python code that implements the active-finite-Voronoi (AFV) model.",
+  "keywords": "tissue mechanics, voronoi models, biophysical modeling",
+  "license": "MIT",
+  "title": "PyAFV",
+  "version": ""
+}
