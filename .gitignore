@@ -39,3 +39,6 @@ docs/_build/
 benchmark_*.svg
 tests/*.svg
 .benchmarks
+
+# JOSS
+docs/paper/paper.pdf
