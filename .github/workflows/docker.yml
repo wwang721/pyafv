@@ -1,0 +1,42 @@
+name: Docker image build and push
+
+on:
+  # release:
+  #   types: [published] # Triggers when you create a release
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest pyafv version from PyPI
+        id: get_version
+        run: |
+          VERSION=$(python -c "import json,urllib.request;print(json.load(urllib.request.urlopen('https://pypi.org/pypi/pyafv/json'))['info']['version'])")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .github/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/pyafv:latest
+            ghcr.io/${{ github.repository_owner }}/pyafv:${{ steps.get_version.outputs.version }}
