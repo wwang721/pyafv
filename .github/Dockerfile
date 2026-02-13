@@ -39,5 +39,8 @@ WORKDIR /app
 COPY --from=builder /src/dist/*.whl /tmp/
 RUN pip install --no-cache-dir /tmp/*.whl && rm -rf /tmp/*.whl
 
+# Install tqdm for progress bars
+Run pip install --no-cache-dir tqdm
+
 # Default command
 CMD ["python"]
