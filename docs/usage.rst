@@ -128,6 +128,8 @@ Run Python scripts with `pyafv` using:
 
    (.venv) $ docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
 
+Using ``${PWD}`` on Windows PowerShell instead of ``$(pwd)``.
+
 
 A simple example
 ----------------

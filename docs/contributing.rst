@@ -213,7 +213,7 @@ You should write benchmarks for any new performance-critical code you add.
 Featured examples
 --------------------
 
-To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras`` (add the ``--inexact`` flag if needed).
+To run current example scripts and notebooks in ``examples/``, install all optional dependencies (e.g., **tqdm**, **jupyter**) via ``uv sync --extra examples`` or ``uv sync --all-extras`` (add the ``--inexact`` flag to avoid removing installed packages).
 
 .. rubric:: Extra dependencies: ``examples``
 
