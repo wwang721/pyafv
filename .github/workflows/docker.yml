@@ -1,8 +1,8 @@
 name: Docker image build and push
 
 on:
-  # release:
-  #   types: [published] # Triggers when you create a release
+  release:
+    types: [published] # Triggers when you create a release
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,10 +25,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get latest pyafv version from PyPI
+      - name: Get version from repository
         id: get_version
         run: |
-          VERSION=$(python -c "import json,urllib.request;print(json.load(urllib.request.urlopen('https://pypi.org/pypi/pyafv/json'))['info']['version'])")
+          VERSION=$(sed -n 's/^__version__ = ["'\'']\([^"'\'']*\)["'\'']/\1/p' pyafv/_version.py)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build and push

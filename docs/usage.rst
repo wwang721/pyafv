@@ -57,6 +57,8 @@ Install from source
 .. _GitHub: https://github.com/wwang721/pyafv
 .. |PyPI| replace:: **PyPI**
 .. _PyPI: https://pypi.org/project/pyafv/
+.. |GitHub Package| replace:: **GitHub Package**
+.. _GitHub Package: https://github.com/wwang721/pyafv/pkgs/container/pyafv
 
 
 Installing from source can be necessary if *pip* installation does not work.
@@ -109,6 +111,22 @@ If you need to install **PyAFV** on a machine without internet access, you can d
    (.venv) $ pip install pyafv-<version>-<platform>.whl
 
 Alternatively, you can build **PyAFV** from source as described in the previous section. In this case, in addition to the required prerequisites listed above, the build-time dependencies **hatchling** and **hatch-cython** must also be available.
+
+
+Install using Docker
+^^^^^^^^^^^^^^^^^^^^
+
+Pull the Docker image from **GitHub Container Registry** (available as a |GitHub Package|_):
+
+.. code-block:: console
+
+   (.venv) $ docker pull ghcr.io/wwang721/pyafv:latest
+
+Run Python scripts with `pyafv` using:
+
+.. code-block:: console
+
+   (.venv) $ docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
 
 
 A simple example

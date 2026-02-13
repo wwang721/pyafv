@@ -63,6 +63,18 @@ pip install pyafv-<version>-<platform>.whl
 Alternatively, you can build **PyAFV** from source as described in the previous section. In this case, in addition to the required prerequisites of the package, the build-time dependencies **hatchling** and **hatch-cython** must also be available.
 
 
+### Install using Docker
+
+Pull the Docker image from **GitHub Container Registry** (available as a [**GitHub Package**](https://github.com/wwang721/pyafv/pkgs/container/pyafv)):
+```bash
+docker pull ghcr.io/wwang721/pyafv:latest
+```
+Run Python scripts with `pyafv` using:
+```bash
+docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
+```
+
+
 ## Usage
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb)
