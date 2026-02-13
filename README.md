@@ -71,7 +71,7 @@ docker pull ghcr.io/wwang721/pyafv:latest
 ```
 Run Python scripts with `pyafv` using:
 ```bash
-docker run --rm -v $(PWD):/app ghcr.io/wwang721/pyafv python <script_name>.py
+docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
 ```
 
 

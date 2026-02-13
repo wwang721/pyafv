@@ -126,7 +126,7 @@ Run Python scripts with `pyafv` using:
 
 .. code-block:: console
 
-   (.venv) $ docker run --rm -v $(PWD):/app ghcr.io/wwang721/pyafv python <script_name>.py
+   (.venv) $ docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
 
 
 A simple example
