@@ -1,4 +1,4 @@
-name: Zenodo Deployment Display
+name: Zenodo deployment display
 
 on:
   # release:
