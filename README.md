@@ -7,6 +7,7 @@
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
 [![Codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
 [![Documentation](https://app.readthedocs.org/projects/pyafv/badge/?version=latest)](https://pyafv.readthedocs.io)
+[![Docker](https://img.shields.io/docker/pulls/wwang721/pyafv.svg?logo=docker)](https://hub.docker.com/r/wwang721/pyafv)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb)
 
 <!--
@@ -65,15 +66,16 @@ Alternatively, you can build **PyAFV** from source as described in the previous 
 
 ### Install using Docker
 
-Pull the Docker image from **GitHub Container Registry** (available as a [**GitHub Package**](https://github.com/wwang721/pyafv/pkgs/container/pyafv)):
+Pull the Docker image from **Docker Hub**:
 ```bash
-docker pull ghcr.io/wwang721/pyafv:latest
+docker pull wwang721/pyafv:latest
 ```
-Run Python scripts with `pyafv` using:
+It's also available in the **GitHub Container Registry (GHCR)** under [**GitHub Packages**](https://github.com/wwang721/pyafv/pkgs/container/pyafv); use `ghcr.io/wwang721/pyafv` to pull from GHCR instead.
+Then run Python scripts with `pyafv` using:
 ```bash
-docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
+docker run --rm -v $(pwd):/app wwang721/pyafv python <script_name>.py
 ```
-Using `${PWD}` on Windows PowerShell instead of `$(pwd)`.
+Use `${PWD}` on Windows PowerShell instead of `$(pwd)`.
 
 
 ## Usage

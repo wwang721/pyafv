@@ -15,6 +15,8 @@ on:
       - '.github/workflows/zenodo-display.yml'
       - '.github/workflows/tests_all_platform.yml'
       - '.github/codecov.yml'
+      - '.github/Dockerfile'
+      - '.github/workflows/docker.yml'
 
   pull_request:
     branches: [ "main" ]
@@ -31,6 +33,8 @@ on:
       - '.github/workflows/zenodo-display.yml'
       - '.github/workflows/tests_all_platform.yml'
       - '.github/codecov.yml'
+      - '.github/Dockerfile'
+      - '.github/workflows/docker.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

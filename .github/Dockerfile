@@ -37,10 +37,7 @@ WORKDIR /app
 
 # Copy built wheel from builder and install
 COPY --from=builder /src/dist/*.whl /tmp/
-RUN pip install --no-cache-dir /tmp/*.whl && rm -rf /tmp/*.whl
-
-# Install tqdm for progress bars
-RUN pip install --no-cache-dir tqdm
+RUN pip install --no-cache-dir /tmp/*.whl tqdm && rm -rf /tmp/*.whl
 
 # Default command
 CMD ["python"]

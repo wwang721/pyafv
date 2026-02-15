@@ -57,8 +57,10 @@ Install from source
 .. _GitHub: https://github.com/wwang721/pyafv
 .. |PyPI| replace:: **PyPI**
 .. _PyPI: https://pypi.org/project/pyafv/
-.. |GitHub Package| replace:: **GitHub Package**
-.. _GitHub Package: https://github.com/wwang721/pyafv/pkgs/container/pyafv
+.. |GitHub Packages| replace:: **GitHub Packages**
+.. _GitHub Packages: https://github.com/wwang721/pyafv/pkgs/container/pyafv
+.. |Docker Hub| replace:: **Docker Hub**
+.. _Docker Hub: https://hub.docker.com/r/wwang721/pyafv
 
 
 Installing from source can be necessary if *pip* installation does not work.
@@ -116,19 +118,26 @@ Alternatively, you can build **PyAFV** from source as described in the previous 
 Install using Docker
 ^^^^^^^^^^^^^^^^^^^^
 
-Pull the Docker image from **GitHub Container Registry** (available as a |GitHub Package|_):
+.. only:: html
+   
+   .. image:: https://img.shields.io/docker/pulls/wwang721/pyafv.svg?logo=docker
+      :target: https://hub.docker.com/r/wwang721/pyafv
+      :alt: Docker
+
+Pull the Docker image from |Docker Hub|_:
 
 .. code-block:: console
 
-   (.venv) $ docker pull ghcr.io/wwang721/pyafv:latest
+   (.venv) $ docker pull wwang721/pyafv:latest
 
-Run Python scripts with `pyafv` using:
+It's also available in the **GitHub Container Registry (GHCR)** under |GitHub Packages|_; use ``ghcr.io/wwang721/pyafv`` to pull from GHCR instead.
+Then run Python scripts with `pyafv` using:
 
 .. code-block:: console
 
-   (.venv) $ docker run --rm -v $(pwd):/app ghcr.io/wwang721/pyafv python <script_name>.py
+   (.venv) $ docker run --rm -v $(pwd):/app wwang721/pyafv python <script_name>.py
 
-Using ``${PWD}`` on Windows PowerShell instead of ``$(pwd)``.
+Use ``${PWD}`` on Windows PowerShell instead of ``$(pwd)``.
 
 
 A simple example
