@@ -27,6 +27,7 @@ Install using pip
       :target: https://pypi.org/project/pyafv
       :alt: PyPI
 
+..
    .. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200
       :target: https://pypi.org/project/pyafv
       :alt: Downloads
