@@ -882,11 +882,16 @@ class FiniteVoronoiSimulator:
         Determine which pairs of cells are connected, i.e.,
         the distance from the cell center to its corresponding Voronoi ridge
         segment is < self.phys.r.
+        
+        .. note::
+            Connectivity cannot be determined from the cell-cell distance alone (e.g, d < 2r).
+            Two nearby cell centers may still be unconnected if another cell lies between
+            them, so that their Voronoi cells do not share a ridge.
         """
         ridge_points_arr = np.asarray(ridge_points, dtype=int).reshape(-1, 2)        # (R, 2)
         ridge_vertices_arr = np.asarray(ridge_vertices_all, dtype=int).reshape(-1, 2)  # (R, 2)
 
-        # take p2 for each ridge, avoid -1 points (representing space)
+        # take p2 for each ridge
         p1_idx = ridge_points_arr[:, 0]        # (R,)
         p2_idx = ridge_points_arr[:, 1]        # (R,)
         p2 = self.pts[p2_idx]                  # (R, 2)
