@@ -1,6 +1,7 @@
 # PyAFV
 
-[![PyPi](https://img.shields.io/pypi/v/pyafv?cacheSeconds=300)](https://pypi.org/project/pyafv/)
+[![PyPi](https://img.shields.io/pypi/v/pyafv?color=brightgreen&cacheSeconds=300)](https://pypi.org/project/pyafv/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyafv.svg)](https://anaconda.org/conda-forge/pyafv)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Tests on all platforms](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml)
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
@@ -36,6 +37,13 @@ print(pyafv.__version__)
 
 > On some HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using `unset PYTHONPATH` or prefixing the *pip* command with `PYTHONPATH=""`.
 
+As an alternative, you can install **PyAFV** via **conda** from the [conda-forge](https://anaconda.org/conda-forge/pyafv) channel:
+```bash
+conda install -c conda-forge pyafv
+```
+If you go this route, note that for Python 3.14 the package currently supports only the GIL-enabled build.
+
+
 ### Install from source
 
 Installing from source can be necessary if *pip* installation does not work. First, download and unzip the source code, then navigate to the root directory of the package and run:
@@ -65,7 +73,7 @@ pip install pyafv-<version>-<platform>.whl
 Alternatively, you can build **PyAFV** from source as described in the previous section. In this case, in addition to the required prerequisites of the package, the build-time dependencies **hatchling** and **hatch-cython** must also be available.
 
 
-### Install using Docker
+### Install using Docker 🐳
 
 Pull the Docker image from **Docker Hub**:
 ```bash

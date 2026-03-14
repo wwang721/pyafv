@@ -18,12 +18,12 @@ Installation
    - Python 3.10 and 3.14t (free-threaded) on *Windows ARM64* (not *x86-64*) are the only untested configurations. The builds succeed and the wheels are available on |PyPI|_, but automated testing is unavailable due to the absence of a supported **GitHub Actions** runners for these configurations.
 
 
-Install using pip
-^^^^^^^^^^^^^^^^^^
+Install using pip/conda
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. only:: html
 
-   .. image:: https://img.shields.io/pypi/v/pyafv?cacheSeconds=300
+   .. image:: https://img.shields.io/pypi/v/pyafv?color=brightgreen&cacheSeconds=300
       :target: https://pypi.org/project/pyafv
       :alt: PyPI
 
@@ -31,6 +31,12 @@ Install using pip
    .. image:: https://img.shields.io/pypi/dm/pyafv.svg?cacheSeconds=43200
       :target: https://pypi.org/project/pyafv
       :alt: Downloads
+
+.. only:: html
+
+   .. image:: https://img.shields.io/conda/vn/conda-forge/pyafv.svg
+      :target: https://anaconda.org/conda-forge/pyafv
+      :alt: conda-forge
 
 The package is available on |PyPI|_, so you should be able to install it using *pip* directly:
 
@@ -50,6 +56,14 @@ After installation, verify that it was successful by importing the package in *P
 
    On some HPC clusters, global Python path can contaminate the runtime environment. You may need to clear it explicitly using ``unset PYTHONPATH`` or prefixing the *pip* command with ``PYTHONPATH=""``.
 
+As an alternative, you can install **PyAFV** via *conda* from the |conda-forge|_ channel:
+
+.. code-block:: console
+   
+   (.venv) $ conda install -c conda-forge pyafv
+
+If you go this route, note that for Python 3.14 the package currently supports only the GIL-enabled build.
+
 
 Install from source
 ^^^^^^^^^^^^^^^^^^^^
@@ -62,6 +76,8 @@ Install from source
 .. _GitHub Packages: https://github.com/wwang721/pyafv/pkgs/container/pyafv
 .. |Docker Hub| replace:: **Docker Hub**
 .. _Docker Hub: https://hub.docker.com/r/wwang721/pyafv
+.. |conda-forge| replace:: **conda-forge**
+.. _conda-forge: https://anaconda.org/conda-forge/pyafv
 
 
 Installing from source can be necessary if *pip* installation does not work.

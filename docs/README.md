@@ -6,7 +6,7 @@ To build the documentation locally, run the following commands from the reposito
 ```bash
 pip install -r docs/requirements.txt
 ```
-Then build the documentation with:
+Then build the documentation site with:
 ```bash
 make html
 ```
@@ -15,3 +15,8 @@ or run:
 make doctest
 ```
 to execute and validate code blocks in the documentation.
+
+To generate a PDF of the entire documentation, run:
+```base
+make latexpdf
+```

@@ -1,6 +1,8 @@
 # Contributing to PyAFV
 
+<!--
 > *This contributing guide was drafted by **GitHub Copilot** and approved by the maintainer.*
+-->
 
 First off, **THANK YOU** for considering contributing to **PyAFV**! We welcome contributions from the community.
 
