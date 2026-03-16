@@ -218,7 +218,7 @@ To run current example scripts and notebooks in ``examples/``, install all optio
 .. rubric:: Extra dependencies: ``examples``
 
 +----------------+-------------------------------+-----------------------------------+
-| Package        | Minimum Version               | Usage                             |
+| Package        | Minimum version               | Usage                             |
 +================+===============================+===================================+
 | tqdm           | 4.67.1                        | Progress bars during calculations |
 +----------------+-------------------------------+-----------------------------------+

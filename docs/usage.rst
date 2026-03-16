@@ -90,7 +90,7 @@ In general, you do not need to manually install the dependencies, as *pip* will 
 We list the required packages and minimum versions below for reference:
 
 +----------------+-------------------------------+------------------------------------+
-| Package        | Minimum Version               | Usage                              |
+| Package        | Minimum version               | Usage                              |
 +================+===============================+====================================+
 | numpy          | 1.26.4                        | Numerical computations             |
 +----------------+-------------------------------+------------------------------------+

@@ -824,7 +824,7 @@ class FiniteVoronoiSimulator:
     # --------------------- Paradigm of plotting ---------------------
     def _plot_routine(self, ax: matplotlib.axes.Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray,
                       point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]],
-                      vertex_in_id: list[int], vertex_out_id: list[int], **kw) -> None:
+                      vertex_in_id: set[int], vertex_out_id: set[int], **kw) -> None:
         """
         Low-level plot routine. Draws:
           - All Voronoi edges (solid for finite, dashed for formerly-infinite)
@@ -893,7 +893,7 @@ class FiniteVoronoiSimulator:
                     angle2 = np.arctan2(y2-y, x2-x)
                     dangle = np.linspace(0, (angle1 - angle2) % (2*np.pi), 100)
 
-                    ax.plot(x + r * np.cos(angle2+dangle), y + r * np.sin(angle2+dangle), color=line_color_out,lw=line_width, alpha=line_alpha, zorder=2)
+                    ax.plot(x + r * np.cos(angle2+dangle), y + r * np.sin(angle2+dangle), color=line_color_out, lw=line_width, alpha=line_alpha, zorder=2)
 
         ax.set_aspect("equal")
         ax.set_xlim(center[0]-L, center[0]+L)
