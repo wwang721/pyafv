@@ -781,15 +781,24 @@ class FiniteVoronoiSimulator:
         )
 
     # --------------------- 2D plotting utilities ---------------------
-    def plot_2d(self, ax: matplotlib.axes.Axes | None = None, show: bool = False) -> matplotlib.axes.Axes:
+    def plot_2d(self, ax: matplotlib.axes.Axes | None = None, show: bool = False, **kw) -> matplotlib.axes.Axes:
         """
-        Build the finite-Voronoi structure and render a 2D snapshot.
+        Build the finite-Voronoi structure and render a 2D snapshot. The plotting style follows :py:func:`scipy.spatial.voronoi_plot_2d`.
 
-        Basically a wrapper of :py:meth:`_build_voronoi_with_extensions` and :py:meth:`_per_cell_geometry` functions + plot.
+        This method is basically a wrapper of :py:meth:`_build_voronoi_with_extensions` and :py:meth:`_per_cell_geometry` functions + plot.
 
         Args:
             ax: If provided, draw into this axes; otherwise get the current axes.
             show: Whether to call ``plt.show()`` at the end.
+            show_points (bool, optional): Add the Voronoi points to the plot, default True.
+            point_size (float, optional): Specifies the marker size for Voronoi points, default 2.
+            show_inner_vertices (bool, optional): Add inner vertices to the plot, default False.
+            show_outer_vertices (bool, optional): Add outer vertices to the plot, default False.
+            line_color_in (str, optional): Specifies the color for inner-vertex edges, default 'b'.
+            line_color_out (str, optional): Specifies the color for outer-vertex edges, default 'C6'.
+            line_width (float, optional): Specifies the line width for cell boundaries, default 1.5.
+            line_alpha (float, optional): Specifies the line alpha for cell boundaries, default 1.0.
+            show_voronoi (bool, optional): Add the Voronoi edges to the plot, default True.
         
         Returns:
             The matplotlib axes containing the plot.
@@ -805,7 +814,8 @@ class FiniteVoronoiSimulator:
             ax = plt.gca()
         
         self._plot_routine(ax, vor, vertices_all, ridge_vertices_all,
-                   geom["point_edges_type"], geom["point_vertices_f_idx"])
+                   geom["point_edges_type"], geom["point_vertices_f_idx"], 
+                   geom['vertex_in_id'], geom['vertex_out_id'], **kw)
         
         if show:
             plt.show()
@@ -813,7 +823,8 @@ class FiniteVoronoiSimulator:
 
     # --------------------- Paradigm of plotting ---------------------
     def _plot_routine(self, ax: matplotlib.axes.Axes, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray,
-                      point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]]) -> None:
+                      point_edges_type: list[list[int]], point_vertices_f_idx: list[list[int]],
+                      vertex_in_id: list[int], vertex_out_id: list[int], **kw) -> None:
         """
         Low-level plot routine. Draws:
           - All Voronoi edges (solid for finite, dashed for formerly-infinite)
@@ -833,17 +844,29 @@ class FiniteVoronoiSimulator:
         else:
             L = 5.0 * r
 
+        line_color_in = kw.get('line_color_in', 'b')
+        line_color_out = kw.get('line_color_out', 'C6')
+        line_width = kw.get('line_width', 1.5)
+        line_alpha = kw.get('line_alpha', 1.0)
+
         # Draw Voronoi ridge segments
-        for idx in range(len(vor.ridge_vertices)):
-            x1, y1 = vertices_all[ridge_vertices_all[idx][0]]
-            x2, y2 = vertices_all[ridge_vertices_all[idx][1]]
-            if -1 not in vor.ridge_vertices[idx]:
-                ax.plot([x1, x2], [y1, y2], 'k-', lw=0.5)
-            else:
-                ax.plot([x1, x2], [y1, y2], 'k--', lw=0.5)
+        if kw.get('show_voronoi', True):
+            for idx in range(len(vor.ridge_vertices)):
+                x1, y1 = vertices_all[ridge_vertices_all[idx][0]]
+                x2, y2 = vertices_all[ridge_vertices_all[idx][1]]
+                if -1 not in vor.ridge_vertices[idx]:
+                    ax.plot([x1, x2], [y1, y2], 'k-', lw=0.5, alpha=line_alpha)
+                else:
+                    ax.plot([x1, x2], [y1, y2], 'k--', lw=0.5, alpha=line_alpha)
 
         # Draw cell centers
-        ax.plot(pts[:, 0], pts[:, 1], 'o', color='C0', markersize=2)
+        if kw.get('show_points', True):
+            point_size = kw.get('point_size', 2)
+            ax.plot(pts[:, 0], pts[:, 1], 'o', color='C0', markersize=point_size)
+        if kw.get('show_inner_vertices', False):
+            ax.plot(vertices_all[list(vertex_in_id), 0], vertices_all[list(vertex_in_id), 1], 'o', color=line_color_in, markerfacecolor='none', zorder=2)
+        if kw.get('show_outer_vertices', False):
+            ax.plot(vertices_all[list(vertex_out_id), 0], vertices_all[list(vertex_out_id), 1], 'o', color=line_color_out, markerfacecolor='none', zorder=2)
 
         # Draw each cell boundary
         for idx in range(N):
@@ -853,7 +876,7 @@ class FiniteVoronoiSimulator:
             x, y = pts[idx]
             if len(edges_type) < 2:
                 angle = np.linspace(0, 2*np.pi, 100)
-                ax.plot(x + r * np.cos(angle), y + r * np.sin(angle), color="C6", zorder=2)
+                ax.plot(x + r * np.cos(angle), y + r * np.sin(angle), color=line_color_out, lw=line_width, alpha=line_alpha, zorder=2)
                 continue
 
             for idx_f, edge_type in enumerate(edges_type):
@@ -864,13 +887,13 @@ class FiniteVoronoiSimulator:
                 x2, y2 = vertices_all[v2_idx]
 
                 if edge_type == 1:
-                    ax.plot([x1, x2], [y1, y2], 'b-', zorder=1)
+                    ax.plot([x1, x2], [y1, y2], '-', color=line_color_in, lw=line_width, alpha=line_alpha, zorder=1)
                 else:
                     angle1 = np.arctan2(y1-y, x1-x)
                     angle2 = np.arctan2(y2-y, x2-x)
                     dangle = np.linspace(0, (angle1 - angle2) % (2*np.pi), 100)
 
-                    ax.plot(x + r * np.cos(angle2+dangle), y + r * np.sin(angle2+dangle), color="C6", zorder=2)
+                    ax.plot(x + r * np.cos(angle2+dangle), y + r * np.sin(angle2+dangle), color=line_color_out,lw=line_width, alpha=line_alpha, zorder=2)
 
         ax.set_aspect("equal")
         ax.set_xlim(center[0]-L, center[0]+L)

@@ -332,13 +332,18 @@ class DeformablePolygonSimulator:
                 break
 
 
-    def plot_2d(self, ax: matplotlib.axes.Axes | None = None, show: bool = False) -> matplotlib.axes.Axes:
+    def plot_2d(self, ax: matplotlib.axes.Axes | None = None, show: bool = False, **kw) -> matplotlib.axes.Axes:
         """
         Render a 2D snapshot of the cell doublet in DP model.
 
         Args:
             ax: If provided, draw into this axes; otherwise get the current axes.
             show: Whether to call ``plt.show()`` at the end.
+            line_color_in (str, optional): Specifies the color for the contact edge.
+            line_color_out (str, optional): Specifies the color for the vertices and non-contact edges.
+            line_width_in (float, optional): Specifies the line width for the contact edge.
+            line_width_out (float, optional): Specifies the line width for the non-contact edges.
+            point_size (float, optional): Specifies the marker size for the vertices.
         
         Returns:
             The matplotlib axes containing the plot.
@@ -352,10 +357,16 @@ class DeformablePolygonSimulator:
         pts1 = self.pts1
         pts2 = self.pts2
 
-        ax.plot(pts1[:, 0], pts1[:, 1], 'o-', color=(21/255, 174/255, 22/255), ms=4, zorder=1)
+        line_color_in = kw.get('line_color_in', (222/255, 49/255, 34/255))
+        line_color_out = kw.get('line_color_out', (21/255, 174/255, 22/255))
+        line_width_in = kw.get('line_width_in', 3)
+        line_width_out = kw.get('line_width_out', 1.5)
+        point_size = kw.get('point_size', 4)
+
+        ax.plot(pts1[:, 0], pts1[:, 1], 'o-', color=line_color_out, ms=point_size, lw=line_width_out, zorder=1)
         ax.plot([pts1[0, 0], pts1[-1, 0]],
-                [pts1[0, 1], pts1[-1, 1]], '-', color=(222/255, 49/255, 34/255), lw=3, zorder=0)  # contact
-        ax.plot(pts2[:, 0], pts2[:, 1], 'o-', color=(21/255, 174/255, 22/255), ms=4, zorder=1)
+                [pts1[0, 1], pts1[-1, 1]], '-', color=line_color_in, lw=line_width_in, zorder=0)  # contact
+        ax.plot(pts2[:, 0], pts2[:, 1], 'o-', color=line_color_out, ms=point_size, lw=line_width_out, zorder=1)
 
 
         box_size = 2.5 * self.phys.r
