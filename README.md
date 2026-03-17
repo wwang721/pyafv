@@ -86,11 +86,11 @@ Alternatively, you can build **PyAFV** from source as described in the previous 
 
 ### Install using Docker 🐳
 
-Pull the Docker image from **Docker Hub**:
+**PyAFV** can also be installed via containerized environments. Pull the Docker image from **Docker Hub**:
 ```bash
 docker pull wwang721/pyafv:latest
 ```
-It's also available in the **GitHub Container Registry (GHCR)** under [**GitHub Packages**](https://github.com/wwang721/pyafv/pkgs/container/pyafv); use `ghcr.io/wwang721/pyafv` to pull from GHCR instead.
+The image is also available via the **GitHub Container Registry (GHCR)** under [**GitHub Packages**](https://github.com/wwang721/pyafv/pkgs/container/pyafv); use `ghcr.io/wwang721/pyafv` to pull from GHCR instead.
 <!--
 Then run Python scripts with `pyafv` using:
 ```bash
