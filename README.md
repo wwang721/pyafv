@@ -18,6 +18,8 @@
 [![Soft Matter](https://img.shields.io/badge/Soft%20Matter-XXXXX-63a7c2.svg?colorA=63a7c2&colorB=grey)](https://doi.org/10.1103/PhysRevE.109.054408)
 -->
 
+<img src="https://raw.githubusercontent.com/pyafv/assets/main/gif/test.gif" alt="pbc" align="right" />
+
 Python code that implements the **active-finite-Voronoi (AFV) model** in 2D.
 The AFV framework was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
