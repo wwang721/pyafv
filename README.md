@@ -48,7 +48,7 @@ As an alternative, you can install **PyAFV** via *conda* from the **conda-forge*
 ```bash
 conda install -c conda-forge pyafv
 ```
-If you go this route, note that for Python 3.14 the package currently supports only the GIL-enabled build.
+If you go this route, note that for Python 3.14 the **conda-forge** distribution currently provides only the GIL-enabled build.
 
 
 <!--
@@ -91,11 +91,13 @@ Pull the Docker image from **Docker Hub**:
 docker pull wwang721/pyafv:latest
 ```
 It's also available in the **GitHub Container Registry (GHCR)** under [**GitHub Packages**](https://github.com/wwang721/pyafv/pkgs/container/pyafv); use `ghcr.io/wwang721/pyafv` to pull from GHCR instead.
+<!--
 Then run Python scripts with `pyafv` using:
 ```bash
 docker run --rm -v $(pwd):/app wwang721/pyafv python <script_name>.py
 ```
-<!-- Use `${PWD}` on Windows PowerShell instead of `$(pwd)`.-->
+Use `${PWD}` on Windows PowerShell instead of `$(pwd)`.
+-->
 
 
 ## Usage
