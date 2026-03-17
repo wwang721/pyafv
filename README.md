@@ -1,6 +1,6 @@
 # PyAFV
 
-<img src="https://raw.githubusercontent.com/pyafv/assets/main/gif/test.gif" alt="pyafv_pbc" align="right" />
+<a href="https://pyafv.github.io"><img src="https://raw.githubusercontent.com/pyafv/assets/main/gif/test.gif" alt="pyafv_pbc" align="right" /></a>
 
 [![PyPi](https://img.shields.io/pypi/v/pyafv?color=brightgreen&cacheSeconds=300)](https://pypi.org/project/pyafv/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyafv.svg)](https://anaconda.org/conda-forge/pyafv)
@@ -22,8 +22,9 @@
 
 **PyAFV** is a Python package for simulating cellular tissues based on the 2D **active finite Voronoi (AFV) model**.
 It provides a computational framework for investigating collective cell behaviors such as motility, adhesion, jamming, and tissue fracture in active matter and biophysical systems.
-In contrast to standard vertex or Voronoi models, AFV model incorporates finite interaction ranges and cell-medium interfaces, allowing for detachment, free boundaries, and fragmentation.
-The AFV formalism was introduced and developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
+In contrast to standard vertex or Voronoi models, the AFV model incorporates finite interaction ranges and cell-medium interfaces, allowing for detachment, free boundaries, and fragmentation.
+The package includes tools for geometry handling, time evolution, and analysis of cell configurations.
+The AFV formalism was introduced and further developed in, for example, Refs. [[1](#huang2023bridging)&ndash;[3](#wang2026divergence)].
 
 
 ## Installation
