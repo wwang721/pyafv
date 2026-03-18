@@ -51,7 +51,7 @@ It provides explicit access to intermediate geometry and force diagnostics, maki
 
 A second need is transparent calibration.
 Near-detachment behavior in finite-Voronoi geometries can be sensitive to regularization and parameter choices, leading to ambiguous or model-dependent detachment forces if calibration is not performed explicitly [@wang2026divergence].
-`pyafv` includes a dedicated calibration submodule that formalizes this process and enables reproducible comparison between AFV simulations and related polygonal models.
+`pyafv` includes a dedicated calibration module that formalizes this process and enables reproducible comparison between AFV simulations and related polygonal models.
 
 # Methods and implementation
 
@@ -116,10 +116,10 @@ The snippet below illustrates a minimal AFV workflow for geometry and force comp
 import numpy as np
 import pyafv as afv
 
-N = 100
-pts = np.random.rand(N, 2) * 10
-phys = afv.PhysicalParams()
-sim = afv.FiniteVoronoiSimulator(pts, phys)
+N = 100                                          # number of cells
+pts = np.random.rand(N, 2) * 10                  # initial positions
+phys = afv.PhysicalParams(r=1.0)                 # use default parameter values
+sim = afv.FiniteVoronoiSimulator(pts, phys)      # initialize the simulator
 
 diag = sim.build()
 forces = diag["forces"]
