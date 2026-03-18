@@ -111,7 +111,7 @@ import pyafv as afv
 
 N = 100                                          # number of cells
 pts = np.random.rand(N, 2) * 10                  # initial positions
-params = afv.PhysicalParams()                    # use default parameter values
+params = afv.PhysicalParams(r=1.0)               # use default parameter values
 sim = afv.FiniteVoronoiSimulator(pts, params)    # initialize the simulator
 sim.plot_2d(show=True)                           # visualize the Voronoi diagram
 ```
@@ -119,8 +119,7 @@ To compute the conservative forces and extract detailed geometric information (e
 ```python
 diag = sim.build()
 ```
-The returned object `diag` is a Python `dict` containing these quantities.
-
+The returned object `diag` is a Python `dict` containing these quantities. Refer to the [documentation](https://pyafv.readthedocs.io/latest/usage.html#a-simple-example) for more detailed usage.
 
 ## Simulation previews
 
