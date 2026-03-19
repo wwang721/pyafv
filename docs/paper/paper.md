@@ -29,7 +29,7 @@ bibliography: paper.bib
 # Summary
 
 Collective cell behavior is commonly modeled using frameworks that balance geometric realism against computational efficiency.
-Self-propelled particle models are computationally efficient but lack explicit cell boundaries and interfacial mechanics [@fily2012athermal; @levine2000self; @wang2025controlling], while phase-field models resolve interfaces in detail at substantially higher computational cost for large systems [@chiang2024intercellular; @chiang2024multiphase]. Voronoi- and vertex-type models occupy an intermediate regime, retaining cell-shape-dependent mechanics with comparatively low overhead [@bi2016motility; @park2015unjamming; @henkes2020dense].
+Self-propelled particle models are computationally efficient but lack explicit cell boundaries and interfacial mechanics [@fily2012athermal; @levine2000self; @wang2026controlling], while phase-field models resolve interfaces in detail at substantially higher computational cost for large systems [@chiang2024intercellular; @chiang2024multiphase]. Voronoi- and vertex-type models occupy an intermediate regime, retaining cell-shape-dependent mechanics with comparatively low overhead [@bi2016motility; @park2015unjamming; @henkes2020dense].
 
 The active finite Voronoi (AFV) model extends conventional confluent Voronoi models to nonconfluent settings by introducing a finite radius scale $\ell$ around each cell center [@teomy2018confluent; @huang2023bridging].
 This construction allows cell-cell contacts to terminate naturally when Voronoi edges extend beyond $\ell$, enabling gap opening and cell detachment within the same geometric framework, which is essential for studies of tissue cohesion, detachment, and fracture-like events.
