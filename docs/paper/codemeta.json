@@ -22,7 +22,7 @@
   "datePublished": "2026-02-10",
   "dateModified": "2026-02-10",
   "dateCreated": "2026-02-10",
-  "description": "Python code that implements the active-finite-Voronoi (AFV) model.",
+  "description": "Python code that implements the active finite Voronoi (AFV) model.",
   "keywords": "tissue mechanics, voronoi models, biophysical modeling",
   "license": "MIT",
   "title": "PyAFV",
