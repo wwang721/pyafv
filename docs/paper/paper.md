@@ -1,5 +1,5 @@
 ---
-title: 'PyAFV: A Python package for active finite-Voronoi simulations of nonconfluent tissues'
+title: 'PyAFV: A Python package for active finite Voronoi simulations of nonconfluent tissues'
 tags:
   - Python
   - biophysics
@@ -9,11 +9,10 @@ tags:
 authors:
   - name: Wei Wang
     orcid: 0000-0002-0053-1069
-    # corresponding: true # (This is how to denote the corresponding author)
+    corresponding: true # (This is how to denote the corresponding author)
     affiliation: 1
   - name: Brian A. Camley
     orcid: 0000-0002-0765-6956
-    # corresponding: true # (This is how to denote the corresponding author)
     affiliation: "1, 2" # (Multiple affiliations must be quoted)
 affiliations:
  - name: Department of Physics and Astronomy, Johns Hopkins University, Baltimore, United States
@@ -29,7 +28,7 @@ bibliography: paper.bib
 # Summary
 
 Collective cell behavior is commonly modeled using frameworks that balance geometric realism against computational efficiency.
-Self-propelled particle models are computationally efficient but lack explicit cell boundaries and interfacial mechanics [@fily2012athermal; @levine2000self; @wang2025controlling], while phase-field models resolve interfaces in detail at substantially higher computational cost for large systems [@chiang2024intercellular; @chiang2024multiphase]. Voronoi- and vertex-type models occupy an intermediate regime, retaining cell-shape-dependent mechanics with comparatively low overhead [@bi2016motility; @park2015unjamming; @henkes2020dense].
+Self-propelled particle models are computationally efficient but lack explicit cell boundaries and interfacial mechanics [@fily2012athermal; @levine2000self; @wang2026controlling], while phase-field models resolve interfaces in detail at substantially higher computational cost for large systems [@chiang2024intercellular; @chiang2024multiphase]. Voronoi- and vertex-type models occupy an intermediate regime, retaining cell-shape-dependent mechanics with comparatively low overhead [@bi2016motility; @park2015unjamming; @henkes2020dense].
 
 The active finite Voronoi (AFV) model extends conventional confluent Voronoi models to nonconfluent settings by introducing a finite radius scale $\ell$ around each cell center [@teomy2018confluent; @huang2023bridging].
 This construction allows cell-cell contacts to terminate naturally when Voronoi edges extend beyond $\ell$, enabling gap opening and cell detachment within the same geometric framework, which is essential for studies of tissue cohesion, detachment, and fracture-like events.
@@ -37,7 +36,7 @@ In the AFV model, each cell boundary is composed of straight Voronoi contact seg
 
 `pyafv` is an open-source Python package implementing this framework in two dimensions.
 It provides high-level APIs for geometry/force computation, active dynamics workflows, visualization, and diagnostics such as cell-cell connectivity and contacting/non-contacting boundary length.
-The package also includes calibration tools that connect AFV behavior to a deformable-polygon (DP) doublet model [@wang2026divergence; @lv2024active; @boromand2018jamming], enabling practical parameter tuning for near-detachment mechanics.
+The package also includes calibration tools that connect AFV behavior to a deformable polygon (DP) doublet model [@wang2026divergence; @lv2024active; @boromand2018jamming], enabling practical parameter tuning for near-detachment mechanics.
 
 # Statement of need
 
@@ -50,7 +49,7 @@ The software is designed for groups that need a practical compromise between geo
 It provides explicit access to intermediate geometry and force diagnostics, making it suitable not only for production simulations but also for method validation and mechanistic interpretation.
 
 A second need is transparent calibration.
-Near-detachment behavior in finite-Voronoi geometries can be sensitive to regularization and parameter choices, leading to ambiguous or model-dependent detachment forces if calibration is not performed explicitly [@wang2026divergence].
+Near-detachment behavior in finite Voronoi geometries can be sensitive to regularization and parameter choices, leading to ambiguous or model-dependent detachment forces if calibration is not performed explicitly [@wang2026divergence].
 `pyafv` includes a dedicated calibration module that formalizes this process and enables reproducible comparison between AFV simulations and related polygonal models.
 
 # Methods and implementation
@@ -89,7 +88,7 @@ The package also supports heterogeneous preferred areas through per-cell updates
 
 ## Numerical design
 
-For $N \geqslant 3$, `pyafv` uses SciPy Voronoi tessellations only as an initial geometric scaffold [@scipy2020]. Unbounded ridges arising under open boundaries are detected and resolved by explicitly introducing extension vertices and updating region membership, enabling finite-Voronoi cell geometries to be constructed without imposing artificial confinement or periodic boundaries.
+For $N \geqslant 3$, `pyafv` uses SciPy Voronoi tessellations only as an initial geometric scaffold [@scipy2020]. Unbounded ridges arising under open boundaries are detected and resolved by explicitly introducing extension vertices and updating region membership, enabling finite Voronoi cell geometries to be constructed without imposing artificial confinement or periodic boundaries.
 Special handling is included for small-$N$ edge cases.
 Geometry routines then decompose each cell into polygonal and arc contributions to compute area/perimeter quantities and the corresponding force derivatives.
 
@@ -126,7 +125,7 @@ forces = diag["forces"]
 connections = diag["connections"]
 ```
 
-To visualize the constructed finite-Voronoi diagram, users can run `sim.plot_2d(show=True)`.
+To visualize the constructed finite Voronoi diagram, users can run `sim.plot_2d(show=True)`.
 With the same interface, users can run relaxation trajectories, add active self-propulsion, extract connectivity networks, and update preferred areas per cell.
 Additional examples and notebooks in the project demonstrate these workflows, including custom plotting and periodic-boundary visualization. The full API and documentation are available for further details [@wang2026pyafv].
 
