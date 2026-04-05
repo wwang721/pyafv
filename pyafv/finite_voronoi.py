@@ -194,11 +194,24 @@ class FiniteVoronoiSimulator:
 
             center = np.mean(pts, axis=0)
 
+            """ Code with issues, see below for the fix:
             span_x = np.ptp(vor.vertices[:, 0])  # span in x
             span_y = np.ptp(vor.vertices[:, 1])  # span in y
             pts_span_x = np.ptp(pts[:, 0])  # span in x
             pts_span_y = np.ptp(pts[:, 1])  # span in y
             span = max(span_x, span_y, pts_span_x, pts_span_y, 10. * r)  # overall span
+            """
+
+            # Sometimes (e.g., three almost collinear points), we will get only one vertex and so, zero span.
+            # Therefore, we need to stack vertices and points together to compute the overall span.
+            xmin = min(np.min(vor.vertices[:, 0]), np.min(pts[:, 0]))
+            xmax = max(np.max(vor.vertices[:, 0]), np.max(pts[:, 0]))
+            ymin = min(np.min(vor.vertices[:, 1]), np.min(pts[:, 1]))
+            ymax = max(np.max(vor.vertices[:, 1]), np.max(pts[:, 1]))
+
+            span_x = xmax - xmin
+            span_y = ymax - ymin
+            span = max(span_x, span_y, 10.0 * r)  # overall span
 
             # Base copies
             vertices_base = vor.vertices  # (K,2)
