@@ -144,6 +144,7 @@ Below are representative simulation snapshots generated using the code:
     * [QhullError when 3+ points are collinear #1](https://github.com/wwang721/pyafv/issues/1) [Closed - see [comments](https://github.com/wwang721/pyafv/issues/1#issuecomment-3701355742)]
     *  [Add customized plotting to examples illustrating access to vertices and edges #5](https://github.com/wwang721/pyafv/issues/5) [Completed in PR [#7](https://github.com/wwang721/pyafv/pull/7)]
     * [Time step dependence of intercellular adhesion in simulations #8](https://github.com/wwang721/pyafv/issues/8) [Closed in PR [#9](https://github.com/wwang721/pyafv/pull/9)]
+    * [Handle degenerate 4-fold Voronoi vertices causing unpacking errors in _assemble_forces #38](https://github.com/wwang721/pyafv/issues/38) [Closed in PR [#42](https://github.com/wwang721/pyafv/pull/42)]
 
 - Some releases of this repository are cross-listed on [Zenodo](https://doi.org/10.5281/zenodo.18091659):
 
