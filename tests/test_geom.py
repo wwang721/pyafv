@@ -41,3 +41,11 @@ def test_geom(data_dir, simulator):
 
     #-----------------------------
     simulator.plot_2d()
+
+
+def test_right_angle(simulator):
+    # Test a right angle geometry for Voronoi diagram construction
+
+    pts = np.array([[-1., 2.], [-1., -1.], [1., -1.]]) * 0.5
+    simulator.update_positions(pts)
+    simulator.build()
