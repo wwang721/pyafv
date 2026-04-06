@@ -554,7 +554,7 @@ class FiniteVoronoiSimulator:
             D0 = _row_dot(ri - rj, np.column_stack((rj_minus_rk[:,1], -rj_minus_rk[:,0])))  # cross2(ri-rj, rj-rk)
             # rewrite cross robustly:
             D0 = (ri[:,0]-rj[:,0])*(rj_minus_rk[:,1]) - (ri[:,1]-rj[:,1])*(rj_minus_rk[:,0])
-            D = 2.0 * (D0 ** 2)
+            D = 2.0 * (D0 ** 2)  # (H,)
 
             # alphas
             alpha_i = _row_dot(rj_minus_rk, rj_minus_rk) * _row_dot(ri_minus_rj, ri_minus_rk) / D
@@ -563,30 +563,30 @@ class FiniteVoronoiSimulator:
 
             # d_alpha_j / d_ri and d_alpha_k / d_ri
             cross_z = np.column_stack((rj_minus_rk[:, 1], -rj_minus_rk[:, 0]))  # (H,2)
-            term_j_ri = (rk_minus_rj / _row_dot(rj_minus_ri, rj_minus_rk)[:, None]) + 2.0 * (ri_minus_rk / _row_dot(ri_minus_rk, ri_minus_rk)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            term_k_ri = (rj_minus_rk / _row_dot(rk_minus_ri, rk_minus_rj)[:, None]) + 2.0 * (ri_minus_rj / _row_dot(ri_minus_rj, ri_minus_rj)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            d_alpha_j_d_ri = (alpha_j[:, None] * term_j_ri)  # (H,2)
-            d_alpha_k_d_ri = (alpha_k[:, None] * term_k_ri)
+            term_j_ri = 2.0 * (ri_minus_rk / _row_dot(ri_minus_rk, ri_minus_rk)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            term_k_ri = 2.0 * (ri_minus_rj / _row_dot(ri_minus_rj, ri_minus_rj)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            d_alpha_j_d_ri = (_row_dot(ri_minus_rk, ri_minus_rk)/D)[:, None] * rk_minus_rj + (alpha_j[:, None] * term_j_ri)  # (H,2)
+            d_alpha_k_d_ri = (_row_dot(ri_minus_rj, ri_minus_rj)/D)[:, None] * rj_minus_rk + (alpha_k[:, None] * term_k_ri)
 
             d_h_in_d_xi = alpha_i[:, None] * np.array([1.0, 0.0]) + d_alpha_j_d_ri[:, [0]] * (rj - ri) + d_alpha_k_d_ri[:, [0]] * (rk - ri)
             d_h_in_d_yi = alpha_i[:, None] * np.array([0.0, 1.0]) + d_alpha_j_d_ri[:, [1]] * (rj - ri) + d_alpha_k_d_ri[:, [1]] * (rk - ri)
 
             # d_alpha_i / d_rj and d_alpha_k / d_rj
             cross_z = np.column_stack((-(ri_minus_rk)[:, 1], (ri_minus_rk)[:, 0]))
-            term_i_rj = (rk_minus_ri / _row_dot(ri_minus_rj, ri_minus_rk)[:, None]) + 2.0 * (rj_minus_rk / _row_dot(rj_minus_rk, rj_minus_rk)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            term_k_rj = (ri_minus_rk / _row_dot(rk_minus_rj, rk_minus_ri)[:, None]) + 2.0 * (rj_minus_ri / _row_dot(rj_minus_ri, rj_minus_ri)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            d_alpha_i_d_rj = (alpha_i[:, None] * term_i_rj)
-            d_alpha_k_d_rj = (alpha_k[:, None] * term_k_rj)
+            term_i_rj = 2.0 * (rj_minus_rk / _row_dot(rj_minus_rk, rj_minus_rk)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            term_k_rj = 2.0 * (rj_minus_ri / _row_dot(rj_minus_ri, rj_minus_ri)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            d_alpha_i_d_rj = (_row_dot(rj_minus_rk, rj_minus_rk)/D)[:, None] * rk_minus_ri + (alpha_i[:, None] * term_i_rj)
+            d_alpha_k_d_rj = (_row_dot(ri_minus_rj, ri_minus_rj)/D)[:, None] * ri_minus_rk + (alpha_k[:, None] * term_k_rj)
 
             d_h_in_d_xj = d_alpha_i_d_rj[:, [0]] * (ri - rj) + alpha_j[:, None] * np.array([1.0, 0.0]) + d_alpha_k_d_rj[:, [0]] * (rk - rj)
             d_h_in_d_yj = d_alpha_i_d_rj[:, [1]] * (ri - rj) + alpha_j[:, None] * np.array([0.0, 1.0]) + d_alpha_k_d_rj[:, [1]] * (rk - rj)
 
             # d_alpha_i / d_rk and d_alpha_j / d_rk
             cross_z = np.column_stack(((ri_minus_rj)[:, 1], -(ri_minus_rj)[:, 0]))
-            term_i_rk = (rj_minus_ri / _row_dot(ri_minus_rk, ri_minus_rj)[:, None]) + 2.0 * (rk_minus_rj / _row_dot(rk_minus_rj, rk_minus_rj)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            term_j_rk = (ri_minus_rj / _row_dot(rj_minus_rk, rj_minus_ri)[:, None]) + 2.0 * (rk_minus_ri / _row_dot(rk_minus_ri, rk_minus_ri)[:, None]) - 2.0 * (cross_z / D0[:, None])
-            d_alpha_i_d_rk = (alpha_i[:, None] * term_i_rk)
-            d_alpha_j_d_rk = (alpha_j[:, None] * term_j_rk)
+            term_i_rk = 2.0 * (rk_minus_rj / _row_dot(rk_minus_rj, rk_minus_rj)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            term_j_rk = 2.0 * (rk_minus_ri / _row_dot(rk_minus_ri, rk_minus_ri)[:, None]) - 2.0 * (cross_z / D0[:, None])
+            d_alpha_i_d_rk = (_row_dot(rj_minus_rk, rj_minus_rk)/D)[:, None] * rj_minus_ri + (alpha_i[:, None] * term_i_rk)
+            d_alpha_j_d_rk = (_row_dot(ri_minus_rk, ri_minus_rk)/D)[:, None] * ri_minus_rj + (alpha_j[:, None] * term_j_rk)
 
             d_h_in_d_xk = d_alpha_i_d_rk[:, [0]] * (ri - rk) + d_alpha_j_d_rk[:, [0]] * (rj - rk) + alpha_k[:, None] * np.array([1.0, 0.0])
             d_h_in_d_yk = d_alpha_i_d_rk[:, [1]] * (ri - rk) + d_alpha_j_d_rk[:, [1]] * (rj - rk) + alpha_k[:, None] * np.array([0.0, 1.0])
