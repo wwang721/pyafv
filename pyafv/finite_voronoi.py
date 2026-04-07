@@ -33,7 +33,7 @@ def _row_dot(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 class FiniteVoronoiSimulator:
-    """Simulator for the active-finite-Voronoi (AFV) model.
+    """Simulator for the active finite Voronoi (AFV) model.
 
     This class provides an interface to simulate the finite Voronoi model.
     It wraps around the two backend implementations, which may be
@@ -291,7 +291,7 @@ class FiniteVoronoiSimulator:
     # --------------------- Geometry & energy contributions per cell ---------------------
     def _per_cell_geometry(self, vor: Voronoi, vertices_all: np.ndarray, ridge_vertices_all: np.ndarray, num_vertices: int, vertexpair2ridge: dict[tuple[int, int], int]) -> dict[str,object]:
         """
-        Build the finite-Voronoi per-cell geometry and energy contributions.
+        Build the finite Voronoi per-cell geometry and energy contributions.
 
         Iterate each cell to:
           - sort polygon/arc vertices around each cell
@@ -738,7 +738,7 @@ class FiniteVoronoiSimulator:
 
     # --------------------- One integration step ---------------------
     def build(self, connect: bool = True) -> dict[str, object]:
-        """ Build the finite-Voronoi structure and compute forces, returning a dictionary of diagnostics.
+        """ Build the finite Voronoi structure and compute forces, returning a dictionary of diagnostics.
 
         Do the following:
           - Build Voronoi (+ extensions)
@@ -808,7 +808,7 @@ class FiniteVoronoiSimulator:
     # --------------------- 2D plotting utilities ---------------------
     def plot_2d(self, ax: matplotlib.axes.Axes | None = None, show: bool = False, **kw) -> matplotlib.axes.Axes:
         """
-        Build the finite-Voronoi structure and render a 2D snapshot. The plotting style follows :py:func:`scipy.spatial.voronoi_plot_2d`.
+        Build the finite Voronoi structure and render a 2D snapshot. The plotting style follows :py:func:`scipy.spatial.voronoi_plot_2d`.
 
         This method is basically a wrapper of :py:meth:`_build_voronoi_with_extensions` and :py:meth:`_per_cell_geometry` functions + plot.
 

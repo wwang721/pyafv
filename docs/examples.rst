@@ -34,7 +34,7 @@ See the plotted figures below:
 
 |
 
-Active-Finite-Voronoi (AFV) dynamics
+Active finite Voronoi (AFV) dynamics
 -------------------------------------
 
 We can incorporate self-propulsion (active-Brownian-like dynamics) for each cell to model active-matter systems.

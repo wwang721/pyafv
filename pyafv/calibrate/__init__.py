@@ -1,5 +1,5 @@
 """
-Subpackage for calibrating the detachment forces against the deformable-polygon (DP) model.
+Subpackage for calibrating the detachment forces against the deformable polygon (DP) model.
 """
 
 from .core import auto_calibrate

@@ -16,7 +16,7 @@ print(f"{phys_cal=}")
 """
     The auto_calibrate process above is equivalent to
     applying a series of external forces until detachment
-    and computing the delta value of finite-Voronoi model
+    and computing the delta value of finite Voronoi model
     that matches the detachment force of DP model.
 """
 

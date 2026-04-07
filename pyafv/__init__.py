@@ -1,5 +1,5 @@
 """
-PyAFV - A Python implementation of the **active-finite-Voronoi (AFV) model** in 2D.
+PyAFV - A Python implementation of the **active finite Voronoi (AFV) model** in 2D.
 """
 
 from .physical_params import PhysicalParams, target_delta

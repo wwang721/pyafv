@@ -20,7 +20,7 @@ PyAFV
    :alt: Model illustration
    :align: right
 
-**PyAFV** is a Python implementation of the **active-finite-Voronoi (AFV) model** in 2D.
+**PyAFV** is a Python implementation of the **active finite Voronoi (AFV) model** in 2D.
 
 The AFV framework was introduced and developed in, for example, Refs. :cite:`huang2023bridging,teomy2018confluent,wang2026divergence`.
 

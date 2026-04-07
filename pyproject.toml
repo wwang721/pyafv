@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "pyafv"
 dynamic = ["version"]
-description = "Python implementation of the active-finite-Voronoi (AFV) model"
+description = "Python implementation of the active finite Voronoi (AFV) model"
 readme = "README.md"
 authors = [
     { name = "Wei Wang" },

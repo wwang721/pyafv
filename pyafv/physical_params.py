@@ -34,7 +34,7 @@ def sigmoid(x):
 
 @dataclass(frozen=True)
 class PhysicalParams:
-    r"""Physical parameters for the active-finite-Voronoi (AFV) model.
+    r"""Physical parameters for the active finite Voronoi (AFV) model.
 
     .. warning::
         * **Frozen dataclass** is used for :py:class:`PhysicalParams` to ensure immutability of instances.

@@ -9,7 +9,7 @@ Measuring performance
    :figwidth: 50%
    :align: right
 
-**PyAFV** has been benchmarked against the **MATLAB** implementation of the active-finite-Voronoi model from Ref. :cite:`huang2023bridging` by measuring the wall-clock runtime for simulations of varying system sizes. The results are shown in the figure; each data point corresponds to :math:`10^3` integration steps, averaged over three independent runs. The results show that *PyAFV* exhibits **near-linear** scaling, approximately :math:`\mathcal{O}(N)`, whereas the original *MATLAB* code appears to scale as :math:`\mathcal{O}(N^{3/2})`. This difference leads to a significant speedup, particularly for large systems (:math:`N\gtrsim 10^3`).
+**PyAFV** has been benchmarked against the **MATLAB** implementation of the active finite Voronoi model from Ref. :cite:`huang2023bridging` by measuring the wall-clock runtime for simulations of varying system sizes. The results are shown in the figure; each data point corresponds to :math:`10^3` integration steps, averaged over three independent runs. The results show that *PyAFV* exhibits **near-linear** scaling, approximately :math:`\mathcal{O}(N)`, whereas the original *MATLAB* code appears to scale as :math:`\mathcal{O}(N^{3/2})`. This difference leads to a significant speedup, particularly for large systems (:math:`N\gtrsim 10^3`).
 
 .. note::
     

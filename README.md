@@ -4,7 +4,7 @@
 
 [![PyPi](https://img.shields.io/pypi/v/pyafv?color=brightgreen&cacheSeconds=300)](https://pypi.org/project/pyafv/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyafv.svg)](https://anaconda.org/conda-forge/pyafv)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/github/license/wwang721/pyafv)](/LICENSE)
 [![Tests on all platforms](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests_all_platform.yml)
 [![pytest](https://github.com/wwang721/pyafv/actions/workflows/tests.yml/badge.svg)](https://github.com/wwang721/pyafv/actions/workflows/tests.yml)
 [![Codecov](https://codecov.io/github/wwang721/pyafv/branch/main/graph/badge.svg?token=VSXSOX8HVS)](https://codecov.io/github/wwang721/pyafv/tree/main)
@@ -104,7 +104,7 @@ Use `${PWD}` on Windows PowerShell instead of `$(pwd)`.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/getting_started.ipynb)
 
-Here is a simple example to get you started, demonstrating how to construct a finite-Voronoi diagram (click the **Google Colab** badge above to run the notebook directly):
+Here is a simple example to get you started, demonstrating how to construct a finite Voronoi diagram (click the **Google Colab** badge above to run the notebook directly):
 ```python
 import numpy as np
 import pyafv as afv
@@ -169,7 +169,7 @@ Below are representative simulation snapshots generated using the code:
   <tr>
     <td id="wang2026divergence" valign="top">[3]</td>
     <td>
-      W. Wang (汪巍) and B. A. Camley, <em>Divergence of detachment forces in the finite-Voronoi model</em>, manuscript in preparation (2026).
+      W. Wang (汪巍) and B. A. Camley, <em>Divergence of detachment forces in the finite Voronoi model</em>, manuscript in preparation (2026).
     </td>
   </tr>
 </table>

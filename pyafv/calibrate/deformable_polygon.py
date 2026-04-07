@@ -166,7 +166,7 @@ def _energy_gradient(pts, KA, KP, A0, P0, lam):
 
 class DeformablePolygonSimulator:
     """
-    Simulator for the deformable-polygon (DP) model of cell doublets.
+    Simulator for the deformable polygon (DP) model of cell doublets.
 
     Args:
         phys: An instance of PhysicalParams containing the physical parameters, while *phys.r* and *phys.delta* are ignored.
@@ -183,7 +183,7 @@ class DeformablePolygonSimulator:
 
     def __init__(self, phys: PhysicalParams, num_vertices: int = 100):
         """
-        Initialize the Deformable Polygon model for a cell doublet at steady state.
+        Initialize the deformable polygon (DP) model for a cell doublet at steady state.
         """
         if not isinstance(phys, PhysicalParams):      # pragma: no cover
             raise TypeError("phys must be an instance of PhysicalParams")
@@ -247,7 +247,7 @@ class DeformablePolygonSimulator:
             import warnings
             warnings.warn(
                 "Target shape index indicates non-circular shape; "
-                "the deformable-polygon (DP) model may not be valid in this regime. "
+                "the deformable polygon (DP) model may not be valid in this regime. "
                 "Do not use the DP model for calibration if this warning appears.",
                 UserWarning,
                 stacklevel=3,
