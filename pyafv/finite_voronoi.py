@@ -93,7 +93,7 @@ class FiniteVoronoiSimulator:
             self._impl = _impl
 
     # --------------------- Voronoi construction & extension ---------------------
-    def _build_voronoi_with_extensions(self) -> tuple[Voronoi, np.ndarray, np.ndarray, int, dict[tuple[int,int], int], dict[int, list[int]]]:
+    def _build_voronoi_with_extensions(self, joggle : bool = False) -> tuple[Voronoi, np.ndarray, np.ndarray, int, dict[tuple[int,int], int], dict[int, list[int]]]:
         """
         Build standard Voronoi structure for current points.
 
@@ -105,6 +105,9 @@ class FiniteVoronoiSimulator:
             
             This is an internal method. Use with caution.
 
+        Args:
+            joggle: Whether to joggle input points (N>=3) slightly to avoid precision issues (e.g., collinearities, co-circularities).
+        
         Returns: 
             tuple[scipy.spatial.Voronoi, numpy.ndarray, numpy.ndarray, int, dict[tuple[int,int], int], dict[int, list[int]]] : A *tuple* containing:
             
@@ -175,7 +178,10 @@ class FiniteVoronoiSimulator:
         
         # N >= 3 (vectorized main path)
         if N >= 3:
-            vor = Voronoi(pts)
+            if not joggle:
+                vor = Voronoi(pts, qhull_options="Qbb Qc Qz")  # using SciPy Voronoi default option: "Qbb Qc Qz"
+            else:
+                vor = Voronoi(pts, qhull_options="QJ")  # "QJ" option to joggle input points slightly to avoid precision issues (e.g., collinearities, co-circularities)
             """
             Basic info from Voronoi object:
             -------------------------------
@@ -758,14 +764,21 @@ class FiniteVoronoiSimulator:
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
-        
+
+        try:
+            geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+        except KeyError:
+            # In case of a KeyError (which can happen when some inner vertices are nearly overlapped
+            # and cause issues in the geometry construction), retry with joggle=True to perturb points slightly.
+            (vor, vertices_all, ridge_vertices_all, num_vertices,
+                vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions(joggle=True)
+            geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+
         # Get connectivity info
         if connect:
             connections = self._get_connections(vor.ridge_points, vertices_all, ridge_vertices_all)
         else:           # pragma: no cover
             connections = np.empty((0,2), dtype=int)
-
-        geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
 
         F = self._assemble_forces(
             vertices_all=vertices_all,
@@ -818,7 +831,14 @@ class FiniteVoronoiSimulator:
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
 
-        geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+        try:
+            geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+        except KeyError:
+            # In case of a KeyError (which can happen when some inner vertices are nearly overlapped
+            # and cause issues in the geometry construction), retry with joggle=True to perturb points slightly.
+            (vor, vertices_all, ridge_vertices_all, num_vertices,
+                vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions(joggle=True)
+            geom, vertices_all = self._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
 
         from matplotlib import pyplot as plt
 

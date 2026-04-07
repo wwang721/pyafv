@@ -51,3 +51,10 @@ def test_geom(data_dir, simulator):
     pts = np.array([[1., 1.], [-1., 1.], [-1., -1.], [1., -1.]]) * 0.5
     simulator.update_positions(pts)
     simulator.build()
+
+    # Test a square geometry where SciPy Voronoi generate two nearly overlapped vertices at the center, which can cause issues in the geometry construction.
+    # This is a regression test for a bug that was fixed by adding a "joggle" option to perturb points slightly to avoid precision issues.
+    pts = np.load(data_dir / 'pts_at_error.npy')
+    simulator.update_positions(pts)
+    simulator.plot_2d()
+    simulator.build()
