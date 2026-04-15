@@ -27,85 +27,36 @@ bibliography: paper.bib
 
 # Summary
 
-Collective cell behavior is commonly modeled using frameworks that balance geometric realism against computational efficiency.
-Self-propelled particle models are computationally efficient but lack explicit cell boundaries and interfacial mechanics [@fily2012athermal; @levine2000self; @wang2026controlling], while phase-field models resolve interfaces in detail at substantially higher computational cost for large systems [@chiang2024intercellular; @chiang2024multiphase]. Voronoi- and vertex-type models occupy an intermediate regime, retaining cell-shape-dependent mechanics with comparatively low overhead [@bi2016motility; @park2015unjamming; @henkes2020dense].
-
-The active finite Voronoi (AFV) model extends conventional confluent Voronoi models to nonconfluent settings by introducing a finite radius scale $\ell$ around each cell center [@teomy2018confluent; @huang2023bridging].
-This construction allows cell-cell contacts to terminate naturally when Voronoi edges extend beyond $\ell$, enabling gap opening and cell detachment within the same geometric framework, which is essential for studies of tissue cohesion, detachment, and fracture-like events.
-In the AFV model, each cell boundary is composed of straight Voronoi contact segments and circular free-boundary arcs of radius $\ell$, and forces are derived from area-perimeter mechanics with distinct contacting and non-contacting interfacial tensions.
-
-`pyafv` is an open-source Python package implementing this framework in two dimensions.
-It provides high-level APIs for geometry/force computation, active dynamics workflows, visualization, and diagnostics such as cell-cell connectivity and contacting/non-contacting boundary length.
-The package also includes calibration tools that connect AFV behavior to a deformable polygon (DP) doublet model [@wang2026divergence; @lv2024active; @boromand2018jamming], enabling practical parameter tuning for near-detachment mechanics.
+Biological tissues can exist as confluent monolayers or nonconfluent clusters with intercellular gaps. While Voronoi models have been widely used to study confluent tissues, the active finite Voronoi (AFV) model [@teomy2018confluent; @huang2023bridging] extends these to nonconfluent tissues by introducing a finite radius $\ell$ around each cell center.
+`PyAFV` is an open-source Python package implementing the two-dimensional AFV model, with APIs for geometry and force computation, active dynamics, visualization, and connectivity diagnostics, as well as a calibration module that connects near-detachment AFV behavior to a deformable polygon (DP) model [@wang2026divergence]. It is aimed at researchers in biophysics and soft matter who need a computationally efficient, reproducible tool for simulating nonconfluent tissue mechanics.
 
 # Statement of need
 
-Computational studies of epithelial systems frequently require modeling regimes that are neither strictly confluent nor fully dilute.
-In these regimes, researchers need methods that simultaneously capture (i) cell-shape-dependent mechanics, (ii) changing neighbor topology, and (iii) opening/closing of intercellular gaps.
-Standard confluent Voronoi implementations are often optimized for tiling tissues without free boundaries [@bi2015density], whereas more detailed interface-resolving methods can substantially reduce throughput in large parameter scans [@wang2025confinement].
+Studies of tissues often require a model that is neither strictly confluent nor fully dilute—capturing cell-shape-dependent mechanics, changing neighbor topology, and gap opening simultaneously. Self-propelled particle models are efficient but discard cell geometry entirely, and may also crystallize [@levine2000self; @fily2012athermal; @wang2026controlling]. Phase-field models capture cell shapes more accurately but are computationally demanding [@chiang2024intercellular; @chiang2024multiphase; @wang2025confinement]. Voronoi- and vertex-type models offer a middle ground but generally fill all space by construction, and are not suited for nonconfluent tissues [@bi2015density; @bi2016motility; @park2015unjamming; @henkes2020dense]. `PyAFV` provides a Python package for the active finite Voronoi (AFV) model [@teomy2018confluent; @huang2023bridging]—an extension of the standard Voronoi model for nonconfluent tissues—where each cell's domain is the intersection of its Voronoi region with a disk of radius $\ell$, so that cell boundaries consist of straight cell-cell contact edges and circular cell-medium arcs of radius $\ell$.
 
-`pyafv` addresses this need by packaging AFV simulations in a reproducible Python workflow aimed at theoretical and computational biophysics studies of tissue cohesion, detachment, and fragmentation.
-The software is designed for groups that need a practical compromise between geometric detail and computational efficiency, especially when studying transitions between cohesive and fragmented tissue states.
-It provides explicit access to intermediate geometry and force diagnostics, making it suitable not only for production simulations but also for method validation and mechanistic interpretation.
+A second need is reliable calibration. Detachment forces in the AFV model diverge as cells approach full separation, so the rupture timescale depends strongly on the simulation time step without truncation [@wang2026divergence]. `PyAFV` includes a calibration module that determines a consistent truncation threshold by matching AFV near-detachment forces to those of a deformable polygon (DP) model, making calibration an explicit, reproducible step.
 
-A second need is transparent calibration.
-Near-detachment behavior in finite Voronoi geometries can be sensitive to regularization and parameter choices, leading to ambiguous or model-dependent detachment forces if calibration is not performed explicitly [@wang2026divergence].
-`pyafv` includes a dedicated calibration module that formalizes this process and enables reproducible comparison between AFV simulations and related polygonal models.
+# State of the field
 
-# Methods and implementation
+Prior AFV implementations are either unreleased or not packaged as reusable libraries. The MATLAB implementation in Ref. [@huang2023bridging] lacks integrated calibration, open-boundary handling, and a library interface. `PyAFV` provides a Python library interface for the AFV model; benchmarks show it scales as $\mathcal{O}(N)$ with system size, while the MATLAB code scales as $\mathcal{O}(N^{3/2})$, giving `PyAFV` substantial speedups for $N \gtrsim 10^3$.
 
-## AFV geometry and dynamics
+# Software design
 
-Let $\{\mathbf r_i\}$ be cell-center coordinates.
-In the standard Voronoi construction, the Voronoi region of cell $i$ is the set of points closer to $\mathbf r_i$ than to any other center.
-AFV defines the finite cell domain as the intersection of the standard Voronoi region with a disk of radius $\ell$ centered at $\mathbf r_i$, explicitly truncating long Voronoi edges and introducing free boundaries.
-Consequently, boundaries contain straight cell-cell interfaces (where Voronoi edges are retained) and circular cell-medium interfaces (where truncation by radius $\ell$ applies).
+**Open boundary handling.** For $N \geq 3$, `PyAFV` uses SciPy's Voronoi routine only for the initial combinatorial structure [@scipy2020]. Unbounded ridges—arising when a cell has no neighbor on one side—are resolved by introducing explicit extension vertices and updating region membership, without imposing artificial confinement or periodic boundary conditions. Small-$N$ edge cases are handled separately.
 
-`pyafv` computes mechanics from area and perimeter terms with a separate contribution for non-contacting perimeter length, i.e., 
+**Energy and force computation.** For given cell center coordinates $\{\mathbf{r}_i\}$, `PyAFV` implements
 
 $$
-E=\sum_i K_A(A_i-A_0)^2 + K_P(P_i-P_0)^2 + \Lambda P_i^{(n)},
+E = \sum_i K_A(A_i - A_0)^2 + K_P(P_i - P_0)^2 + \Lambda P_i^{(n)},
 $$
 
-where $K_A$ and $K_P$ are elastic moduli for cell area $A_i$ and perimeter $P_i$, respectively, and $A_0$ and $P_0$ are the preferred area and perimeter, respectively. $P_i^{(n)}$ is the non-contacting perimeter length and $\Lambda$ measures the tension difference between contacting and non-contacting edges [@teomy2018confluent; @huang2023bridging; @wang2026divergence].
-Cell centers evolve in overdamped active dynamics,
+where $K_A$, $K_P$ are elastic moduli, $A_0$, $P_0$ are preferred area and perimeter, $P_i^{(n)}$ is the non-contacting arc length, and $\Lambda$ is the tension difference between non-contacting and contacting edges [@teomy2018confluent; @huang2023bridging; @wang2026divergence]. Each cell is decomposed into polygons and circular arc segments; forces on each cell center are computed as $-\nabla_i E$.
 
-$$
-\dot{\mathbf r}_i = -\mu\nabla_i E + v_0\mathbf n_i,
-$$
+**Hybrid backend.** Geometry routines for the finite Voronoi construction are implemented in both Cython and pure Python. The Cython backend is selected automatically when available; otherwise the pure-Python fallback is used with no change to the public API. Users can force backend selection for debugging.
 
-with optional rotational diffusion for polarity direction.
-This overdamped active dynamics is implemented explicitly in the package examples, making modeling assumptions and update rules transparent in user scripts.
+**API and transparency.** The central class is `FiniteVoronoiSimulator`, initialized with cell-center coordinates and a `PhysicalParams` dataclass. The `build()` method of this class returns a diagnostics dictionary of forces, geometric quantities, and contact connectivity. Cell dynamics are implemented in user scripts rather than inside the library, keeping modeling assumptions explicit. Per-cell heterogeneous preferred areas are supported for mixed-population studies.
 
-## Software interface
-
-The central public object is `FiniteVoronoiSimulator`, initialized with point coordinates and a `PhysicalParams` dataclass.
-`sim.build()` returns a diagnostics dictionary containing conservative forces, geometric data, and inferred connectivity.
-The returned diagnostics are designed to facilitate inspection and debugging of geometric and mechanical contributions, which is particularly important near contact-breaking transitions.
-This API supports common workflows: relaxation to mechanical equilibrium, active dynamics, custom visualization, and extraction of contact networks.
-
-The package also supports heterogeneous preferred areas through per-cell updates, enabling mixed-population or perturbation studies without custom forks of the core geometry code.
-
-## Numerical design
-
-For $N \geqslant 3$, `pyafv` uses SciPy Voronoi tessellations only as an initial geometric scaffold [@scipy2020]. Unbounded ridges arising under open boundaries are detected and resolved by explicitly introducing extension vertices and updating region membership, enabling finite Voronoi cell geometries to be constructed without imposing artificial confinement or periodic boundaries.
-Special handling is included for small-$N$ edge cases.
-Geometry routines then decompose each cell into polygonal and arc contributions to compute area/perimeter quantities and the corresponding force derivatives.
-
-To balance speed and portability, `pyafv` uses a hybrid backend strategy: a Cython implementation is selected when available, otherwise a pure-Python fallback is used automatically.
-Users can also force backend selection for debugging.
-
-## Calibration workflow
-
-Calibration is essential for interpreting AFV detachment forces in terms of underlying mechanical parameters.
-The `pyafv.calibrate` module provides tools to align AFV near-detachment behavior with a DP cell-doublet model [@wang2026divergence].
-The core automated workflow, implemented in `pyafv.calibrate.auto_calibrate()`, proceeds as follows:
-
-1. determines steady-state doublet geometry,
-2. probes DP detachment under increasing external pulling,
-3. infers an AFV contact truncation threshold that reproduces the target detachment force.
-
-This makes calibration a documented and integral part of the simulation setup rather than an *ad hoc* post-processing step.
+**Calibration module.** Because detachment forces diverge as cells approach full separation [@wang2026divergence], calibration is essential for interpreting tissue fractures. `pyafv.calibrate.auto_calibrate()` finds the steady-state of a cell doublet in the deformable polygon (DP) model [@boromand2018jamming; @lv2024active], probes its detachment force under external pulling, and determines the AFV truncation threshold $\delta$ that matches the target force.
 
 # Example
 
@@ -125,18 +76,19 @@ forces = diag["forces"]
 connections = diag["connections"]
 ```
 
-To visualize the constructed finite Voronoi diagram, users can run `sim.plot_2d(show=True)`.
-With the same interface, users can run relaxation trajectories, add active self-propulsion, extract connectivity networks, and update preferred areas per cell.
-Additional examples and notebooks in the project demonstrate these workflows, including custom plotting and periodic-boundary visualization. The full API and documentation are available for further details [@wang2026pyafv].
+To visualize the constructed finite Voronoi diagram, users can run `sim.plot_2d(show=True)`. Additional examples and notebooks in the project demonstrate relaxation trajectories, active dynamics, connectivity extraction, and custom visualization. The full API and documentation are available for further details [@wang2026pyafv].
+
+# Research impact statement
+
+`PyAFV` was used to produce all the finite Voronoi simulation results of our previous work [@wang2026divergence], and its calculated forces were validated against the MATLAB implementation [@huang2023bridging] for identical configurations. Its faster scaling compared to the MATLAB code, integrated calibration, and Python library interface make it well-suited for systematic studies of nonconfluent tissue mechanics.
 
 # AI usage disclosure
 
-During development of this software, generative AI tools were used for limited assistance. GitHub Copilot was used within the GitHub interface to assist with code review and minor refactoring suggestions during pull-request review. In addition, OpenAI Codex-based tools were occasionally used to suggest code edits and documentation phrasing.
-All AI-assisted suggestions were reviewed, edited, and validated by the human authors. The core model design, algorithms, implementation decisions, validation, and interpretation were made by the authors, who take full responsibility for the correctness, originality, licensing, and compliance of the submitted software and paper.
+Generative AI tools were used for limited assistance during development. GitHub Copilot assisted with code review in pull requests; OpenAI Codex and Anthropic Claude Code were used to suggest code edits and documentation phrasing. All suggestions were reviewed and validated by the authors, who are responsible for the correctness and integrity of the software and paper.
 
 # Acknowledgements
 
 The authors acknowledge support from NIH Grant No. R35GM142847.
-This work was carried out at the Advanced Research Computing at Hopkins (ARCH) core facility, which is supported by the National Science Foundation (NSF) Grant No. OAC1920103.
+This work was also carried out at the Advanced Research Computing at Hopkins (ARCH) core facility, which is supported by the National Science Foundation (NSF) Grant No. OAC1920103.
 
 # References
