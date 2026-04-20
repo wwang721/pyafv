@@ -19,12 +19,12 @@
   ],
   "identifier": "http://dx.doi.org/10.5281/zenodo.18091659",
   "codeRepository": "https://github.com/wwang721/pyafv",
-  "datePublished": "2026-02-10",
-  "dateModified": "2026-02-10",
-  "dateCreated": "2026-02-10",
+  "datePublished": "2026-04-22",
+  "dateModified": "2026-04-22",
+  "dateCreated": "2025-12-28",
   "description": "Python code that implements the active finite Voronoi (AFV) model.",
   "keywords": "tissue mechanics, voronoi models, biophysical modeling",
   "license": "MIT",
   "title": "PyAFV",
-  "version": ""
+  "version": "v0.4.10"
 }
