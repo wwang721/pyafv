@@ -7,14 +7,17 @@ def test_small_clusters(simulator):
     pts = np.array([[0.0, 0.0]])  # N=1
     simulator.update_positions(pts)
     simulator.build()
+    simulator.plot_2d(show=False)
 
     pts = np.array([[0.5, 0.5], [0.54, 0.52]]) * 25.  # N=2
     simulator.update_positions(pts)
     simulator.build()
+    simulator.plot_2d(show=False)
 
     pts = np.array([[0.0, 0.0], [1.0, 10.0]])  # N=2 separated
     simulator.update_positions(pts)
     simulator.build()
+    simulator.plot_2d(show=False)
 
     pts = np.array([[0.0, 0.0], [1.0, 0.5], [2.0, 0.1]])  # N=3
     # pts = np.array([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]])  # N=3 collinear
