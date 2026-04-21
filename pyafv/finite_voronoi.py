@@ -881,15 +881,19 @@ class FiniteVoronoiSimulator:
         line_width = kw.get('line_width', 1.5)
         line_alpha = kw.get('line_alpha', 1.0)
 
-        # Draw Voronoi ridge segments
+        # Draw Voronoi ridge segments (batched via LineCollection)
         if kw.get('show_voronoi', True):
-            for idx in range(len(vor.ridge_vertices)):
-                x1, y1 = vertices_all[ridge_vertices_all[idx][0]]
-                x2, y2 = vertices_all[ridge_vertices_all[idx][1]]
-                if -1 not in vor.ridge_vertices[idx]:
-                    ax.plot([x1, x2], [y1, y2], 'k-', lw=0.5, alpha=line_alpha)
-                else:
-                    ax.plot([x1, x2], [y1, y2], 'k--', lw=0.5, alpha=line_alpha)
+            from matplotlib.collections import LineCollection
+            rv_orig = np.asarray(vor.ridge_vertices)
+            if rv_orig.size > 0:
+                segs = vertices_all[np.asarray(ridge_vertices_all, dtype=int)]  # (R,2,2)
+                inf_mask = (rv_orig == -1).any(axis=1)
+                finite_segs = segs[~inf_mask]
+                dashed_segs = segs[inf_mask]
+                if len(finite_segs):
+                    ax.add_collection(LineCollection(finite_segs, colors='k', linestyles='-', linewidths=0.5, alpha=line_alpha))
+                if len(dashed_segs):
+                    ax.add_collection(LineCollection(dashed_segs, colors='k', linestyles='--', linewidths=0.5, alpha=line_alpha))
 
         # Draw cell centers
         if kw.get('show_points', True):
