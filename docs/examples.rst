@@ -76,6 +76,8 @@ Connectivity between cells
 
 |
 
+.. _custom-plotting:
+
 Custom plotting
 ----------------
 
@@ -85,7 +87,7 @@ Custom plotting
 
 See `examples/jupyter/custom_plot.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/custom_plot.ipynb>`_ for an example of custom plotting using **PyAFV**, or you can run the notebook directly on **Google Colab** by clicking the badge above.
 
-This example shows how to use :py:meth:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths.
+This example shows how to use :py:meth:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths. Both a serial version (for illustration) and a vectorized version (much faster) of the custom plotting routine are provided in the notebook.
 
 .. image:: ../assets/model_illustration.png
    :alt: Custom plotting
@@ -112,7 +114,7 @@ Periodic boundary conditions
    :alt: Open In Colab
 
 **PyAFV** uses open boundary conditions in 2D by default, but it is also possible to implement periodic boundary conditions via a tiling of the edge regions.
-See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly on **Google Colab** by clicking the badge above), and the generated figure is shown below:
+See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly on **Google Colab** by clicking the badge above), and the generated figure is shown below (as in the :ref:`custom plotting section <custom-plotting>` above, the notebook provides both serial and vectorized implementations of the plotting function with filled cell colors):
 
 .. image:: ../assets/pbc.png
    :alt: PBC example
