@@ -881,9 +881,10 @@ class FiniteVoronoiSimulator:
         line_width = kw.get('line_width', 1.5)
         line_alpha = kw.get('line_alpha', 1.0)
 
+        from matplotlib.collections import LineCollection
+
         # Draw Voronoi ridge segments (batched via LineCollection)
         if kw.get('show_voronoi', True):
-            from matplotlib.collections import LineCollection
             rv_orig = np.asarray(vor.ridge_vertices)
             if rv_orig.size > 0:
                 segs = vertices_all[np.asarray(ridge_vertices_all, dtype=int)]  # (R,2,2)
@@ -904,32 +905,59 @@ class FiniteVoronoiSimulator:
         if kw.get('show_outer_vertices', False):
             ax.plot(vertices_all[list(vertex_out_id), 0], vertices_all[list(vertex_out_id), 1], 'o', color=line_color_out, markerfacecolor='none', zorder=2)
 
-        # Draw each cell boundary
-        for idx in range(N):
-            edges_type = point_edges_type[idx]
-            vertices_f_idx = point_vertices_f_idx[idx]
+        # Draw each cell boundary: batch straight edges + (arcs ∪ full circles)
+        # via two LineCollections. Flatten per-cell ragged lists once; build
+        # v2 = "next vertex within cell" using a cell-wrapping index map.
+        cell_lens = np.fromiter((len(et) for et in point_edges_type), dtype=int, count=N)
+        deg_mask = cell_lens < 2              # degenerate (full-circle) cells
+        valid_mask = ~deg_mask
 
-            x, y = pts[idx]
-            if len(edges_type) < 2:
-                angle = np.linspace(0, 2*np.pi, 100)
-                ax.plot(x + r * np.cos(angle), y + r * np.sin(angle), color=line_color_out, lw=line_width, alpha=line_alpha, zorder=2)
-                continue
+        arc_polylines = []                    # concatenated into one LineCollection at the end
 
-            for idx_f, edge_type in enumerate(edges_type):
-                v1_idx = vertices_f_idx[idx_f]
-                x1, y1 = vertices_all[v1_idx]
-                idx2 = idx_f + 1 if idx_f < len(edges_type)-1 else 0
-                v2_idx = vertices_f_idx[idx2]
-                x2, y2 = vertices_all[v2_idx]
+        if valid_mask.any():
+            valid_cells_idx = np.where(valid_mask)[0]
+            valid_lens = cell_lens[valid_mask]
 
-                if edge_type == 1:
-                    ax.plot([x1, x2], [y1, y2], '-', color=line_color_in, lw=line_width, alpha=line_alpha, zorder=1)
-                else:
-                    angle1 = np.arctan2(y1-y, x1-x)
-                    angle2 = np.arctan2(y2-y, x2-x)
-                    dangle = np.linspace(0, (angle1 - angle2) % (2*np.pi), 100)
+            flat_v = np.concatenate([np.asarray(point_vertices_f_idx[i], dtype=int) for i in valid_cells_idx])
+            flat_e = np.concatenate([np.asarray(point_edges_type[i], dtype=int) for i in valid_cells_idx])
+            flat_cell = np.repeat(valid_cells_idx, valid_lens)
 
-                    ax.plot(x + r * np.cos(angle2+dangle), y + r * np.sin(angle2+dangle), color=line_color_out, lw=line_width, alpha=line_alpha, zorder=2)
+            # Next-vertex index within each cell, wrapping the last position to cell start.
+            offsets = np.concatenate(([0], np.cumsum(valid_lens)))
+            next_idx = np.arange(flat_v.size) + 1
+            next_idx[offsets[1:] - 1] = offsets[:-1]
+            flat_v2 = flat_v[next_idx]
+
+            # Straight edges (type 1) — inner-edge style
+            straight_mask = flat_e == 1
+            if straight_mask.any():
+                V1 = vertices_all[flat_v[straight_mask]]
+                V2 = vertices_all[flat_v2[straight_mask]]
+                ax.add_collection(LineCollection(np.stack([V1, V2], axis=1), colors=line_color_in, linewidths=line_width, alpha=line_alpha, zorder=1))
+
+            # Arc edges (type 0) — sample 100 points per arc, vectorized
+            arc_mask = flat_e == 0
+            if arc_mask.any():
+                centers = pts[flat_cell[arc_mask]]                              # (A,2)
+                V1 = vertices_all[flat_v[arc_mask]]
+                V2 = vertices_all[flat_v2[arc_mask]]
+                angle1 = np.arctan2(V1[:, 1] - centers[:, 1], V1[:, 0] - centers[:, 0])
+                angle2 = np.arctan2(V2[:, 1] - centers[:, 1], V2[:, 0] - centers[:, 0])
+                total = (angle1 - angle2) % (2 * np.pi)                         # (A,)
+                t = np.linspace(0.0, 1.0, 100)                                  # (100,)
+                theta = angle2[:, None] + t[None, :] * total[:, None]           # (A,100)
+                arc_xy = np.stack([centers[:, 0:1] + r * np.cos(theta), centers[:, 1:2] + r * np.sin(theta)], axis=-1)  # (A,100,2)
+                arc_polylines.append(arc_xy)
+
+        # Degenerate cells → full circles, same style/zorder as arcs
+        if deg_mask.any():
+            deg_centers = pts[deg_mask]                                         # (D,2)
+            theta = np.linspace(0.0, 2 * np.pi, 100)                            # (100,)
+            circle_xy = np.stack([deg_centers[:, 0:1] + r * np.cos(theta)[None, :], deg_centers[:, 1:2] + r * np.sin(theta)[None, :]], axis=-1)  # (D,100,2)
+            arc_polylines.append(circle_xy)
+
+        if arc_polylines:
+            ax.add_collection(LineCollection(np.concatenate(arc_polylines, axis=0), colors=line_color_out, linewidths=line_width, alpha=line_alpha, zorder=2))
 
         ax.set_aspect("equal")
         ax.set_xlim(center[0]-L, center[0]+L)
