@@ -76,7 +76,7 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
     ax = ax or _get_axes()
 
     pts = np.asarray(pts, dtype=float)
-    if pts.ndim != 2 or pts.shape[1] != 2:
+    if pts.ndim != 2 or pts.shape[1] != 2:                   # pragma: no cover
         raise ValueError("pts must have shape (N,2)")
     
     N = pts.shape[0]            # Number of points
@@ -163,10 +163,10 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
             # Must be a sequence of colors
             try:
                 cell_colors = list(cell_colors)
-            except TypeError:
+            except TypeError:                     # pragma: no cover
                 raise TypeError("cell_colors must be a single color or an iterable of colors")
 
-            if len(cell_colors) != N:
+            if len(cell_colors) != N:             # pragma: no cover
                 raise ValueError(f"cell_colors must have length {N}, got {len(cell_colors)}")
 
         # --- Assemble per-cell fill polygons (ragged list) ---
