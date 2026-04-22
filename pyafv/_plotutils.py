@@ -46,17 +46,17 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
         fill_zorder (float, optional): Specifies the z-order for cell fills, default 0.
 
         show_points (bool, optional): Add cell center points to the plot, default *False*.
-        point_size (float, optional): Specifies the marker area for the points, default :math:`4\pi`.
-        point_color (color or list, optional): Specifies the color for the points, default 'C0'.
+        point_size (float, optional): Specifies the marker area for the points, default 4.
+        point_colors (color or list, optional): A single color or a sequence of colors for the points, default 'C0'.
         point_zorder (float, optional): Specifies the z-order for the points, default 3.
         
-        straight_colors (color or list, optional): A single color or a sequence of colors for straight edges, default 'C0'.
+        straight_colors (color or list, optional): A single color or a sequence of colors for straight contact edges, default 'C0'.
         straight_lw (float, optional): Line width for straight edges, default 1.0.
         straight_alpha (float, optional): Alpha for straight edges, default 1.0.
         straight_capstyle (str, optional): Cap style for straight edges, default 'butt'.
         straight_zorder (float, optional): Z-order for straight edges, default 2.
 
-        arc_colors (color or list, optional): A single color or a sequence of colors for arc edges, default 'C2'.
+        arc_colors (color or list, optional): A single color or a sequence of colors for arc non-contact edges, default 'C2'.
         arc_lw (float, optional): Line width for arc edges, default 1.0.
         arc_alpha (float, optional): Alpha for arc edges, default 1.0.
         arc_capstyle (str, optional): Cap style for arc edges, default 'butt'.
@@ -78,10 +78,10 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
 
     # Draw cell centers
     if kw.get('show_points', False):
-        point_size = kw.get('point_size', np.pi * 2**2)
-        point_color = kw.get('point_color', 'C0')
+        point_size = kw.get('point_size', 2**2)
+        point_colors = kw.get('point_colors', 'C0')
         point_zorder = kw.get('point_zorder', 3)
-        ax.scatter(pts[:, 0], pts[:, 1], s=point_size, c=point_color, marker='o', zorder=point_zorder)
+        ax.scatter(pts[:, 0], pts[:, 1], s=point_size, c=point_colors, marker='o', zorder=point_zorder)
 
     point_edges_type = diag["edges_type"]
     point_vertices_f_idx = diag["regions"]

@@ -3,7 +3,7 @@ Examples
 
 
 .. note::
-   
+
    To run the examples below, you need to install the **tqdm** package for progress bars. The *Jupyter Notebooks* in `examples/jupyter/ <https://github.com/wwang721/pyafv/tree/main/examples/jupyter/>`_ additionally require **jupyter** and **ipywidgets** as well.
 
 
@@ -76,8 +76,6 @@ Connectivity between cells
 
 |
 
-.. _custom-plotting:
-
 Custom plotting
 ----------------
 
@@ -88,6 +86,10 @@ Custom plotting
 See `examples/jupyter/custom_plot.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/custom_plot.ipynb>`_ for an example of custom plotting using **PyAFV**, or you can run the notebook directly on **Google Colab** by clicking the badge above.
 
 This example shows how to use :py:meth:`pyafv.FiniteVoronoiSimulator.build` returned ``dict`` to plot the Voronoi diagram with custom styling, including coloring cells by their area and customizing edge colors and widths. Both a **serial** version (for *illustration*) and a **vectorized** version (⚡\ :emphasis:`much faster`) of the *custom plotting routine* are provided in the notebook.
+
+.. important::
+
+    Starting from v0.4.10, we also provide a standalone utility function :py:func:`pyafv.visualize_2d`, which wraps the **vectorized** plotting routine for easier reuse (see the :ref:`next section <standalone-plotting>`). This function is generally preferred over the original :py:meth:`pyafv.FiniteVoronoiSimulator.plot_2d` method.
 
 .. image:: ../assets/model_illustration.png
    :alt: Custom plotting
@@ -106,6 +108,36 @@ This notebook also shows how to access additional internal information via :py:m
 
 |
 
+.. _standalone-plotting:
+
+A standalone plotting utility
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Inspired by the custom plotting examples used in daily research, we have implemented a **standalone** plotting utility :py:func:`pyafv.visualize_2d` that can be used to plot the finite Voronoi diagram with *color-filled cells* and *customizable styling*. A simple example usage is shown below:
+
+.. code-block:: python
+
+   import numpy as np
+   import matplotlib.pyplot as plt
+   import pyafv as afv
+
+   N = 100                                          # number of cells
+   pts = np.random.rand(N, 2) * 10                  # initial positions
+   params = afv.PhysicalParams(r=1.0)               # use default parameter values
+   sim = afv.FiniteVoronoiSimulator(pts, params)    # initialize the simulator
+   diag = sim.build()                               # compute forces and geometry
+
+   fig, ax = plt.subplots()
+   afv.visualize_2d(pts, diag, r=1.0, ax=ax)        # visualize the FV diagram
+   plt.show()
+
+This :py:func:`pyafv.visualize_2d` function is designed to be **flexible** and **efficient** (vectorized), and it should satisfy most common plotting needs for 2D finite Voronoi diagrams.
+
+.. autofunction:: pyafv.visualize_2d
+    :noindex:
+
+|
+
 Periodic boundary conditions
 ----------------------------
 
@@ -114,7 +146,7 @@ Periodic boundary conditions
    :alt: Open In Colab
 
 **PyAFV** uses open boundary conditions in 2D by default, but it is also possible to implement *periodic boundary conditions* via a tiling of the edge regions.
-See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly on **Google Colab** by clicking the badge above), and the generated figure is shown below (as in the :ref:`custom plotting section <custom-plotting>` above, the notebook provides both **serial** and **vectorized** implementations of the *plotting function* with *filled cell colors*):
+See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly on **Google Colab** by clicking the badge above), and the generated figure is shown below:
 
 .. image:: ../assets/pbc.png
    :alt: PBC example

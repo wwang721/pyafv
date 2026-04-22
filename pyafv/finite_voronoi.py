@@ -819,8 +819,8 @@ class FiniteVoronoiSimulator:
             point_size (float, optional): Specifies the marker size for the points, default 2.
             show_inner_vertices (bool, optional): Add inner vertices to the plot, default *False*.
             show_outer_vertices (bool, optional): Add outer vertices to the plot, default *False*.
-            line_color_in (str, optional): Specifies the color for inner-vertex edges, default 'b'.
-            line_color_out (str, optional): Specifies the color for outer-vertex edges, default 'C6'.
+            line_color_in (str, optional): Specifies the color for contact edges (and inner vertices), default 'b'.
+            line_color_out (str, optional): Specifies the color for non-contact edges (and outer vertices), default 'C6'.
             line_width (float, optional): Specifies the line width for cell boundaries, default 1.5.
             line_alpha (float, optional): Specifies the line alpha for cell boundaries, default 1.0.
             show_voronoi (bool, optional): Add the Voronoi edges to the plot, default *True*.
