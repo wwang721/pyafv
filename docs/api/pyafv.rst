@@ -14,6 +14,7 @@
 
    .. autosummary::
 
+      ~visualize_2d
       ~target_delta
 
    .. rubric:: Subpackages

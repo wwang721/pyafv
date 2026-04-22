@@ -337,7 +337,7 @@ class DeformablePolygonSimulator:
         Render a 2D snapshot of the cell doublet in DP model.
 
         Args:
-            ax: If provided, draw into this axes; otherwise get the current axes.
+            ax: If provided, draw into the axes; otherwise get the current axes.
             show: Whether to call ``plt.show()`` at the end.
             line_color_in (str, optional): Specifies the color for the contact edge.
             line_color_out (str, optional): Specifies the color for the vertices and non-contact edges.

@@ -813,17 +813,17 @@ class FiniteVoronoiSimulator:
         This method is basically a wrapper of :py:meth:`_build_voronoi_with_extensions` and :py:meth:`_per_cell_geometry` functions + plot.
 
         Args:
-            ax: If provided, draw into this axes; otherwise get the current axes.
+            ax: If provided, draw into the axes; otherwise get the current axes.
             show: Whether to call ``plt.show()`` at the end.
-            show_points (bool, optional): Add the Voronoi points to the plot, default True.
-            point_size (float, optional): Specifies the marker size for Voronoi points, default 2.
-            show_inner_vertices (bool, optional): Add inner vertices to the plot, default False.
-            show_outer_vertices (bool, optional): Add outer vertices to the plot, default False.
+            show_points (bool, optional): Add cell center points to the plot, default *True*.
+            point_size (float, optional): Specifies the marker size for the points, default 2.
+            show_inner_vertices (bool, optional): Add inner vertices to the plot, default *False*.
+            show_outer_vertices (bool, optional): Add outer vertices to the plot, default *False*.
             line_color_in (str, optional): Specifies the color for inner-vertex edges, default 'b'.
             line_color_out (str, optional): Specifies the color for outer-vertex edges, default 'C6'.
             line_width (float, optional): Specifies the line width for cell boundaries, default 1.5.
             line_alpha (float, optional): Specifies the line alpha for cell boundaries, default 1.0.
-            show_voronoi (bool, optional): Add the Voronoi edges to the plot, default True.
+            show_voronoi (bool, optional): Add the Voronoi edges to the plot, default *True*.
         
         Returns:
             The matplotlib axes containing the plot.
