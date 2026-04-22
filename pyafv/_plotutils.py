@@ -2,8 +2,11 @@
 Adapted from scipy.spatial._plotutils, with modifications to suit
 pyafv's data structures.
 
-The original code is licensed under BSD and can be found at
-https://github.com/scipy/scipy/blob/v1.17.0/scipy/spatial/_plotutils.py
+The original code is licensed under BSD-3-Clause and can be found at:
+    https://github.com/scipy/scipy/blob/v1.17.0/scipy/spatial/_plotutils.py
+
+    Copyright (c) 2001-2002 Enthought, Inc. 2003-2025, SciPy Developers.
+    All rights reserved.
 """
 
 import numpy as np
@@ -38,7 +41,7 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
     Args:
         pts: An (N, 2) array of point coordinates.
         diag: A diagnostic *dict* containing Voronoi diagram information.
-        r: Maximum radius (or denoted as :math:`\ell_0`) used for drawing arcs.
+        r: Maximum radius (or denoted as :math:`\ell`) used for drawing arcs.
         ax (matplotlib.axes.Axes | None): If provided, draw into the axes; otherwise create a new one.
         
         cell_colors (color or list, optional): A single color or a sequence of colors for filling cells, default 'C2'. Use *None* for no fill.
@@ -61,6 +64,8 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
         arc_alpha (float, optional): Alpha for arc edges, default 1.0.
         arc_capstyle (str, optional): Cap style for arc edges, default 'butt'.
         arc_zorder (float, optional): Z-order for arc edges, default 1.
+
+        auto_adjust_bounds (bool, optional): Whether to automatically adjust the plot bounds to fit the diagram, default *True*.
     
     Returns:
         matplotlib.figure.Figure: The matplotlib figure object representing the entire canvas.
@@ -210,7 +215,9 @@ def visualize_2d(pts: np.ndarray, diag: dict[str, object], r: float, ax = None, 
         arc_zorder = kw.get('arc_zorder', 1)
         ax.add_collection(LineCollection(np.concatenate(arc_polylines, axis=0), colors=arc_colors, lw=arc_lw, alpha=arc_alpha, capstyle=arc_capstyle, zorder=arc_zorder))
 
-    _adjust_bounds(ax, pts, r)
+    if kw.get('auto_adjust_bounds', True):
+        _adjust_bounds(ax, pts, r)
+
     ax.set_aspect("equal")
 
     return ax.figure

@@ -5,6 +5,7 @@ PyAFV - A Python implementation of the **active finite Voronoi (AFV) model** in 
 from .physical_params import PhysicalParams, target_delta
 from .finite_voronoi import FiniteVoronoiSimulator
 from ._plotutils import visualize_2d
+from ._connectutil import *
 from . import calibrate
 
 try:
