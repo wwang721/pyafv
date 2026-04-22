@@ -25,7 +25,7 @@ def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndar
     N = pts.shape[0]
 
     if r is None:
-          r = L / 2.0
+        r = L / 2.0
 
     thresh = min(2.01 * r, L)
 
