@@ -22,3 +22,12 @@
    .. autosummary:: 
 
       ~calibrate
+
+   .. rubric:: Experimental API (use with caution)
+
+   .. autosummary::
+
+      ~tile_pbc
+      ~rebuild_connection_matrix
+      ~select_daughter_cluster
+      ~get_cluster_sizes

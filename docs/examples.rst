@@ -148,6 +148,10 @@ Periodic boundary conditions
 **PyAFV** uses open boundary conditions in 2D by default, but it is also possible to implement *periodic boundary conditions* via a tiling of the edge regions.
 See `examples/jupyter/periodic_plotting.ipynb <https://github.com/wwang721/pyafv/blob/main/examples/jupyter/periodic_plotting.ipynb>`_ for an example (or you can run the notebook directly on **Google Colab** by clicking the badge above), and the generated figure is shown below:
 
+.. note::
+
+   The tiling routine is now wrapped as a utility function :py:func:`pyafv.tile_pbc` (experimental).
+
 .. image:: ../assets/pbc.png
    :alt: PBC example
    :width: 500px

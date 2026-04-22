@@ -1,7 +1,7 @@
 """
 Experimental utilities for handling periodic boundary conditions and connectivity information.
 
-These functions are not documented yet and may be subject to change or removal in future versions.
+These functions are not fully documented yet and may be subject to change or removal in future versions.
 """
 
 import numpy as np
@@ -9,13 +9,13 @@ import numpy as np
 __all__ = ['tile_pbc', 'rebuild_connection_matrix', 'select_daughter_cluster', 'get_cluster_sizes']
 
 
-def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndarray, np.ndarray]:
+def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndarray, np.ndarray]:    # pragma: no cover
     r"""
     Periodic tiling of pts (N,2), with bookkeeping.
 
     Args:
-        pts: (N,2) original positions
-        L: Box size for periodic boundary conditions
+        pts: (N,2) original positions.
+        L: Box size for periodic boundary conditions.
         r: Maximum radius (or denoted as :math:`\ell`) used to determine the tiling range (at least :math:`2\ell`); if None, defaults to :math:`L/2`.
         
     Returns:
@@ -98,7 +98,17 @@ def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndar
 
 # ------------- Connectivity (experimental feature) -------------
 
-def rebuild_connection_matrix(N, connect):
+def rebuild_connection_matrix(N: int, connect: np.ndarray):    # pragma: no cover
+    """
+    Build a symmetric sparse adjacency matrix from a cell-cell edge list.
+
+    Args:
+        N: Total number of cells.
+        connect: (E,2) edge list, where each row is a pair of cell indices.
+
+    Returns:
+        scipy.sparse.csr_matrix: An (N,N) boolean adjacency matrix, symmetrized so that both ``(i,j)`` and ``(j,i)`` are set for every input edge.
+    """
     from scipy.sparse import csr_matrix
 
     i, j = connect[:, 0], connect[:, 1]
@@ -110,8 +120,17 @@ def rebuild_connection_matrix(N, connect):
     return connect_matrix
 
 
-def select_daughter_cluster(N, connect):
-    """Select a daughter cluster randomly from the connected components."""
+def select_daughter_cluster(N: int, connect: np.ndarray) -> tuple[np.ndarray | None, int, np.ndarray]:    # pragma: no cover
+    """
+    Randomly pick one connected component ("daughter cluster") from the connectivity graph.
+
+    Args:
+        N: Total number of cells.
+        connect: (E,2) edge list, where each row is a pair of cell indices.
+
+    Returns:
+        tuple[numpy.ndarray | None, int, numpy.ndarray]: A *tuple* containing: an (N_sub,) :py:class:`numpy.ndarray` of global indices for cells in the chosen cluster, the cluster size ``N_sub``, and the (E_sub,2) :py:class:`numpy.ndarray` of edges re-indexed to local ``0..N_sub-1``. If the graph has only one connected component, returns ``(None, N, connect)`` unchanged.
+    """
     from scipy.sparse.csgraph import connected_components
 
     n_components, labels = connected_components(csgraph=rebuild_connection_matrix(N, connect), directed=False)
@@ -133,7 +152,17 @@ def select_daughter_cluster(N, connect):
         return None, N, connect
 
 
-def get_cluster_sizes(N, connect):
+def get_cluster_sizes(N: int, connect: np.ndarray) -> tuple[np.ndarray, int, np.ndarray]:    # pragma: no cover
+    """
+    Compute the sizes of all connected components in the connectivity graph.
+
+    Args:
+        N: Total number of cells.
+        connect: (E,2) edge list, where each row is a pair of cell indices.
+
+    Returns:
+        tuple[numpy.ndarray, int, numpy.ndarray]: A *tuple* containing: an (n_components,) :py:class:`numpy.ndarray` of component sizes, the number of connected components, and an (N,) :py:class:`numpy.ndarray` of component labels for each cell.
+    """
     from scipy.sparse.csgraph import connected_components
 
     n_components, labels = connected_components(csgraph=rebuild_connection_matrix(N, connect), directed=False)
