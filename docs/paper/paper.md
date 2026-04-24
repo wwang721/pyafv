@@ -42,7 +42,7 @@ Prior AFV implementations are either unreleased or not packaged as reusable libr
 
 # Software design
 
-**Open boundary handling.** For $N \geq 3$, `PyAFV` uses SciPy's Voronoi routine only for the initial combinatorial structure [@scipy2020]. Unbounded ridges—arising when a cell has no neighbor on one side—are resolved by introducing explicit extension vertices and updating region membership, without imposing artificial confinement or periodic boundary conditions. Small-$N$ edge cases are handled separately.
+**Open boundary handling.** For $N \geq 3$, `PyAFV` uses SciPy's Voronoi routine only for the initial combinatorial structure [@virtanen2020scipy]. Unbounded ridges—arising when a cell has no neighbor on one side—are resolved by introducing explicit extension vertices and updating region membership, without imposing artificial confinement or periodic boundary conditions. Small-$N$ edge cases are handled separately.
 
 **Energy and force computation.** For given cell center coordinates $\{\mathbf{r}_i\}$, `PyAFV` implements
 
