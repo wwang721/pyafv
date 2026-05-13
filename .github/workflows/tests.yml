@@ -17,6 +17,7 @@ on:
       - '.github/codecov.yml'
       - '.github/Dockerfile'
       - '.github/workflows/docker.yml'
+      - '.github/FUNDING.yml'
       - '**/CITATION.*'
 
   pull_request:
@@ -36,6 +37,7 @@ on:
       - '.github/codecov.yml'
       - '.github/Dockerfile'
       - '.github/workflows/docker.yml'
+      - '.github/FUNDING.yml'
       - '**/CITATION.*'
 
   # Allows you to run this workflow manually from the Actions tab
