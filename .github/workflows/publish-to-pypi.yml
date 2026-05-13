@@ -29,7 +29,7 @@ jobs:
 
       # Add this step to make 'uv' available to cibuildwheel
       - name: Install uv
-        uses: astral-sh/setup-uv@v8
+        uses: astral-sh/setup-uv@v7
         with:
           # This tells the action to watch your project file instead of a lockfile
           cache-dependency-glob: "pyproject.toml"
@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v8
+      - uses: astral-sh/setup-uv@v7
         with:
           # This tells the action to watch your project file instead of a lockfile
           cache-dependency-glob: "pyproject.toml"
