@@ -323,6 +323,7 @@ class FiniteVoronoiSimulator:
                 - **dP_poly_dh**: Array of dP_polygon/dh for each vertex.
                 - **area_list**: Array of polygon areas for each cell.
                 - **perimeter_list**: Array of polygon perimeters for each cell.
+                - **arclen_list**: Array of non-contacting arc lengths for each cell.
                 - **point_edges_type**: List of lists of edge types per cell.
                 - **point_vertices_f_idx**: List of lists of vertex ids per cell.
                 - **num_vertices_ext**: Number of vertices including infinite extension vertices.
@@ -474,7 +475,7 @@ class FiniteVoronoiSimulator:
         # --------------------------------------------------
         # Part 2 in Cython/Python backend
         # --------------------------------------------------
-        vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list = self._impl.compute_vertex_derivatives(
+        vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list, arclen_list = self._impl.compute_vertex_derivatives(
             point_edges_type,            # list-of-lists / arrays of edge types
             point_vertices_f_idx,        # list-of-lists / arrays of vertex ids
             vertices_all.astype(np.float64, copy=False),
@@ -498,6 +499,7 @@ class FiniteVoronoiSimulator:
             dP_poly_dh=dP_poly_dh,
             area_list=area_list,
             perimeter_list=perimeter_list,
+            arclen_list=arclen_list,
             point_edges_type=point_edges_type,
             point_vertices_f_idx=point_vertices_f_idx,
             num_vertices_ext=num_vertices_ext,
@@ -757,6 +759,7 @@ class FiniteVoronoiSimulator:
                 - **forces**: (N,2) array of forces on cell centers
                 - **areas**: (N,) array of cell areas
                 - **perimeters**: (N,) array of cell perimeters
+                - **arclens**: (N,) array of non-contacting edge (arc) lengths per cell
                 - **vertices**: (M,2) array of all Voronoi + extension vertices
                 - **edges_type**: List-of-lists of edge types per cell (1=straight, 0=circular arc)
                 - **regions**: List-of-lists of vertex indices per cell
@@ -799,6 +802,7 @@ class FiniteVoronoiSimulator:
             forces=F,
             areas=geom["area_list"],
             perimeters=geom["perimeter_list"],
+            arclens=geom["arclen_list"],
             vertices=vertices_all,
             edges_type=geom["point_edges_type"],
             regions=geom["point_vertices_f_idx"],

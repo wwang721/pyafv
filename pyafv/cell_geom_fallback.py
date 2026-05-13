@@ -152,6 +152,7 @@ def compute_vertex_derivatives(
 
     area_list = np.zeros(N)
     perimeter_list = np.zeros(N)
+    arclen_list = np.zeros(N)
 
     for idx in range(N):
         edges_type = np.asarray(point_edges_type[idx], dtype=int)
@@ -161,6 +162,7 @@ def compute_vertex_derivatives(
         if E < 2:
             area_list[idx] = np.pi * (r ** 2)
             perimeter_list[idx] = 2.0 * np.pi * r
+            arclen_list[idx] = 2.0 * np.pi * r
             continue
 
         # ring indices
@@ -199,6 +201,7 @@ def compute_vertex_derivatives(
         Pi = Pi_straight + Pi_arc
         Ai = Ai_straight + Ai_arc
         perimeter_list[idx] = Pi
+        arclen_list[idx] = Pi_arc
         area_list[idx] = Ai
 
         # ----- dA_poly/dh, dP_poly/dh for v1 -----
@@ -252,4 +255,4 @@ def compute_vertex_derivatives(
                     vertex_out_da_dtheta[k2v, which2] = da2_arc[valid2]
                     vertex_out_dl_dtheta[k2v, which2] = dl2
 
-    return vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list
+    return vertex_out_da_dtheta, vertex_out_dl_dtheta, dA_poly_dh, dP_poly_dh, area_list, perimeter_list, arclen_list

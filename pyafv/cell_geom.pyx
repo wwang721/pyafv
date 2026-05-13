@@ -325,6 +325,7 @@ def compute_vertex_derivatives(
     cdef object dP_poly_dh_np = np.zeros((num_vertices_ext + 2*num_ridges, 2), dtype=np.float64)
     cdef object area_list_np = np.zeros(N, dtype=np.float64)
     cdef object perimeter_list_np = np.zeros(N, dtype=np.float64)
+    cdef object arclen_list_np = np.zeros(N, dtype=np.float64)
 
     cdef cnp.float64_t[:, :] vertex_out_da_dtheta = vertex_out_da_dtheta_np
     cdef cnp.float64_t[:, :] vertex_out_dl_dtheta = vertex_out_dl_dtheta_np
@@ -332,6 +333,7 @@ def compute_vertex_derivatives(
     cdef cnp.float64_t[:, :] dP_poly_dh = dP_poly_dh_np
     cdef cnp.float64_t[:] area_list = area_list_np
     cdef cnp.float64_t[:] perimeter_list = perimeter_list_np
+    cdef cnp.float64_t[:] arclen_list = arclen_list_np
 
     # declarations used inside loop (declare here, assign in loop)
     cdef object edges_type_obj
@@ -398,6 +400,7 @@ def compute_vertex_derivatives(
         if E < 2:
             area_list[i] = 3.14159265358979323846 * (r * r)
             perimeter_list[i] = 2.0 * 3.14159265358979323846 * r
+            arclen_list[i] = 2.0 * 3.14159265358979323846 * r
             continue
 
         # ring indices
@@ -467,6 +470,7 @@ def compute_vertex_derivatives(
         Ai = Ai_straight + Ai_arc
         perimeter_list[i] = Pi
         area_list[i] = Ai
+        arclen_list[i] = Pi_arc
 
         # ----- dA_poly/dh, dP_poly/dh for v1 -----
         for j in range(E):
@@ -537,4 +541,5 @@ def compute_vertex_derivatives(
             dA_poly_dh_np,
             dP_poly_dh_np,
             area_list_np,
-            perimeter_list_np)
+            perimeter_list_np,
+            arclen_list_np)

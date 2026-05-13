@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up MSVC for ARM64 Windows
         if: matrix.os == 'windows-11-arm'
@@ -29,7 +29,7 @@ jobs:
 
       # Add this step to make 'uv' available to cibuildwheel
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8
         with:
           # This tells the action to watch your project file instead of a lockfile
           cache-dependency-glob: "pyproject.toml"
@@ -57,9 +57,9 @@ jobs:
 
       - name: Build wheels (non-Windows-ARM)
         if: matrix.os != 'windows-11-arm'
-        uses: pypa/cibuildwheel@v3.3.1
+        uses: pypa/cibuildwheel@v3.4.1
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
@@ -68,14 +68,14 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v8
         with:
           # This tells the action to watch your project file instead of a lockfile
           cache-dependency-glob: "pyproject.toml"
 
       - run: uv build --sdist # Build the .tar.gz file
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
@@ -89,7 +89,7 @@ jobs:
     permissions:
       id-token: write # Required for Trusted Publishing
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: cibw-*
           path: dist
