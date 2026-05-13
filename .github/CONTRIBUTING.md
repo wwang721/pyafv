@@ -35,7 +35,6 @@ This installs the core package dependencies along with `pytest` required for dev
 
 > [!NOTE]
 > - You can install additional packages as needed using `uv add <package_name>`.
-> - You can install additional packages as needed using `uv add <package_name>`.
 > - In some environments (like HPC clusters), global Python path can contaminate the project environment. You may need to add the `PYTHONPATH=""` prefix to all `uv` commands to isolate the project.
 > - The current version uses **Cython** to translate `.pyx` files into `.cpp`, (and therefore requires a working C/C++ compiler), though [a fallback backend](/pyafv/cell_geom_fallback.py) (based on early pure-Python release) is also implemented.
 > - For *Windows* **MinGW GCC** users (rather than **MSVC**), add a `setup.cfg` file at the repository root:
