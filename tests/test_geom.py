@@ -51,6 +51,12 @@ def test_geom(data_dir, simulator):
     simulator.update_positions(pts)
     diag = simulator.build()
 
+    # Test coordination number
+    zs = diag['coord_nums']
+    connect_matrix = afv.rebuild_connection_matrix(pts.shape[0], diag["connections"])
+    z_values = connect_matrix.getnnz(axis=1)
+    assert np.all(zs == z_values)
+
     #-----------------------------
     simulator.plot_2d()
     N = pts.shape[0]

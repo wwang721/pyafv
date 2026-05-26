@@ -57,6 +57,7 @@ def build_point_edges(vor_regions, point_region,
 
     point_edges_type = []
     point_vertices_f_idx = []
+    coord_nums = np.zeros(N, dtype=int)
 
     # --- fast vectorized per-cell processing (no inner edge loop) ---
     for idx in range(N):
@@ -122,8 +123,10 @@ def build_point_edges(vor_regions, point_region,
 
         point_edges_type.append(edges_type)
         point_vertices_f_idx.append(vertices_f_idx)
+        
+        coord_nums[idx] = np.sum(edges_type, dtype=int)
 
-    return point_edges_type, point_vertices_f_idx
+    return point_edges_type, point_vertices_f_idx, coord_nums
 
 
 def compute_vertex_derivatives(

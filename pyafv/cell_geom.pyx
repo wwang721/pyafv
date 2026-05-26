@@ -142,6 +142,7 @@ def build_point_edges(
     cdef Py_ssize_t N = pts.shape[0]
     cdef list point_edges_type = [None] * N
     cdef list point_vertices_f_idx = [None] * N
+    cdef cnp.int64_t[:] coord_nums = np.zeros(N, dtype=np.int64)
 
     # packed (v1,v2) -> ridge_id
     cdef dict pair2ridge = {}
@@ -283,8 +284,9 @@ def build_point_edges(
 
         point_edges_type[idx] = edges_type
         point_vertices_f_idx[idx] = vertices_f_idx
+        coord_nums[idx] = sum(edges_type)
 
-    return point_edges_type, point_vertices_f_idx
+    return point_edges_type, point_vertices_f_idx, np.asarray(coord_nums)
 
 
 # ---------------------------------------------------------------------------------------
