@@ -327,6 +327,7 @@ class FiniteVoronoiSimulator:
                 - **point_edges_type**: List of lists of edge types per cell.
                 - **point_vertices_f_idx**: List of lists of vertex ids per cell.
                 - **num_vertices_ext**: Number of vertices including infinite extension vertices.
+                - **coord_nums**: (N,) integer array of coordination numbers per cell.
         """
         N = self.N
         r = self.phys.r
@@ -464,7 +465,7 @@ class FiniteVoronoiSimulator:
         # Part 1 in Cython/Python backend
         # --------------------------------------------------
         vor_regions = self._impl.pad_regions(vor.regions)            # (R, Kmax) int64 with -1 padding
-        point_edges_type, point_vertices_f_idx = self._impl.build_point_edges(
+        point_edges_type, point_vertices_f_idx, coord_nums = self._impl.build_point_edges(
             vor_regions, vor.point_region.astype(np.int64),
             vertices_all.astype(np.float64), pts.astype(np.float64),
             int(num_vertices), vertexpair2ridge, 
@@ -503,6 +504,7 @@ class FiniteVoronoiSimulator:
             point_edges_type=point_edges_type,
             point_vertices_f_idx=point_vertices_f_idx,
             num_vertices_ext=num_vertices_ext,
+            coord_nums=coord_nums,
         )
         return diagnostics, vertices_all
 
@@ -764,6 +766,7 @@ class FiniteVoronoiSimulator:
                 - **edges_type**: List-of-lists of edge types per cell (1=straight, 0=circular arc)
                 - **regions**: List-of-lists of vertex indices per cell
                 - **connections**: (K,2) array of connected cell index pairs
+                - **coord_nums**: (N,) integer array of coordination numbers per cell
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
@@ -807,6 +810,7 @@ class FiniteVoronoiSimulator:
             edges_type=geom["point_edges_type"],
             regions=geom["point_vertices_f_idx"],
             connections=connections,
+            coord_nums=geom["coord_nums"],
         )
 
     # --------------------- 2D plotting utilities ---------------------
