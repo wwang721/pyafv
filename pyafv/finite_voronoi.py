@@ -762,11 +762,11 @@ class FiniteVoronoiSimulator:
                 - **areas**: (N,) array of cell areas
                 - **perimeters**: (N,) array of cell perimeters
                 - **arclens**: (N,) array of non-contacting edge (arc) lengths per cell
+                - **coord_nums**: (N,) integer array of coordination numbers per cell
                 - **vertices**: (M,2) array of all Voronoi + extension vertices
                 - **edges_type**: List-of-lists of edge types per cell (1=straight, 0=circular arc)
                 - **regions**: List-of-lists of vertex indices per cell
                 - **connections**: (K,2) array of connected cell index pairs
-                - **coord_nums**: (N,) integer array of coordination numbers per cell
         """
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
