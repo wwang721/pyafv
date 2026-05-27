@@ -11,16 +11,18 @@ ordering.
 
 This feature is intended for large systems (:math:`N \gtrsim 10^4`) where the
 cost of local Voronoi builds is high enough to offset the overhead of domain
-decomposition, inter-process data transfer, and duplicated halo work. For small
-or moderate systems, :py:class:`pyafv.FiniteVoronoiSimulator` may still be
-faster.
+decomposition, inter-process data transfer, and duplicated halo work.
+The crossover depends on hardware, point density, and the
+chosen domain grid. For small systems, :py:class:`pyafv.FiniteVoronoiSimulator`
+may still be faster.
 
 .. note::
 
    See :ref:`bench_parallel_build` for a build-time benchmark comparing
    :py:class:`pyafv.FiniteVoronoiSimulator` with
    :py:class:`pyafv.ParallelFiniteVoronoiSimulator`. The benchmark shows that
-   multiprocessing is not always faster.
+   multiprocessing is generally faster once the system is not too small,
+   especially for large systems.
 
 
 Basic usage
@@ -50,9 +52,9 @@ simulator is created:
 PyAFV decomposes the domain into an ``a``-by-``b`` grid of subdomains set by
 ``grid_shape=(a, b)``. The number of subdomains is therefore :math:`ab`.
 ``n_workers`` is the number of worker processes to use.
-In practice, we recommend setting ``n_workers`` to the number of available
-CPU cores, but no larger than the number of subdomains, since any additional
-workers will remain idle anyway.
+In practice, set ``n_workers`` to the number of CPU cores available to the
+Python job, but no larger than the number of subdomains; additional workers
+would remain idle anyway.
 
 By default, :py:meth:`pyafv.ParallelFiniteVoronoiSimulator.build` uses
 ``connect=False``. This differs from
@@ -112,8 +114,9 @@ down a new process pool. That is usually slower in a loop.
    usually defaults to ``fork``, but the guard is still recommended for
    portable scripts.
 
-   In Jupyter notebooks, the parallel simulator may still work even if this guard is not used,
-   but long production runs are usually more robust when launched from a script.
+   In Jupyter notebooks, the parallel simulator may still work without this
+   guard, but long production runs are usually more robust when launched from a
+   script.
 
 
 Halo width
@@ -174,7 +177,7 @@ Running on clusters
 -------------------
 
 Python multiprocessing runs worker processes on the same node as the main
-Python process. It does not distribute work across multiple nodes. On a SLURM
+Python process. It does not distribute work across multiple nodes. On a Slurm
 cluster, use one task with multiple CPUs, for example:
 
 .. code-block:: bash
