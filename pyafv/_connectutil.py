@@ -16,7 +16,7 @@ def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndar
     Args:
         pts: (N,2) original positions.
         L: Box size for periodic boundary conditions.
-        r: Maximum radius (or denoted as :math:`\ell`) used to determine the tiling range (at least :math:`2\ell`); if None, defaults to :math:`L/2`.
+        r: Maximum radius (or denoted as :math:`\ell`) used to determine the tiling range (at least :math:`4\ell`, which ensures both correct cell shapes and forces, whereas :math:`2\ell` only ensures correct cell shapes); if None, defaults to :math:`L`.
         
     Returns:
         An (M,2) array containing the tiled positions and an (M,) array containing indices mapping each tiled point back to its original index in 0..N-1.
@@ -25,9 +25,9 @@ def tile_pbc(pts: np.ndarray, L: float, r: float | None = None) -> tuple[np.ndar
     N = pts.shape[0]
 
     if r is None:
-        r = L / 2.0
+        r = L
 
-    thresh = min(2.01 * r, L)
+    thresh = min(4.01 * r, L)
 
     x = pts[:, 0]
     y = pts[:, 1]

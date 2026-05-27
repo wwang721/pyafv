@@ -28,10 +28,11 @@ def test_small_clusters(simulator):
     simulator.plot_2d(show=False)
     afv.visualize_2d(pts, diag, simulator.phys.r, auto_adjust_bounds=False)
 
-    pts = np.array([[0.0, 0.0], [1.0, 0.5], [2.0, 0.1]])  # N=3
-    # pts = np.array([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]])  # N=3 collinear
+    pts = np.array([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]])  # N=3 collinear
     simulator.update_positions(pts)
-    simulator.build()
+    diag = simulator.build()
+    simulator.plot_2d(show=False)
+    afv.visualize_2d(pts, diag, simulator.phys.r, auto_adjust_bounds=False)
 
 
 def test_geom(data_dir, simulator):

@@ -9,12 +9,14 @@
 
       ~PhysicalParams
       ~FiniteVoronoiSimulator
+      ~ParallelFiniteVoronoiSimulator
 
    .. rubric:: Functions
 
    .. autosummary::
 
       ~visualize_2d
+      ~visualize_2d_parallel
       ~target_delta
 
    .. rubric:: Subpackages
@@ -31,3 +33,5 @@
       ~rebuild_connection_matrix
       ~select_daughter_cluster
       ~get_cluster_sizes
+      ~DomainDecomposition
+      ~decompose_points

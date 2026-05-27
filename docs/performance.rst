@@ -13,7 +13,7 @@ Measuring performance
 
 .. note::
     
-   All benchmark results were obtained on a MacBook Pro (14-in, 2024) equipped with an Apple M4 Pro chip (12-core) and 24 GB of RAM, running macOS 15.6. The *MATLAB* implementation was executed using **MATLAB R2025a**, while *PyAFV* was run using **Python 3.13.5** with the **PyAFV v0.4.3** default Cython backend.
+   All benchmark results were obtained on a MacBook Pro (14-in, 2024) equipped with an Apple M4 Pro chip (12-core) and 24 GB of RAM, running macOS 15.6. The *MATLAB* implementation was executed using **MATLAB R2025a**, while *PyAFV* was run using **Python 3.13.5** with the **PyAFV v0.4.3** default Cython backend (**PyAFV v0.4.12** for :ref:`parallel build benchmark <bench_parallel_build>`).
 
 
 .. _bench_backends:
@@ -42,3 +42,41 @@ The histogram above summarizes the runtimes of the core routines invoked by :py:
 
 
 The remaining dominant cost arises from the additional per-cell processing performed in :py:meth:`pyafv.FiniteVoronoiSimulator._per_cell_geometry`. As shown in the histogram, the Cython-backed implementation substantially reduces the runtime of this step, bringing it down to a level comparable to that of SciPy's Voronoi tessellation.
+
+
+.. _bench_parallel_build:
+
+Benchmarking parallel build
+---------------------------
+
+.. figure:: ../assets/parallel_build_times.svg
+   :alt: Parallel build-time benchmark
+   :figwidth: 100%
+   :align: center
+
+   Build-time benchmark for :py:class:`pyafv.FiniteVoronoiSimulator` and
+   :py:class:`pyafv.ParallelFiniteVoronoiSimulator`.
+
+The figure shows the cost of a single
+:py:meth:`pyafv.FiniteVoronoiSimulator.build` call with ``connect=False``
+against the domain-decomposed multiprocess implementation. For each system
+size, the same ten randomly generated point sets were used for all methods; the
+bars show the mean build time, while the right panel shows the speedup relative
+to :py:class:`pyafv.FiniteVoronoiSimulator`. Parallel timings were measured
+with a persistent worker pool and three unmeasured warm-up builds, so the
+reported times do not include one-time worker startup.
+
+For very small systems, multiprocessing overhead dominates. In this benchmark,
+the parallel implementation is slower than the single-process simulator at
+:math:`N=100`, but becomes faster by :math:`N=1000`. For larger systems, local
+domain decomposition gives substantial speedups: the ``4 x 3`` setup reaches
+about :math:`4.9\times` at :math:`N=10^4`, :math:`6.8\times` at
+:math:`N=10^5`, and :math:`6.9\times` at :math:`N=10^6`. The speedup is not
+perfectly linear in the number of workers, likely because the benchmark was run
+on a laptop with 8 performance cores and 4 efficiency cores rather than on a
+uniform multi-core CPU.
+
+The optimal decomposition depends on the number of points and the CPU resources
+available on the machine. In this benchmark, using more domains generally helps
+over the tested range, but this tradeoff depends on halo overhead and should be
+checked for each workload.

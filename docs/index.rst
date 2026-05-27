@@ -27,8 +27,7 @@ The AFV framework was introduced and developed in, for example, Refs. :cite:`hua
 .. It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
 .. and offers a *simple* and *intuitive* API.
 
-Check out the :doc:`usage`, :doc:`examples`, :doc:`performance`, :doc:`calibration`, :doc:`citation`, :doc:`contributing`, and :doc:`api/index` sections for further information, including
-how to :ref:`install <installation>` the package, usage examples, benchmarks, local development, and the complete API reference.
+Check out the :doc:`usage`, :doc:`examples`, :doc:`multiprocessing`, :doc:`performance`, :doc:`calibration`, :doc:`citation`, :doc:`contributing`, and :doc:`api/index` sections for further information, including how to :ref:`install <installation>` the package, usage examples, multiprocess domain decomposition, benchmarks, local development, and the complete API reference.
 
 .. |simulation demo| replace:: *simulation demo*
 .. _simulation demo: https://dapengbi.com/paper_simulation_demos/afv_model/index.html
@@ -66,6 +65,7 @@ how to :ref:`install <installation>` the package, usage examples, benchmarks, lo
    Home <self>
    usage
    examples
+   multiprocessing
    performance
    calibration
    citation
@@ -88,4 +88,3 @@ how to :ref:`install <installation>` the package, usage examples, benchmarks, lo
 
 * :ref:`genindex`
 * :ref:`modindex`
-

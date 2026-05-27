@@ -4,7 +4,12 @@ PyAFV - A Python implementation of the **active finite Voronoi (AFV) model** in 
 
 from .physical_params import PhysicalParams, target_delta
 from .finite_voronoi import FiniteVoronoiSimulator
-from ._plotutils import visualize_2d
+from .parallel_voronoi import (
+    DomainDecomposition,
+    ParallelFiniteVoronoiSimulator,
+    decompose_points,
+)
+from ._plotutils import visualize_2d, visualize_2d_parallel
 from ._connectutil import *
 from . import calibrate
 
@@ -17,7 +22,11 @@ except ImportError:                          # pragma: no cover
 __all__ = [
     "PhysicalParams",
     "FiniteVoronoiSimulator",
+    "DomainDecomposition",
+    "ParallelFiniteVoronoiSimulator",
+    "decompose_points",
     "visualize_2d",
+    "visualize_2d_parallel",
     "target_delta",
     "calibrate",
 ]
