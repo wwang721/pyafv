@@ -740,6 +740,115 @@ class FiniteVoronoiSimulator:
         F[:, 1] = fy
         return F
 
+    def _small_colinear_support_points(self) -> np.ndarray | None:
+        if self.N < 3 or self.N > 10:
+            return None
+
+        centered = self.pts - np.mean(self.pts, axis=0)
+        if np.linalg.matrix_rank(centered) >= 2:
+            return None
+
+        xmin = float(np.min(self.pts[:, 0]))
+        xmax = float(np.max(self.pts[:, 0]))
+        ymin = float(np.min(self.pts[:, 1]))
+        ymax = float(np.max(self.pts[:, 1]))
+        span = max(xmax - xmin, ymax - ymin)
+        padding = max(span, 20.0 * self.phys.r, 1.0)
+
+        return np.array(
+            [
+                [xmin - padding, ymin - padding],
+                [xmax + padding, ymin - padding],
+                [0.5 * (xmin + xmax), ymax + padding],
+            ],
+            dtype=float,
+        )
+
+    def _simulator_with_support_points(self, support_pts: np.ndarray) -> FiniteVoronoiSimulator:
+        pts_aug = np.vstack([self.pts, support_pts])
+        backend = "python" if self._BACKEND == "python" else None
+        sim = FiniteVoronoiSimulator(pts_aug, self.phys, backend=backend)
+        sim.update_preferred_areas(
+            np.concatenate(
+                [
+                    self._preferred_areas,
+                    np.full(support_pts.shape[0], self.phys.A0, dtype=float),
+                ]
+            )
+        )
+        return sim
+
+    def _build_with_support_points(self, support_pts: np.ndarray, connect: bool) -> dict[str, object]:
+        n_real = self.N
+        sim = self._simulator_with_support_points(support_pts)
+
+        diag = sim.build(connect=connect)
+        diag["forces"] = diag["forces"][:n_real]
+        diag["areas"] = diag["areas"][:n_real]
+        diag["perimeters"] = diag["perimeters"][:n_real]
+        diag["arclens"] = diag["arclens"][:n_real]
+        diag["coord_nums"] = diag["coord_nums"][:n_real]
+        diag["edges_type"] = diag["edges_type"][:n_real]
+        diag["regions"] = diag["regions"][:n_real]
+
+        connections = np.asarray(diag["connections"], dtype=int).reshape(-1, 2)
+        if connections.size:            # pragma: no cover
+            diag["connections"] = connections[np.all(connections < n_real, axis=1)]
+        else:
+            diag["connections"] = connections
+        return diag
+
+    def _plot_with_support_points(
+        self,
+        support_pts: np.ndarray,
+        ax: matplotlib.axes.Axes | None,
+        show: bool,
+        **kw,
+    ) -> matplotlib.axes.Axes:
+        sim = self._simulator_with_support_points(support_pts)
+        (vor, vertices_all, ridge_vertices_all, num_vertices,
+            vertexpair2ridge, vertex_points) = sim._build_voronoi_with_extensions()
+
+        try:
+            geom, vertices_all = sim._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+        except KeyError:            # pragma: no cover
+            (vor, vertices_all, ridge_vertices_all, num_vertices,
+                vertexpair2ridge, vertex_points) = sim._build_voronoi_with_extensions(joggle=True)
+            geom, vertices_all = sim._per_cell_geometry(vor, vertices_all, ridge_vertices_all, num_vertices, vertexpair2ridge)
+
+        from matplotlib import pyplot as plt
+        from types import SimpleNamespace
+
+        if ax is None:
+            ax = plt.gca()
+
+        n_real = self.N
+        real_ridge_mask = np.all(np.asarray(vor.ridge_points, dtype=int) < n_real, axis=1)
+        plot_vor = SimpleNamespace(ridge_vertices=np.asarray(vor.ridge_vertices)[real_ridge_mask])
+        real_point_edges_type = geom["point_edges_type"][:n_real]
+        real_point_vertices = geom["point_vertices_f_idx"][:n_real]
+        real_vertex_ids = {
+            int(vertex_id)
+            for region in real_point_vertices
+            for vertex_id in region
+        }
+
+        self._plot_routine(
+            ax,
+            plot_vor,
+            vertices_all,
+            ridge_vertices_all[real_ridge_mask],
+            real_point_edges_type,
+            real_point_vertices,
+            geom["vertex_in_id"] & real_vertex_ids,
+            geom["vertex_out_id"] & real_vertex_ids,
+            **kw,
+        )
+
+        if show:            # pragma: no cover
+            plt.show()
+        return ax
+
     # --------------------- One integration step ---------------------
     def build(self, connect: bool = True) -> dict[str, object]:
         """ Build the finite Voronoi structure and compute forces, returning a dictionary of diagnostics.
@@ -768,6 +877,10 @@ class FiniteVoronoiSimulator:
                 - **regions**: List-of-lists of vertex indices per cell
                 - **connections**: (K,2) array of connected cell index pairs
         """
+        support_pts = self._small_colinear_support_points()
+        if support_pts is not None:
+            return self._build_with_support_points(support_pts, connect)
+
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
 
@@ -836,6 +949,10 @@ class FiniteVoronoiSimulator:
         Returns:
             The matplotlib axes containing the plot.
         """
+        support_pts = self._small_colinear_support_points()
+        if support_pts is not None:
+            return self._plot_with_support_points(support_pts, ax, show, **kw)
+
         (vor, vertices_all, ridge_vertices_all, num_vertices,
             vertexpair2ridge, vertex_points) = self._build_voronoi_with_extensions()
 

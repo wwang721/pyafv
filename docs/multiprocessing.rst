@@ -60,6 +60,13 @@ By default, :py:meth:`pyafv.ParallelFiniteVoronoiSimulator.build` uses
 default. This default avoids connectivity work during runs where only forces
 are needed.
 
+.. tip::
+
+   Decomposing the whole system into smaller domains can also improve the
+   accuracy of :py:class:`scipy.spatial.Voronoi` for large systems, since
+   Qhull's floating-point tolerance scales with the system span; see
+   `issue #38 <https://github.com/wwang721/pyafv/issues/38#issuecomment-4189891733>`_.
+
 
 Repeated build steps
 --------------------
