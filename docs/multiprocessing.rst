@@ -112,7 +112,7 @@ down a new process pool. That is usually slower in a loop.
    usually defaults to ``fork``, but the guard is still recommended for
    portable scripts.
 
-   In Jupyter notebooks, the parallel simulator may still work even this guard is not used,
+   In Jupyter notebooks, the parallel simulator may still work even if this guard is not used,
    but long production runs are usually more robust when launched from a script.
 
 
