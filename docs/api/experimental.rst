@@ -18,3 +18,10 @@ Experimental APIs
 .. autofunction:: select_daughter_cluster
 
 .. autofunction:: get_cluster_sizes
+
+
+.. rubric:: Domain decomposition utilities
+
+.. autoclass:: DomainDecomposition
+
+.. autofunction:: decompose_points

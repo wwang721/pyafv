@@ -42,3 +42,36 @@ The histogram above summarizes the runtimes of the core routines invoked by :py:
 
 
 The remaining dominant cost arises from the additional per-cell processing performed in :py:meth:`pyafv.FiniteVoronoiSimulator._per_cell_geometry`. As shown in the histogram, the Cython-backed implementation substantially reduces the runtime of this step, bringing it down to a level comparable to that of SciPy's Voronoi tessellation.
+
+
+.. _bench_parallel_build:
+
+Benchmarking parallel build
+---------------------------
+
+.. figure:: ../assets/parallel_build_times.svg
+   :alt: Parallel build-time benchmark
+   :figwidth: 100%
+   :align: center
+
+   Build-time benchmark for :py:class:`pyafv.FiniteVoronoiSimulator` and
+   :py:class:`pyafv.ParallelFiniteVoronoiSimulator`.
+
+The figure shows the cost of a single
+:py:meth:`pyafv.FiniteVoronoiSimulator.build` call with ``connect=False`` against
+the domain-decomposed multiprocess implementation. For each system size, the same
+ten randomly generated point sets were used for all methods; the bars show the
+mean build time, while the right panel shows the speedup relative to
+:py:class:`pyafv.FiniteVoronoiSimulator`.
+
+For small systems, multiprocessing overhead dominates, so the parallel
+implementation is slower than the single-process simulator. In this benchmark,
+the crossover occurs around :math:`N=10^4`. For larger systems, the local
+domain decomposition becomes beneficial: the ``4 x 3`` setup reaches a speedup
+of about :math:`5.6\times` at :math:`N=10^5` and :math:`6.8\times` at
+:math:`N=10^6`.
+
+The optimal decomposition depends on the number of points and
+the CPU resources available on the machine. For repeated simulations, the
+parallel simulator should be used as a context manager so that the worker pool is
+reused across many build steps.
