@@ -183,8 +183,12 @@ A complete example
 The following code provides a complete example that simulates 10,000 cells
 using a ``3 x 3`` domain decomposition and 9 worker processes:
 
-.. literalinclude:: ../examples/multiprocessing.py
+.. literalinclude:: ../examples/parallel.py
    :language: python
+
+Run the code as you would a standard Python script. If your system has 9 or more
+CPU cores available, the parallel implementation should run substantially faster
+than the single-process version.
 
 
 Running on clusters
@@ -232,6 +236,19 @@ multiprocessing, using four worker processes per rank
 .. literalinclude:: ../examples/MPI_wrap.py
    :language: python
 
+On Linux clusters, it may be necessary to explicitly set the multiprocessing
+start method to ``spawn`` for better compatibility with MPI:
+
+.. code-block:: python
+
+   import multiprocessing as mp
+   
+   # ... define main() here ...
+
+   if __name__ == "__main__":
+      mp.set_start_method("spawn", force=True)
+      main()
+
 To run the above code:
 
 .. code-block:: console
@@ -245,7 +262,10 @@ On a Slurm cluster, request 2 MPI tasks and 4 CPUs per task:
    #SBATCH --ntasks=2
    #SBATCH --cpus-per-task=4
 
-   mpiexec python MPI_wrap.py
+   mpiexec -n "$SLURM_NTASKS" \
+     --map-by "slot:PE=$SLURM_CPUS_PER_TASK" \
+     --bind-to core \
+     python MPI_wrap.py
 
 Visualization of MPI-based parallel simulations is also possible. Simply loop over each
 rank's domain and call :py:func:`pyafv.visualize_2d_parallel` using the diagnostics from
