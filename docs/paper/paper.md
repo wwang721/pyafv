@@ -21,7 +21,7 @@ affiliations:
  - name: Department of Biophysics, Johns Hopkins University, Baltimore, United States
    index: 2
    ror: "00za53h95"
-date: 27 May 2026
+date: 28 May 2026
 bibliography: paper.bib
 ---
 
@@ -38,7 +38,7 @@ A second need is reliable calibration. Detachment forces in the AFV model diverg
 
 # State of the field
 
-Prior AFV implementations are either unreleased or not packaged as reusable libraries. The MATLAB implementation in Ref. [@huang2023bridging] lacks integrated calibration, open-boundary handling, and a library interface. `PyAFV` provides a Python library interface for the AFV model; benchmarks show it scales as $\mathcal{O}(N)$ with system size, while the MATLAB code scales as $\mathcal{O}(N^{3/2})$, giving `PyAFV` substantial speedups for $N \gtrsim 10^3$.
+Prior AFV implementations are either unreleased or not packaged as reusable libraries. The MATLAB implementation in Ref. [@huang2023bridging] lacks integrated calibration, open-boundary handling, and a library interface. `PyAFV` provides a Python library interface for the AFV model; benchmarks show it scales as $\mathcal{O}(N)$ with system size, while the MATLAB code scales as $\mathcal{O}(N^{3/2})$, giving `PyAFV` substantial speedups for $N \gtrsim 10^3$. Further acceleration is available through domain-decomposed Python multiprocessing and MPI parallelization.
 
 # Software design
 
@@ -54,7 +54,10 @@ where $K_A$, $K_P$ are elastic moduli, $A_0$, $P_0$ are preferred area and perim
 
 **Hybrid backend.** Geometry routines for the finite Voronoi construction are implemented in both Cython and pure Python. The Cython backend is selected automatically when available; otherwise the pure-Python fallback is used with no change to the public API. Users can force backend selection for debugging.
 
+![**Build-time performance of the serial and parallel simulators.** **a,** Build times for system sizes $N$ ranging from $10^2$ to $10^6$. **b,** Speedup of the parallel implementation relative to the serial version for different domain decompositions. For the parallel simulations, the number of CPU processes is set equal to the total number of domains.\label{performance}](performance_parallel.pdf)
+
 **API and transparency.** The central class is `FiniteVoronoiSimulator`, initialized with cell-center coordinates and a `PhysicalParams` dataclass. The `build()` method of this class returns a diagnostics dictionary of forces, geometric quantities, and contact connectivity. Cell dynamics are implemented in user scripts rather than inside the library, keeping modeling assumptions explicit. Per-cell heterogeneous preferred areas are supported for mixed-population studies.
+For simulations with large system sizes, `PyAFV` also includes a domain-decomposed multiprocessing implementation `ParallelFiniteVoronoiSimulator`, which retains an interface and build/diagnostic workflow similar to those of the serial `FiniteVoronoiSimulator`. The runtime of the two simulators for different system sizes $N$ is given in Fig.\ref{performance}a, while the speedup achieved by the parallel implementation is shown in Fig. \ref{performance}b.
 
 **Calibration module.** Because detachment forces diverge as cells approach full separation [@wang2026divergence], calibration is essential for interpreting tissue fractures. `pyafv.calibrate.auto_calibrate()` finds the steady-state of a cell doublet in the deformable polygon (DP) model [@boromand2018jamming; @lv2024active], probes its detachment force under external pulling, and determines the AFV truncation threshold $\delta$ that matches the target force.
 
@@ -76,11 +79,11 @@ forces = diag["forces"]
 connections = diag["connections"]
 ```
 
-To visualize the constructed finite Voronoi diagram, users can run `sim.plot_2d(show=True)`. Additional examples and notebooks in the project demonstrate relaxation trajectories, active dynamics, connectivity extraction, and custom visualization. The full API and documentation are available for further details [@wang2026pyafv].
+To visualize the constructed finite Voronoi diagram, users can call `sim.plot_2d(show=True)` or or use the standalone function `afv.visualize_2d(pts, diag, r=1.0)`. Additional examples and notebooks in the project demonstrate relaxation trajectories, active dynamics, connectivity extraction, periodic boundary conditions, parallel acceleration, etc. The full API and documentation are available for further details [@wang2026pyafv].
 
 # Research impact statement
 
-`PyAFV` was used to produce all the finite Voronoi simulation results of our previous work [@wang2026divergence], and its calculated forces were validated against the MATLAB implementation [@huang2023bridging] for identical configurations. Its faster scaling compared to the MATLAB code, integrated calibration, and Python library interface make it well-suited for systematic studies of nonconfluent tissue mechanics.
+`PyAFV` was used to produce all the finite Voronoi simulation results of our previous work [@wang2026divergence], and its calculated forces were validated against the MATLAB implementation [@huang2023bridging] for identical configurations. Its faster scaling compared to the MATLAB code, domain-decomposition-based parallelization, integrated calibration, and Python library interface make it well-suited for systematic studies of nonconfluent tissue mechanics.
 
 # AI usage disclosure
 
