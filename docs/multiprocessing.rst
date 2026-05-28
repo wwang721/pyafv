@@ -177,10 +177,23 @@ set to ``True``. Use :py:func:`pyafv.visualize_2d` for diagnostics from
 :py:meth:`pyafv.FiniteVoronoiSimulator.build`.
 
 
+A complete example
+-------------------
+
+The following code provides a complete example that simulates 10,000 cells
+using a ``3 x 3`` domain decomposition and 9 worker processes:
+
+.. literalinclude:: ../examples/multiprocessing.py
+   :language: python
+
+
 Running on clusters
 -------------------
 
-Python multiprocessing runs worker processes on the same node as the main
+Running on a single node
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Python multiprocessing runs worker processes on the **same node** as the main
 Python process. It does not distribute work across multiple nodes. On a Slurm
 cluster, use one task with multiple CPUs, for example:
 
@@ -195,5 +208,56 @@ Then use the same number of workers in Python:
 
    sim = pyafv.ParallelFiniteVoronoiSimulator(points, phys, (4, 4), 16)
 
-For multi-node domain decomposition, use an MPI-based implementation instead of
-Python multiprocessing. PyAFV does not currently provide an MPI implementation.
+
+Multi-node parallelism: MPI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For multi-node domain decomposition, use an **MPI**-based
+(\ **M**\ essage \ **P**\ assing \ **I**\ nterface) implementation instead of
+Python multiprocessing. PyAFV does **not** currently provide an MPI
+implementation. However, it exposes the point-based domain-decomposition
+function :py:func:`pyafv.decompose_points` as a low-level helper:
+
+.. autofunction:: pyafv.decompose_points
+   :noindex:
+
+Using this function, users can build an MPI wrapper around the parallel
+simulator with `mpi4py <https://mpi4py.readthedocs.io/en/stable/>`_. The
+following code shows a minimal example with two MPI ranks. First, the full
+system is decomposed into a ``2 x 1`` grid across MPI ranks. Then, each rank
+further decomposes its local domain into ``2 x 2`` subdomains for
+multiprocessing, using four worker processes per rank
+(:math:`2 \times 4 = 8` workers in total).
+
+.. literalinclude:: ../examples/MPI_wrap.py
+   :language: python
+
+To run the above code:
+
+.. code-block:: console
+
+   (.venv) $ mpiexec -n 2 python MPI_wrap.py
+
+On a Slurm cluster, request 2 MPI tasks and 4 CPUs per task:
+
+.. code-block:: bash
+
+   #SBATCH --ntasks=2
+   #SBATCH --cpus-per-task=4
+
+   mpiexec python MPI_wrap.py
+
+Visualization of MPI-based parallel simulations is more complex,
+so we currently do not recommend it. However, if the number of cells
+is large enough to require multiple compute nodes (:math:`N \gtrsim 10^6`),
+visualizing the full system is usually not very informative anyway.
+In such large-scale simulations, the finite Voronoi structures are often
+difficult to distinguish visually, and it is generally more effective to
+visualize cells simply as points.
+
+.. caution::
+
+   MPI ranks can be placed on different nodes, while the worker processes
+   created by each rank run on that rank's node. Therefore,
+   ``--cpus-per-task`` must not exceed the number of CPU cores available
+   on a single node.

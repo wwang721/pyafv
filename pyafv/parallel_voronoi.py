@@ -132,12 +132,13 @@ def decompose_points(
 ) -> list[DomainDecomposition]:
     """Decompose points into owned grid domains plus halo/local points.
 
-    This function is independent of the finite Voronoi model. It only computes
-    global/local point-index bookkeeping.
-
     Points on internal owned-domain boundaries are assigned to exactly one
     domain by using right-sided binning and clipping at the outermost boundary.
     Halo/local domains include points on all halo box edges.
+
+    .. tip::
+       This function is independent of the finite Voronoi model. It only computes
+       global/local point-index bookkeeping.
 
     Args:
         points (numpy.ndarray): (N,2) array of point coordinates.
@@ -151,8 +152,8 @@ def decompose_points(
             systems. ``"sorted_x"`` uses less temporary memory.
 
     Returns:
-        list[DomainDecomposition]: One point-only decomposition object for
-        each domain in row-major order.
+        list[DomainDecomposition]: One list of :py:class:`DomainDecomposition` objects in row-major order,
+        where each element stores the local and global point information for a single domain.
 
     Raises:
         ValueError: If *points* does not have shape (N,2).
