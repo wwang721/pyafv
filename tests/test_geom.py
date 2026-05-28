@@ -65,6 +65,20 @@ def test_geom(data_dir, simulator):
     assert isinstance(fig, matplotlib.figure.Figure)
     assert len(fig.axes) > 0
 
+    selected = np.arange(0, N, 3)
+    fig = afv.visualize_2d(
+        pts,
+        diag,
+        simulator.phys.r,
+        selected=selected,
+        cell_colors=['C0'] * N,
+        point_colors=['C1'] * N,
+        point_size=np.arange(N) + 1,
+        show_points=True,
+    )
+    assert isinstance(fig, matplotlib.figure.Figure)
+    assert len(fig.axes) > 0
+
     # Test a right angle geometry for Voronoi diagram construction
     pts = np.array([[-1., 2.], [-1., -1.], [1., -1.]]) * 0.5
     simulator.update_positions(pts)

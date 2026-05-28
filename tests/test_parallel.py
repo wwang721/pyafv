@@ -186,6 +186,19 @@ def test_visualize_2d_parallel_returns_figure(phys):
         diag,
         phys.r,
         cell_colors=["C0"] * pts.shape[0],
+        point_colors=["C1"] * pts.shape[0],
+        point_size=np.arange(pts.shape[0]) + 1,
+        show_points=True,
+    )
+    assert isinstance(fig, matplotlib.figure.Figure)
+
+    fig = afv.visualize_2d_parallel(
+        pts,
+        diag,
+        phys.r,
+        selected=np.arange(0, pts.shape[0], 3),
+        cell_colors=["C0"] * pts.shape[0],
+        point_colors=["C1"] * pts.shape[0],
         point_size=np.arange(pts.shape[0]) + 1,
         show_points=True,
     )

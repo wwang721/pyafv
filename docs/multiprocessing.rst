@@ -247,10 +247,29 @@ On a Slurm cluster, request 2 MPI tasks and 4 CPUs per task:
 
    mpiexec python MPI_wrap.py
 
-Visualization of MPI-based parallel simulations is more complex,
-so we currently do not recommend it. However, if the number of cells
-is large enough to require multiple compute nodes (:math:`N \gtrsim 10^6`),
-visualizing the full system is usually not very informative anyway.
+Visualization of MPI-based parallel simulations is also possible. Simply loop over each
+rank's domain and call :py:func:`pyafv.visualize_2d_parallel` using the diagnostics from
+each rank (``plot_mode=True`` must be passed to the ``build`` method to enable plotting).
+
+.. code-block:: python
+
+   if rank == 0:      # use only one rank to plot
+      fig, ax = plt.subplots()
+      for idx in range(size):
+         diag = diag_all[idx]
+         domain = domains[idx]
+         local_points = domain.local_pts
+
+         afv.visualize_2d_parallel(local_points, diag, r=radius, ax=ax, 
+                selected=domain.owned_local_ids)  # remove halo points for each rank's domain
+
+      ax.set_xlim(-10, 110)
+      ax.set_ylim(-10, 110)
+      plt.show()
+
+However, if the number of cells is large enough to require multiple
+compute nodes (:math:`N \gtrsim 10^6`), visualizing the full system is
+usually not very informative anyway.
 In such large-scale simulations, the finite Voronoi structures are often
 difficult to distinguish visually, and it is generally more effective to
 visualize cells simply as points.
