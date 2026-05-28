@@ -28,6 +28,10 @@ may still be faster.
 Basic usage
 -----------
 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/pyafv/assets/blob/main/jupyter/multiprocessing.ipynb
+   :alt: Open In Colab
+
 The interface is similar to :py:class:`pyafv.FiniteVoronoiSimulator`, but the
 domain grid shape and number of worker processes are supplied when the
 simulator is created:
