@@ -57,14 +57,15 @@ Benchmarking parallel build
    Build-time benchmark for :py:class:`pyafv.FiniteVoronoiSimulator` and
    :py:class:`pyafv.ParallelFiniteVoronoiSimulator`.
 
-The figure shows the cost of a single
+This figure shows the cost of a single
 :py:meth:`pyafv.FiniteVoronoiSimulator.build` call with ``connect=False``
 against the domain-decomposed multiprocess implementation. For each system
 size, the same ten randomly generated point sets were used for all methods; the
 bars show the mean build time, while the right panel shows the speedup relative
 to :py:class:`pyafv.FiniteVoronoiSimulator`. Parallel timings were measured
 with a persistent worker pool and three unmeasured warm-up builds, so the
-reported times do not include one-time worker startup.
+reported times do not include one-time worker startup. The number of workers
+is set equal to the number of domains.
 
 For very small systems, multiprocessing overhead dominates. In this benchmark,
 the parallel implementation is slower than the single-process simulator at
@@ -75,6 +76,36 @@ about :math:`4.9\times` at :math:`N=10^4`, :math:`6.8\times` at
 perfectly linear in the number of workers, likely because the benchmark was run
 on a laptop with 8 performance cores and 4 efficiency cores rather than on a
 uniform multi-core CPU.
+
+The following figures show benchmark runs on the Johns Hopkins **Rockfish** HPC
+cluster. The first figure corresponds to runs on the |shared|_ partition
+(32 cores/node), while the second shows results from the |parallel|_ partition
+(48 cores/node). The serial :py:class:`pyafv.FiniteVoronoiSimulator` benchmark
+was allocated 16 GB of memory to avoid out-of-memory (OOM) failures; on
+Rockfish, this allocation corresponded to 5 CPUs on both partitions. For the
+parallel simulator runs, both the number of allocated CPUs and the number of
+workers were set equal to the number of domains. Compared with the laptop benchmark,
+the parallel speedup scales more cleanly with the number of workers.
+
+.. |shared| replace:: **shared**
+.. _shared: https://docs.arch.jhu.edu/en/latest/1_Clusters/Rockfish/3_Slurm/Partitions.html#shared
+
+.. |parallel| replace:: **parallel**
+.. _parallel: https://docs.arch.jhu.edu/en/latest/1_Clusters/Rockfish/3_Slurm/Partitions.html#parallel
+
+.. figure:: ../assets/rockfish_shared_partition.svg
+   :alt: Parallel build-time benchmark on Rockfish shared partition
+   :figwidth: 100%
+   :align: center
+
+   JHU Rockfish |shared|_ partition build-time benchmark.
+
+.. figure:: ../assets/rockfish_parallel_partition.svg
+   :alt: Parallel build-time benchmark on Rockfish parallel partition
+   :figwidth: 100%
+   :align: center
+
+   JHU Rockfish |parallel|_ partition build-time benchmark.
 
 The optimal decomposition depends on the number of points and the CPU resources
 available on the machine. In this benchmark, using more domains generally helps
