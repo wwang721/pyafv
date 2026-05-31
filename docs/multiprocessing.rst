@@ -137,7 +137,7 @@ Decomposition method
 --------------------
 
 The low-level helper :py:func:`pyafv.decompose_points` and the parallel
-simulator both support two halo-collection methods:
+simulator both support three halo-collection methods:
 
 .. code-block:: python
 
@@ -151,6 +151,8 @@ simulator both support two halo-collection methods:
 
 - ``"dense"`` is the default. It builds a dense domain-by-point mask and is
   often faster for moderate systems.
+- ``"binned"`` reuses the owned-domain bins to check fewer candidate halo
+  points. It can be faster for large systems with many domains.
 - ``"sorted_x"`` avoids the dense temporary mask by sorting points along the
   ``x``-axis and querying candidate halo ranges. It uses less temporary memory,
   but can be slower for typical moderate-sized systems.

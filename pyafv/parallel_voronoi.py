@@ -128,7 +128,7 @@ def decompose_points(
     halo_width: float = 0.0,
     *,
     domain_bounds: tuple[tuple[float, float], tuple[float, float]] | None = None,
-    method: typing.Literal["dense", "sorted_x"] = "dense",
+    method: typing.Literal["dense", "binned", "sorted_x"] = "dense",
 ) -> list[DomainDecomposition]:
     """Decompose points into owned grid domains plus halo/local points.
 
@@ -149,7 +149,9 @@ def decompose_points(
             If *None*, bounds are inferred from *points*.
         method: Method used to collect halo points. ``"dense"`` builds a
             dense domain-by-point mask and is usually faster for moderate
-            systems. ``"sorted_x"`` uses less temporary memory.
+            systems. ``"binned"`` reuses the owned-domain bins to reduce the
+            number of candidate points checked for each halo and is usually
+            faster for many domains. ``"sorted_x"`` uses less temporary memory.
 
     Returns:
         list[DomainDecomposition]: One list of :py:class:`DomainDecomposition` objects in row-major order,
@@ -169,8 +171,8 @@ def decompose_points(
     halo_width = float(halo_width)
     if halo_width < 0.0:                   # pragma: no cover
         raise ValueError("halo_width must be non-negative")
-    if method not in ("dense", "sorted_x"):                   # pragma: no cover
-        raise ValueError("method must be 'dense' or 'sorted_x'")
+    if method not in ("dense", "binned", "sorted_x"):                   # pragma: no cover
+        raise ValueError("method must be 'dense', 'binned', or 'sorted_x'")
 
     nx, ny = _validate_grid_shape(grid_shape)
     n_domains = nx * ny
@@ -251,6 +253,17 @@ def decompose_points(
         local_domain_ids, local_global_ids_all = np.nonzero(local_mask)
         local_counts = np.bincount(local_domain_ids, minlength=n_domains)
         local_starts = np.concatenate(([0], np.cumsum(local_counts)))
+    elif method == "binned":
+        px = points[:, 0]
+        py = points[:, 1]
+        candidate_ix0 = np.searchsorted(x_edges, halo_x0, side="right") - 1
+        candidate_ix1 = np.searchsorted(x_edges, halo_x1, side="right") - 1
+        candidate_iy0 = np.searchsorted(y_edges, halo_y0, side="right") - 1
+        candidate_iy1 = np.searchsorted(y_edges, halo_y1, side="right") - 1
+        candidate_ix0 = np.clip(candidate_ix0, 0, nx - 1)
+        candidate_ix1 = np.clip(candidate_ix1, 0, nx - 1)
+        candidate_iy0 = np.clip(candidate_iy0, 0, ny - 1)
+        candidate_iy1 = np.clip(candidate_iy1, 0, ny - 1)
     else:
         py = points[:, 1]
         x_order = np.argsort(points[:, 0], kind="stable")
@@ -268,6 +281,28 @@ def decompose_points(
             local_global_ids = local_global_ids_all[
                 local_starts[domain_id] : local_starts[domain_id + 1]
             ]
+        elif method == "binned":
+            candidate_chunks = []
+            for iy_candidate in range(candidate_iy0[domain_id], candidate_iy1[domain_id] + 1):
+                row_start = iy_candidate * nx
+                for ix_candidate in range(candidate_ix0[domain_id], candidate_ix1[domain_id] + 1):
+                    candidate_domain_id = row_start + ix_candidate
+                    candidate_chunks.append(
+                        owned_order[
+                            owned_starts[candidate_domain_id] : owned_starts[candidate_domain_id + 1]
+                        ]
+                    )
+            if len(candidate_chunks) == 1:
+                candidate_global_ids = candidate_chunks[0]
+            else:
+                candidate_global_ids = np.concatenate(candidate_chunks)
+            local_mask = (
+                (px[candidate_global_ids] >= halo_x0[domain_id])
+                & (px[candidate_global_ids] <= halo_x1[domain_id])
+                & (py[candidate_global_ids] >= halo_y0[domain_id])
+                & (py[candidate_global_ids] <= halo_y1[domain_id])
+            )
+            local_global_ids = np.sort(candidate_global_ids[local_mask])
         else:
             x_candidates = x_order[
                 halo_x_left[domain_id] : halo_x_right[domain_id]
@@ -405,8 +440,8 @@ class ParallelFiniteVoronoiSimulator:
         domain_bounds: Optional domain bounds as ``((xmin, xmax), (ymin, ymax))``.
             If *None*, bounds are inferred from the current point positions.
         decomposition_method: Method used to collect halo points. ``"dense"``
-            is usually faster for moderate systems, while ``"sorted_x"`` uses
-            less temporary memory.
+            is usually faster for moderate systems. ``"binned"`` can be faster
+            for many domains. ``"sorted_x"`` uses less temporary memory.
 
     Raises:
         ValueError: If *pts* does not have shape (N,2).
@@ -434,7 +469,7 @@ class ParallelFiniteVoronoiSimulator:
         halo_width: float | None = None,
         backend: typing.Literal["cython", "python"] | None = None,
         domain_bounds: tuple[tuple[float, float], tuple[float, float]] | None = None,
-        decomposition_method: typing.Literal["dense", "sorted_x"] = "dense",
+        decomposition_method: typing.Literal["dense", "binned", "sorted_x"] = "dense",
     ):
         pts = np.asarray(pts, dtype=float)
         if pts.ndim != 2 or pts.shape[1] != 2:                   # pragma: no cover
@@ -457,8 +492,8 @@ class ParallelFiniteVoronoiSimulator:
             raise ValueError("n_workers must be positive")
         self.backend = backend
         self.domain_bounds = _validate_domain_bounds(domain_bounds)
-        if decomposition_method not in ("dense", "sorted_x"):                   # pragma: no cover
-            raise ValueError("decomposition_method must be 'dense' or 'sorted_x'")
+        if decomposition_method not in ("dense", "binned", "sorted_x"):                   # pragma: no cover
+            raise ValueError("decomposition_method must be 'dense', 'binned', or 'sorted_x'")
         self.decomposition_method = decomposition_method
         self._preferred_areas = np.full(self.N, phys.A0, dtype=float)
         self._executor: ProcessPoolExecutor | None = None
