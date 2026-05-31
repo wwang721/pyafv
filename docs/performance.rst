@@ -77,8 +77,8 @@ perfectly linear in the number of workers, likely because the benchmark was run
 on a laptop with 8 performance cores and 4 efficiency cores rather than on a
 uniform multi-core CPU.
 
-The following figures show benchmark runs on the Johns Hopkins **Rockfish** HPC
-cluster. The first figure corresponds to runs on the |shared|_ partition
+The following figures show benchmark runs on the **Rockfish** HPC
+cluster at Johns Hopkins University. The first figure corresponds to runs on the |shared|_ partition
 (32 cores/node), while the second shows results from the |parallel|_ partition
 (48 cores/node). The serial :py:class:`pyafv.FiniteVoronoiSimulator` benchmark
 was allocated 16 GB of memory to avoid out-of-memory (OOM) failures; on
@@ -109,5 +109,53 @@ the parallel speedup scales more cleanly with the number of workers.
 
 The optimal decomposition depends on the number of points and the CPU resources
 available on the machine. In this benchmark, using more domains generally helps
-over the tested range, but this tradeoff depends on halo overhead and should be
-checked for each workload.
+over the tested range, but the best choice should still be checked for each
+workload because worker scheduling, inter-process data transfer, result merging,
+and CPU affinity all depend on the hardware and launch configuration.
+
+
+.. _bench_hybrid_build:
+
+Benchmarking hybrid parallel build: MPI + Python multiprocessing
+----------------------------------------------------------------
+
+.. figure:: ../assets/rockfish_hybrid_parallel.svg
+   :alt: Hybrid MPI + multiprocessing build-time benchmark on Rockfish parallel partition
+   :figwidth: 100%
+   :align: center
+
+   Benchmark for a hybrid Python multiprocessing + MPI wrapper on JHU Rockfish |parallel|_ partition.
+
+The hybrid benchmark uses MPI for a coarse domain decomposition and
+:py:class:`pyafv.ParallelFiniteVoronoiSimulator` inside each rank for a second
+local multiprocessing decomposition; see :ref:`multi_node_parallelism_MPI`.
+A label such as ``(2 x 2) x (4 x 3)`` means that the full system is first
+decomposed into a ``2 x 2`` MPI-rank grid, and each rank then decomposes its
+local point set into a ``4 x 3`` worker grid.
+
+The hybrid timing includes the full wrapper step: coarse domain decomposition
+on rank 0, MPI broadcast of the domains, local multiprocessing builds, MPI
+gather of owned-cell forces, and force assembly on rank 0.
+For the hybrid benchmark runs, the number of Slurm tasks was set to the number
+of coarse MPI domains, and ``--cpus-per-task`` was set to the number of local
+multiprocessing subdomains. For example, the ``(2 x 2) x (4 x 3)`` case was
+launched with 4 MPI ranks and 12 CPUs (12 workers) per rank, for a total of 48 workers.
+
+
+The equal-total-CPU comparisons are ``8 x 6``, ``(1 x 2) x (6 x 4)``, and
+``(2 x 2) x (4 x 3)``, all of which use 48 CPUs (48 workers) in total.
+The hybrid versions are slightly faster for larger systems in this benchmark.
+This may be explained by the fact that the pure multiprocessing run has one
+parent process managing 48 workers, while the hybrid runs distribute that
+Python multiprocessing coordination across two or four MPI ranks. The hybrid
+benchmark also gathers and merges only owned-cell forces, while
+:py:meth:`pyafv.ParallelFiniteVoronoiSimulator.build` returns a fuller
+diagnostic dictionary.
+
+The ``(1 x 2) x (8 x 6)`` case is less efficient than might be expected from
+its 96 total workers, corresponding to 96 allocated CPUs. One likely reason is
+the launch layout: the |parallel|_ partition has 48 cores per node, so this
+configuration requires two nodes and therefore cross-node MPI communication.
+By contrast, the 48-worker ``(1 x 2) x (6 x 4)`` and
+``(2 x 2) x (4 x 3)`` cases can fit on a single node, which reduces MPI
+communication overhead.

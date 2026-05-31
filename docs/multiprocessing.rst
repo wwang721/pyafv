@@ -213,6 +213,8 @@ Then use the same number of workers in Python:
    sim = pyafv.ParallelFiniteVoronoiSimulator(points, phys, (4, 4), 16)
 
 
+.. _multi_node_parallelism_MPI:
+
 Multi-node parallelism: MPI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -267,6 +269,16 @@ On a Slurm cluster, request 2 MPI tasks and 4 CPUs per task:
      --bind-to core \
      python MPI_wrap.py
 
+See :ref:`bench_hybrid_build` for a benchmark of this approach
+on the **Rockfish** HPC cluster at Johns Hopkins University.
+
+.. caution::
+
+   MPI ranks can be placed on different nodes, while the worker processes
+   created by each rank run on that rank's node. Therefore,
+   ``--cpus-per-task`` must not exceed the number of CPU cores available
+   on a single node.
+
 Visualization of MPI-based parallel simulations is also possible. Simply loop over each
 rank's domain and call :py:func:`pyafv.visualize_2d_parallel` using the diagnostics from
 each rank (``plot_mode=True`` must be passed to the ``build`` method to enable plotting).
@@ -293,10 +305,3 @@ usually not very informative anyway.
 In such large-scale simulations, the finite Voronoi structures are often
 difficult to distinguish visually, and it is generally more effective to
 visualize cells simply as points.
-
-.. caution::
-
-   MPI ranks can be placed on different nodes, while the worker processes
-   created by each rank run on that rank's node. Therefore,
-   ``--cpus-per-task`` must not exceed the number of CPU cores available
-   on a single node.
