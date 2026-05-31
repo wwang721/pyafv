@@ -21,7 +21,7 @@ affiliations:
  - name: Department of Biophysics, Johns Hopkins University, Baltimore, United States
    index: 2
    ror: "00za53h95"
-date: 28 May 2026
+date: 6 July 2026
 bibliography: paper.bib
 ---
 
@@ -57,7 +57,7 @@ where $K_A$, $K_P$ are elastic moduli, $A_0$, $P_0$ are preferred area and perim
 ![**Build-time performance of the serial and parallel simulators.** **a,** Build times for system sizes $N$ ranging from $10^2$ to $10^6$. **b,** Speedup of the parallel implementation relative to the serial version for different domain decompositions. For the parallel simulations, the number of CPU processes is set equal to the total number of domains.\label{performance}](performance_parallel.pdf)
 
 **API and transparency.** The central class is `FiniteVoronoiSimulator`, initialized with cell-center coordinates and a `PhysicalParams` dataclass. The `build()` method of this class returns a diagnostics dictionary of forces, geometric quantities, and contact connectivity. Cell dynamics are implemented in user scripts rather than inside the library, keeping modeling assumptions explicit. Per-cell heterogeneous preferred areas are supported for mixed-population studies.
-For simulations with large system sizes, `PyAFV` also includes a domain-decomposed multiprocessing implementation `ParallelFiniteVoronoiSimulator`, which retains an interface and build/diagnostic workflow similar to those of the serial `FiniteVoronoiSimulator`. The runtime of the two simulators for different system sizes $N$ is given in Fig.\ref{performance}a, while the speedup achieved by the parallel implementation is shown in Fig. \ref{performance}b.
+For simulations with large system sizes, `PyAFV` also includes a domain-decomposed multiprocessing implementation `ParallelFiniteVoronoiSimulator`, which retains an interface and build/diagnostic workflow similar to those of the serial `FiniteVoronoiSimulator`. The runtime of the two simulators for different system sizes $N$ is given in Fig. \ref{performance}a, while the speedup achieved by the parallel implementation is shown in Fig. \ref{performance}b.
 
 **Calibration module.** Because detachment forces diverge as cells approach full separation [@wang2026divergence], calibration is essential for interpreting tissue fractures. `pyafv.calibrate.auto_calibrate()` finds the steady-state of a cell doublet in the deformable polygon (DP) model [@boromand2018jamming; @lv2024active], probes its detachment force under external pulling, and determines the AFV truncation threshold $\delta$ that matches the target force.
 
