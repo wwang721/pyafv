@@ -68,16 +68,28 @@ def test_decompose_points_methods_match():
         domain_bounds=((0.0, 8.0), (0.0, 5.0)),
         method="sorted_x",
     )
+    binned_domains = afv.decompose_points(
+        pts,
+        grid_shape=(4, 3),
+        halo_width=0.4,
+        domain_bounds=((0.0, 8.0), (0.0, 5.0)),
+        method="binned",
+    )
 
-    for dense_domain, sorted_domain in zip(dense_domains, sorted_domains):
-        np.testing.assert_array_equal(
-            sorted_domain.local_global_ids,
-            dense_domain.local_global_ids,
-        )
-        np.testing.assert_array_equal(
-            sorted_domain.owned_local_ids,
-            dense_domain.owned_local_ids,
-        )
+    for dense_domain, sorted_domain, binned_domain in zip(
+        dense_domains,
+        sorted_domains,
+        binned_domains,
+    ):
+        for domain in (sorted_domain, binned_domain):
+            np.testing.assert_array_equal(
+                domain.local_global_ids,
+                dense_domain.local_global_ids,
+            )
+            np.testing.assert_array_equal(
+                domain.owned_local_ids,
+                dense_domain.owned_local_ids,
+            )
 
 
 def test_decompose_points_one_domain_allows_zero_span_axes():
