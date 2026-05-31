@@ -137,7 +137,7 @@ Decomposition method
 --------------------
 
 The low-level helper :py:func:`pyafv.decompose_points` and the parallel
-simulator both support two halo-collection methods:
+simulator both support three halo-collection methods:
 
 .. code-block:: python
 
