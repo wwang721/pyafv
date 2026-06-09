@@ -107,13 +107,13 @@ def visualize_2d(
             are sliced to the selected cells.
         point_zorder (float, optional): Specifies the z-order for the points, default 3.
         
-        straight_colors (color, optional): Color for straight contact edges, default 'C0'.
+        straight_colors (color | None, optional): Color for straight contact edges, default 'C0'. Use *None* to skip drawing straight edges.
         straight_lw (float, optional): Line width for straight edges, default 1.0.
         straight_alpha (float, optional): Alpha for straight edges, default 1.0.
         straight_capstyle (str, optional): Cap style for straight edges, default 'butt'.
         straight_zorder (float, optional): Z-order for straight edges, default 2.
 
-        arc_colors (color, optional): Color for arc non-contact edges, default 'C2'.
+        arc_colors (color | None, optional): Color for arc non-contact edges, default 'C2'. Use *None* to skip drawing arc edges.
         arc_lw (float, optional): Line width for arc edges, default 1.0.
         arc_alpha (float, optional): Alpha for arc edges, default 1.0.
         arc_capstyle (str, optional): Cap style for arc edges, default 'butt'.
@@ -171,6 +171,12 @@ def visualize_2d(
                 kw["point_size"] = _slice_sequence_value(kw["point_size"], selected, full_N)
 
     N = pts.shape[0]            # Number of points to plot
+    cell_colors = kw.get('cell_colors', 'C2')
+    draw_cell_fills = cell_colors is not None
+    straight_colors = kw.get('straight_colors', 'C0')
+    draw_straight_edges = straight_colors is not None
+    arc_colors = kw.get('arc_colors', 'C2')
+    draw_arc_edges = arc_colors is not None
 
     # Draw cell centers
     if kw.get('show_points', False):
@@ -178,6 +184,12 @@ def visualize_2d(
         point_colors = kw.get('point_colors', 'C0')
         point_zorder = kw.get('point_zorder', 3)
         ax.scatter(pts[:, 0], pts[:, 1], s=point_size, c=point_colors, marker='o', zorder=point_zorder)
+
+    if not (draw_cell_fills or draw_straight_edges or draw_arc_edges):
+        if kw.get('auto_adjust_bounds', True):
+            _adjust_bounds(ax, pts, r)
+        ax.set_aspect("equal")
+        return ax.figure
 
     vertices_all = diag["vertices"]
 
@@ -211,12 +223,13 @@ def visualize_2d(
         straight_mask = flat_e == 1
         arc_mask = flat_e == 0
 
-        if straight_mask.any():
+        if draw_straight_edges and straight_mask.any():
             straight_segs = np.stack([vertices_all[flat_v[straight_mask]], vertices_all[flat_v2[straight_mask]]], axis=1)
 
-        straight_pts = vertices_all[flat_v2]   # (E, 2); consumed only at straight positions
+        if draw_cell_fills and straight_mask.any():
+            straight_pts = vertices_all[flat_v2]   # (E, 2); consumed only at straight positions
 
-        if arc_mask.any():
+        if (draw_cell_fills or draw_arc_edges) and arc_mask.any():
             centers = pts[flat_cell[arc_mask]]
             V1a = vertices_all[flat_v[arc_mask]]
             V2a = vertices_all[flat_v2[arc_mask]]
@@ -227,20 +240,20 @@ def visualize_2d(
             theta = angle1[:, None] - t[None, :] * total[:, None]        # v1 -> v2
             arc_xy = np.stack([centers[:, 0:1] + r * np.cos(theta), centers[:, 1:2] + r * np.sin(theta)], axis=-1)  # (A, 100, 2)
 
-            edge_to_arc = np.full(flat_e.size, -1, dtype=int)
-            edge_to_arc[arc_mask] = np.arange(arc_mask.sum())
+            if draw_cell_fills:
+                edge_to_arc = np.full(flat_e.size, -1, dtype=int)
+                edge_to_arc[arc_mask] = np.arange(arc_mask.sum())
 
     # --- Full-circle polylines for degenerate cells ---
     deg_circles = None
     deg_idx = None
-    if deg_mask.any():
+    if (draw_cell_fills or draw_arc_edges) and deg_mask.any():
         deg_idx = np.where(deg_mask)[0]
         th = np.linspace(0.0, 2 * np.pi, 100)
         circle_template = np.column_stack([np.cos(th), np.sin(th)])      # (100, 2)
         deg_circles = pts[deg_idx, None, :] + r * circle_template[None, :, :]   # (D, 100, 2)
 
-    cell_colors = kw.get('cell_colors', 'C2')
-    if cell_colors is not None:
+    if draw_cell_fills:
         from matplotlib.collections import PolyCollection
         from matplotlib.colors import to_rgba
 
@@ -283,7 +296,6 @@ def visualize_2d(
 
     # Straight strokes (zorder=2)
     if straight_segs is not None:
-        straight_colors = kw.get('straight_colors', 'C0')
         straight_lw = kw.get('straight_lw', 1.0)
         straight_alpha = kw.get('straight_alpha', 1.0)
         straight_capstyle = kw.get('straight_capstyle', 'butt')
@@ -292,12 +304,11 @@ def visualize_2d(
 
     # Arc + full-circle strokes (zorder=1)
     arc_polylines = []
-    if arc_xy is not None:
+    if draw_arc_edges and arc_xy is not None:
         arc_polylines.append(arc_xy)
-    if deg_circles is not None:
+    if draw_arc_edges and deg_circles is not None:
         arc_polylines.append(deg_circles)
     if arc_polylines:
-        arc_colors = kw.get('arc_colors', 'C2')
         arc_lw = kw.get('arc_lw', 1.0)
         arc_alpha = kw.get('arc_alpha', 1.0)
         arc_capstyle = kw.get('arc_capstyle', 'butt')
