@@ -541,6 +541,7 @@ class FiniteVoronoiSimulator:
             J = np.empty(len(H), dtype=int)
             K = np.empty(len(H), dtype=int)
             for t, h in enumerate(H):
+                _warned_inner_vertex_fallback = False
                 try:
                     I[t], J[t], K[t] = vertex_points[h]
                 except ValueError:
@@ -549,6 +550,16 @@ class FiniteVoronoiSimulator:
                     rng = random.Random(self.phys.seed)
                     I[t], J[t], K[t] = rng.sample(vertex_points[h], 3)
 
+                    # print warning to inform user about fallback
+                    if not _warned_inner_vertex_fallback:
+                        import warnings
+                        warnings.warn(
+                            "At least one inner vertex is associated with 4 or more points. "
+                            "Using a random triple of points for force computation.",
+                            RuntimeWarning,
+                            stacklevel=2,
+                        )
+                    _warned_inner_vertex_fallback = True
 
             ri = pts[I]  # (H,2)
             rj = pts[J]
