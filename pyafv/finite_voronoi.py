@@ -540,8 +540,9 @@ class FiniteVoronoiSimulator:
             I = np.empty(len(H), dtype=int)
             J = np.empty(len(H), dtype=int)
             K = np.empty(len(H), dtype=int)
+
+            _warned_inner_vertex_fallback = False
             for t, h in enumerate(H):
-                _warned_inner_vertex_fallback = False
                 try:
                     I[t], J[t], K[t] = vertex_points[h]
                 except ValueError:
@@ -863,14 +864,21 @@ class FiniteVoronoiSimulator:
 
     # --------------------- One integration step ---------------------
     def build(self, connect: bool = True) -> dict[str, object]:
-        """ Build the finite Voronoi structure and compute forces, returning a dictionary of diagnostics.
+        r""" Build the finite Voronoi structure and compute forces, returning a dictionary of diagnostics.
 
         Do the following:
           - Build Voronoi (+ extensions)
           - Get cell connectivity
           - Compute per-cell quantities and derivatives
           - Assemble forces
-        
+
+        .. note::
+            With a non-zero contact truncation threshold :math:`\delta` in the given parameters *phys*, the force
+            near detachment is not :math:`-\nabla E` from any smooth energy :math:`E`. This is deliberate, and it does
+            no harm for the overdamped dynamics and fracture statistics, but it means the energy is not a Lyapunov
+            function in the cutoff region, and anything energy- or Hessian-based (rigidity, inherent structures,
+            detailed balance) needs care.
+
         Args:
             connect: Whether to compute cell connectivity information.
                 Setting this to ``False`` saves some computation time (though

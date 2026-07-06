@@ -127,6 +127,7 @@ class PhysicalParams:
         
         .. important::
             In the returned instance, the contact truncation threshold :py:attr:`delta` is set to 0.45*r by default.
+            The optimal radius :math:`\ell_0` is computed by minimizing the closed-form energy of a cell doublet.
         """
         l, d = self.get_steady_state()
 
