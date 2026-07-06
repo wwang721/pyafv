@@ -31,7 +31,7 @@ def _tqdm(it: Iterable[T], desc: str = "") -> tuple[Iterable[T], bool]:         
 
 
 def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
-                   dt: float = 1e-3, nsteps: int = 50_000, show: bool | None = None) -> tuple[float, PhysicalParams]:
+                   num_vertices: int | None = None, dt: float = 1e-3, nsteps: int = 50_000, show: bool | None = None) -> tuple[float, PhysicalParams]:
     """
     Auto-calibrate the parameters *phys* against the deformable polygon (DP) model.
 
@@ -42,8 +42,10 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
     Args:
         phys: The initial physical parameters.
         ext_forces: An array of external forces to apply during calibration;
-            defaults to None, which uses ``np.linspace(0, 10, 101)[1:]``;
+            defaults to *None*, which uses ``np.linspace(0, 10, 101)[1:]``;
             should start from a small positive value.
+        num_vertices: Number of vertices :math:`M` to use.
+            If set to *None* (the default here), the default value from :py:class:`DeformablePolygonSimulator` is used.
         dt: Time step for each simulation step.
         nsteps: Number of simulation steps to run for each external force.
         show: Whether to print progress information; no need to set it if **tqdm** is installed.
@@ -65,7 +67,7 @@ def auto_calibrate(phys: PhysicalParams, ext_forces: np.ndarray | None = None,
         :py:class:`DeformablePolygonSimulator` model separately to ensure accuracy is acceptable.
     """
 
-    sim = DeformablePolygonSimulator(phys)
+    sim = DeformablePolygonSimulator(phys) if num_vertices is None else DeformablePolygonSimulator(phys, num_vertices=num_vertices)
 
     if sim.detached: # already detached at zero force (steady state)
         detachment_force = 0.0
