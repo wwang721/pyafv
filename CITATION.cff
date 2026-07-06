@@ -8,9 +8,9 @@ authors:
   given-names: "Brian A."
   orcid: "https://orcid.org/0000-0002-0765-6956"
 title: "PyAFV: A Python package for active finite Voronoi simulations of nonconfluent tissues"
-version: v0.4.15
+version: v0.4.16
 doi: 10.5281/zenodo.18091659
-date-released: 2026-06-09
+date-released: 2026-07-06
 url: "https://github.com/wwang721/pyafv"
 preferred-citation:
   type: article
