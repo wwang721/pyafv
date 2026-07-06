@@ -57,12 +57,22 @@ where the noise satisfies :math:`\langle \eta_i(t) \rangle = 0` and :math:`\lang
 .. literalinclude:: ../examples/active_FV.py
    :language: python
 
-See the plotted figure below:
+See the plotted figures below:
 
-.. image:: ../assets/active_FV.png
-   :alt: AFV dynamics
-   :width: 500px
-   :align: center
+.. list-table::
+   :widths: 50 50
+
+   * - .. figure:: ../assets/active_FV_default.png
+          :width: 500px
+          :align: center
+
+          With contact truncation (default).
+
+     - .. figure:: ../assets/active_FV.png
+          :width: 500px
+          :align: center
+
+          No contact truncation (:math:`\delta=0`).
 
 |
 
