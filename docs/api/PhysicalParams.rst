@@ -17,6 +17,7 @@
       ~PhysicalParams.KP
       ~PhysicalParams.Lambda
       ~PhysicalParams.delta
+      ~PhysicalParams.seed
 
    .. rubric:: Methods
 

@@ -546,7 +546,8 @@ class FiniteVoronoiSimulator:
                 except ValueError:
                     # Fallback to **random** triple if a inner vertex is associated with 4 or more points.
                     import random
-                    I[t], J[t], K[t] = random.sample(vertex_points[h], 3)
+                    rng = random.Random(self.phys.seed)
+                    I[t], J[t], K[t] = rng.sample(vertex_points[h], 3)
 
 
             ri = pts[I]  # (H,2)
