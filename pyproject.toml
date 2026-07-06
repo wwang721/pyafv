@@ -79,10 +79,12 @@ exclude = ["assets/", "docs/", "examples/jupyter/", "*.md", ".*"]
 testpaths = ["tests"]
 addopts = "--benchmark-skip"  # skip benchmarks by default
 # pythonpath = ["."]  # not needed if package is installed
-# filter warnings from matplotlib about pyparsing
 filterwarnings = [
+    # filter warnings from matplotlib about pyparsing
     "ignore:'oneOf' deprecated:DeprecationWarning",
     "ignore:'parseString' deprecated:DeprecationWarning",
     "ignore:'resetCache' deprecated:DeprecationWarning",
-    "ignore:'enablePackrat' deprecated:DeprecationWarning"
+    "ignore:'enablePackrat' deprecated:DeprecationWarning",
+    # filter some custom warnings
+    "ignore:.*At least one inner vertex is associated with 4 or more points.*:RuntimeWarning",
 ]

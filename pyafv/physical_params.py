@@ -22,6 +22,25 @@ def _require_float_scalar(x: object, name: str) -> float:       # pragma: no cov
     raise TypeError(f"{name} must be a real scalar (float-like), got {type(x).__name__}")
 
 
+def _require_nonnegative_int_scalar(x: object, name: str) -> int:       # pragma: no cover
+    """
+    Accept Python int and NumPy integer scalars.
+    Reject other types (including bool).
+    Return a normalized Python int.
+    """
+    # Reject bool explicitly (since bool is a subclass of int)
+    if isinstance(x, bool):
+        raise TypeError(f"{name} must be a non-negative integer scalar, got bool")
+    elif isinstance(x, (int, np.integer)):
+        xi = int(x)
+        if xi < 0:
+            raise ValueError(f"{name} must be non-negative, got {x}")
+        return xi
+
+    # Reject everything else
+    raise TypeError(f"{name} must be a non-negative integer scalar, got {type(x).__name__}")
+
+
 def sigmoid(x):
     # stable sigmoid that handles large |x|
     if x >= 0:
@@ -48,6 +67,7 @@ class PhysicalParams:
         KP: Perimeter elasticity constant.
         Lambda: Tension difference between non-contacting edges and contacting edges.
         delta: Contact truncation threshold to avoid singularities in computations; if None, set to 0.45*r.
+        seed: Random seed for reproducibility; used by :py:meth:`get_steady_state` and :py:meth:`with_optimal_radius` for random optimization restarts, and by :py:class:`FiniteVoronoiSimulator` for fallback random sampling.
     """
     
     r: float = 1.0               #: Radius (maximal) of the Voronoi cells, sometimes denoted as :math:`\ell`.
@@ -57,6 +77,7 @@ class PhysicalParams:
     KP: float = 1.0              #: Perimeter elasticity constant.
     Lambda: float = 0.2  #: Tension difference between non-contacting edges and contacting edges.
     delta: float | None = None   #: Contact truncation threshold to avoid singularities in computations.
+    seed: int | None = None      #: Random seed for reproducibility; used by :py:meth:`get_steady_state` and :py:meth:`with_optimal_radius` for random optimization restarts, and by :py:class:`FiniteVoronoiSimulator` for fallback random sampling.
 
     def __post_init__(self):
         # Normalize and validate required scalar floats
@@ -66,6 +87,7 @@ class PhysicalParams:
         object.__setattr__(self, "KA", _require_float_scalar(self.KA, "KA"))
         object.__setattr__(self, "KP", _require_float_scalar(self.KP, "KP"))
         object.__setattr__(self, "Lambda", _require_float_scalar(self.Lambda, "Lambda"))
+        object.__setattr__(self, "seed", _require_nonnegative_int_scalar(self.seed, "seed") if self.seed is not None else None)
 
         if self.delta is None:
             object.__setattr__(self, "delta", 0.45 * self.r)
@@ -105,6 +127,7 @@ class PhysicalParams:
         
         .. important::
             In the returned instance, the contact truncation threshold :py:attr:`delta` is set to 0.45*r by default.
+            The optimal radius :math:`\ell_0` is computed by minimizing the closed-form energy of a cell doublet.
         """
         l, d = self.get_steady_state()
 
@@ -147,18 +170,18 @@ class PhysicalParams:
         KA, KP, A0, P0, Lambda = params
         return KA * (A - A0)**2 + KP * (P - P0)**2 + Lambda * ln
 
-    def _minimize_energy(self, params, restarts=10, seed=None):
+    def _minimize_energy(self, params, restarts=10):
 
         from scipy.optimize import minimize
         
-        rng = np.random.default_rng(seed)
+        rng = np.random.default_rng(self.seed)
         best = None
         for _ in range(restarts):
             z0 = rng.normal(size=2)
 
             with np.errstate(over='ignore', invalid='ignore'):    # suppress overflow warnings in exp() during optimization
                 res = minimize(lambda z: self._energy_unconstrained(z, params), z0, method="BFGS",
-                            options={"gtol": 1e-8, "maxiter": 1e4})
+                            options={"gtol": 1e-8, "maxiter": 10_000})
             val = res.fun
             z = res.x
 
