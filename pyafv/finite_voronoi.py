@@ -873,11 +873,9 @@ class FiniteVoronoiSimulator:
           - Assemble forces
 
         .. note::
-            With a non-zero contact truncation threshold :math:`\delta` in the given parameters *phys*, the force
-            near detachment is not :math:`-\nabla E` from any smooth energy :math:`E`. This is deliberate, and it does
-            no harm for the overdamped dynamics and fracture statistics, but it means the energy is not a Lyapunov
-            function in the cutoff region, and anything energy- or Hessian-based (rigidity, inherent structures,
-            detailed balance) needs care.
+            With a nonzero contact truncation threshold :math:`\delta` in the given parameters *phys*, the force
+            near detachment is regularized to avoid divergence and is therefore not the exact gradient :math:`-\nabla E`
+            of the original energy :math:`E`. Energy-landscape-based analyses in the cutoff region may require care.
 
         Args:
             connect: Whether to compute cell connectivity information.
