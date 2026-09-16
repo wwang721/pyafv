@@ -706,7 +706,7 @@ class ParallelFiniteVoronoiSimulator:
             arr = np.full(self.N, float(arr[0]), dtype=float)
         elif arr.shape != (self.N,):
             raise ValueError(f"A0 must be scalar or have shape ({self.N},)")
-        self._preferred_areas = arr
+        self._preferred_areas = arr.copy()
 
     @property
     def preferred_areas(self) -> np.ndarray:                # pragma: no cover

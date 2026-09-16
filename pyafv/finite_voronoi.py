@@ -1172,7 +1172,7 @@ class FiniteVoronoiSimulator:
             raise ValueError("pts must have shape (N,2)")
         
         N = pts.shape[0]
-        self.pts = pts
+        self.pts = pts.copy()
 
         if N != self.N:
             self.N = N
@@ -1227,7 +1227,7 @@ class FiniteVoronoiSimulator:
             if arr.shape != (self.N,):
                 raise ValueError(f"A0 must be scalar or have shape ({self.N},)")
         
-        self._preferred_areas = arr
+        self._preferred_areas = arr.copy()
 
     @property
     def preferred_areas(self) -> np.ndarray:
