@@ -49,7 +49,7 @@ As an alternative, you can install **PyAFV** via *conda* from the **conda-forge*
 ```bash
 conda install -c conda-forge pyafv
 ```
-
+If you go this route, note that **conda-forge** currently provides only the regular (non-freethreading, GIL-enabled) build of Python 3.15. Additionally, **conda-forge** dropped Python 3.10 from its default build matrix on August 31, 2026.<sup>[¶](https://conda-forge.org/news/2026/08/31/python-3-10/)</sup> Consequently, only **PyAFV** v0.4.16 and earlier are available through **conda-forge** for Python 3.10, while **PyPI** distributions remain unaffected.
 
 <!--
 ### Install from source
@@ -158,7 +158,7 @@ https://doi.org/10.48550/arXiv.2604.15481). Here is a ready-made BibTeX entry:
 ```bibtex
 @article{wang2026divergence,
   title   = {{Divergence of detachment forces in the finite Voronoi model}},
-  author  = {Wang, Wei and Camley, Brian A},
+  author  = {Wang, Wei and Camley, Brian A.},
   journal = {arXiv preprint arXiv:2604.15481},
   year    = {2026},
   doi     = {10.48550/arXiv.2604.15481}
@@ -184,7 +184,7 @@ https://doi.org/10.48550/arXiv.2604.15481). Here is a ready-made BibTeX entry:
   <tr>
     <td id="wang2026divergence" valign="top">[3]</td>
     <td>
-      W. Wang (汪巍) and B. A. Camley, <em>Divergence of detachment forces in the finite Voronoi model</em> <a href="https://doi.org/10.48550/arXiv.2604.15481">arXiv:2604.15481 [cond-mat.soft] (2026)</a>.
+      W. Wang (汪巍) and B. A. Camley, <em>Divergence of detachment forces in the finite Voronoi model</em>, <a href="https://doi.org/10.48550/arXiv.2604.15481">arXiv:2604.15481 [cond-mat.soft] (2026)</a>.
     </td>
   </tr>
 </table>

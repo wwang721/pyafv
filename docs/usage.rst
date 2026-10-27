@@ -62,6 +62,13 @@ As an alternative, you can install **PyAFV** via *conda* from the |conda-forge|_
    
    (.venv) $ conda install -c conda-forge pyafv
 
+.. role:: raw-html(raw)
+   :format: html
+
+If you go this route, note that |conda-forge|_ currently provides only the regular (non-freethreading, GIL-enabled) build of Python 3.15.
+Additionally, |conda-forge|_ dropped Python 3.10 from its default build matrix on August 31, 2026.\ :raw-html:`<sup><a href="https://conda-forge.org/news/2026/08/31/python-3-10/">¶</a></sup>`
+Consequently, only **PyAFV** v0.4.16 and earlier are available through |conda-forge|_ for Python 3.10, while |PyPI|_ distributions remain unaffected.
+
 
 
 Install from source

@@ -15,7 +15,7 @@ A paper associated with **PyAFV** has been posted to |arXiv|_. Here is a ready-m
 
    @article{wang2026divergence,
      title   = {{Divergence of detachment forces in the finite Voronoi model}},
-     author  = {Wang, Wei and Camley, Brian A},
+     author  = {Wang, Wei and Camley, Brian A.},
      journal = {arXiv preprint arXiv:2604.15481},
      year    = {2026},
      doi     = {10.48550/arXiv.2604.15481}
